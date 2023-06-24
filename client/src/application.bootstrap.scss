@@ -1,0 +1,99 @@
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+.bg_primary-color {
+  background-color: #FFFFFF;
+}
+.primary-color {
+  background-color: #FFFFFF;
+}
+.bg_secondary-color {
+  background-color: #293241;
+}
+.secondary-color {
+  color: #293241;
+}
+.custom-button.btn {
+  background-color: #293241;
+  color: #FFF;
+  border: none;
+  margin-right: 20px;
+}
+.hero {
+  width: 100vw;
+  height: 50vh;
+}
+.hero img {
+  object-fit: cover;
+  object-position: top;
+  height: 100%;
+  width: 100%;
+}
+.overlay {
+  height: 100%;
+  width: 100%;
+  opacity: 0.4;
+}
+.wide{
+  width: 80%;
+}
+
+.short{
+  width: 100px;
+}
+
+.btn-secondary{
+  padding: 0px 5px 0px 5px;
+}
+
+#editorCard input{
+  margin-top: 15px;
+  margin-right: 10px;
+}
+
+.topMargin{
+  margin-top: 15px;
+}
+
+#editorCard button{
+  margin-right: 10px;
+}
+
+
+.topMargins{
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.full{
+  width: 80%;
+}
+
+#testChar{
+  font-size: 100px;
+}
+
+#pinyinFinal{
+  font-size: 80px;
+}
+
+.center{
+  text-align: center;
+}
+
+.border{
+  border-style: solid;
+}
+
+#answerBox{
+  font-size: 60px;
+  width: 95%;
+  height: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pinyinBox{
+  margin-top: 10px;
+}
