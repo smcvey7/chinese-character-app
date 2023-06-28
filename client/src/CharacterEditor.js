@@ -1,16 +1,34 @@
 import React, {useEffect, useState} from "react";
 const {set} = require('lodash.set')
+var _ = require('lodash')
 
 function CharacterEditor(){
   const [characterList, setCharacterList] =  useState(null)
   const [currentCharacter, setCurrentCharacter] = useState(null)
   const [pinyinValue, setPinyinValue] = useState("")
+  const [currentLevel, setCurrentLevel] = useState(1)
+  const [filteredList, setFilteredList] = useState(null)
+  const [data, setData] = useState([])
+
+
+
+  const getData=()=>{
+    fetch ('data.json', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    }).then((r)=>r.json())
+    .then((data)=>setData(data))
+  }
   
   useEffect(()=>{
     fetch('/characters').then((r)=>r.json()).then((chars)=>{
-      setCharacterList(chars)
+      setFilteredList(chars.filter((char)=>char.hsk_level === 1).sort((a, b)=>{return a.id-b.id}))
+      setCharacterList(chars.sort((a, b)=>{return a.id-b.id}))
       setCurrentCharacter(chars[0])
     })
+    getData()
   }, [])
 
 
@@ -23,7 +41,6 @@ function CharacterEditor(){
       ...currentCharacter,
       [e.target.name]: value
     })
-    console.log(currentCharacter)
   }
 
   function handleChangeChoices(e){
@@ -35,7 +52,6 @@ function CharacterEditor(){
       ...currentCharacter,
       choices: newChoices
     })
-    console.log(currentCharacter.choices)
   }
 
 function removePinyin(e){
@@ -71,16 +87,35 @@ function handleAutofill(e){
   .then((data)=>autofillData(data))
 }
 
-function autofillData(data){
-  const traditional = getTraditional(data)
-  const strokes = data.totalstrokes
-  const pinyin = data.readings.mandarinpinyin
+function autofillData(autoData){
+  const traditional = getTraditional(autoData)
+  const strokes = autoData.totalstrokes
+  const pinyin = autoData.readings.mandarinpinyin
+ 
+  const choices = createFakes(autoData.char)
+
   setCurrentCharacter({
     ...currentCharacter,
     traditional: traditional,
     strokes: strokes,
-    pinyin: pinyin
+    pinyin: pinyin, 
+    choices: choices
   })
+}
+
+function createFakes(input){
+  const dictData = data.filter((char)=>char.ci.includes(input))
+  const wordList = dictData.map((word)=>{return word.ci})
+  const items = _.sampleSize(characterList, 3).map((word)=>{return word.simplified})
+  const fakes = [input, input, input].map((word, index)=>{
+    const beforeOrAfter = Math.floor(Math.random()*2)
+    if (beforeOrAfter === 0){
+      return word+items[index]
+    }else return items[index]+word
+  })
+
+
+  return [currentCharacter.choices[0], ...fakes]
 }
 
 function getTraditional(char){
@@ -107,14 +142,14 @@ function handleSubmit(e){
       if (char.id === updatedChar.id){
         return updatedChar
       }else return char
-    })
+    }).sort((a, b)=>{return a.id-b.id})
     setCharacterList(updatedList)
   })
 }
 
 function preloadAll(){
   const incomplete = characterList.filter((char)=>char.pinyin.length === 0)
-  incomplete.map((char)=>{
+  incomplete.forEach((char)=>{
     fetch(`https://api.ctext.org/getcharacter?char=${char.simplified}`)
     .then((r)=>r.json())
     .then((data)=>{
@@ -127,7 +162,6 @@ function preloadAll(){
         strokes: strokes,
         pinyin: pinyin
       }
-      console.log("completed update: ", updatedChar.simplified, updatedChar.pinyin)
       submitUpdate(updatedChar)
     })
 })
@@ -146,22 +180,57 @@ function submitUpdate(updatedChar){
   // })
 }
 
+function handleLevelChange(e){
+  const level = parseInt(e.target.value)
+  setCurrentLevel(level)
+  filterCharacters(level)
+  // setCurrentCharacter(filterCharacters[0])
+}
+
+function filterCharacters(level){
+  const newList = characterList.filter((char)=>{
+    return char.hsk_level === level
+  }).sort((a, b)=>{
+    return a.id-b.id
+  })
+
+  setFilteredList(newList)
+  setCurrentCharacter(newList[0])
+}
+
+function handleComplete(e){
+  setCurrentCharacter({
+    ...currentCharacter,
+    checked: e.target.checked
+  })
+}
+
   if (!currentCharacter) return <></>
 
   return(
     <div>
-      <select value={currentCharacter.id} className="topMargins" name="characters" onChange={(e)=>setCurrentCharacter(characterList.filter((char)=>char.id===parseInt(e.target.value))[0])}>
-            {characterList.map((char)=>{
-              return <option key={char.simplified} value={char.id}>{`${char.simplified} (${char.checked?"checked":"not checked"})`}</option>
-            })}
-          </select>
-      <button onClick={preloadAll}>Preload all</button>
-    
+      <div>
+        Level:
+        <select value={currentLevel} onChange={handleLevelChange}>
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+          <option value={4}>4</option>
+          <option value={5}>5</option>
+          <option value={6}>6</option>
+        </select>
+        <select value={currentCharacter.id} className="topMargins" name="characters" onChange={(e)=>setCurrentCharacter(characterList.filter((char)=>char.id===parseInt(e.target.value))[0])}>
+              {filteredList.map((char)=>{
+                return <option key={char.simplified} value={char.id}>{`${char.simplified} (${char.checked?"checked":"not checked"})`}</option>
+              })}
+            </select>
+        {/* <button onClick={preloadAll}>Preload all</button> */}
+      </div>
       <div id="editorCard" className="full card topMargins">
         <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around">
           <div>
             
-            <h1>Character: {currentCharacter.simplified}</h1><button onClick={handleAutofill}>autofill</button><br/>
+            <h1>Character: {currentCharacter.simplified}{currentCharacter.traditional === "" ? "" : ` / ${currentCharacter.traditional}`}</h1><button onClick={handleAutofill}>autofill</button><br/>
             HSK level:<select onChange={handleChange} number="true" name="hsk_level" value={currentCharacter.hsk_level}>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -198,7 +267,10 @@ function submitUpdate(updatedChar){
               <button value={-1} onClick={nextPrevious}>previous</button>
               <button value={1} onClick={nextPrevious}>next</button>
             </div>
-            <div>
+            <div className="d-flex flex-column">
+              <div>
+                completed <input onChange={handleComplete} checked={currentCharacter.checked} type="checkbox"></input>
+              </div>
             <input type="submit"/>
             </div>
           </div>

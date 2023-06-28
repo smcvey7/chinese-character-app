@@ -13,9 +13,11 @@ class CharactersController < ApplicationController
       strokes: params[:strokes],
       components: params[:components],
       choices: params[:choices],
-      pinyin: params[:pinyin]
+      pinyin: params[:pinyin],
+      checked: params[:checked]
     )
     render json: character
+
   end
 
 
