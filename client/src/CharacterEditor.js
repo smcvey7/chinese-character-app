@@ -92,7 +92,7 @@ function autofillData(autoData){
   const strokes = autoData.totalstrokes
   const pinyin = autoData.readings.mandarinpinyin
  
-  const choices = createFakes(autoData.char)
+  const choices = createFakes(autoData.char, autoData.hsk_level)
 
   setCurrentCharacter({
     ...currentCharacter,
@@ -103,10 +103,11 @@ function autofillData(autoData){
   })
 }
 
-function createFakes(input){
-  const dictData = data.filter((char)=>char.ci.includes(input))
-  const wordList = dictData.map((word)=>{return word.ci})
-  const items = _.sampleSize(characterList, 3).map((word)=>{return word.simplified})
+function createFakes(input, level){
+  // const dictData = data.filter((char)=>char.ci.includes(input))
+  // const wordList = dictData.map((word)=>{return word.ci})
+  const charListByLevel = characterList.filter((char)=>char.hsk_level <= level)
+  const items = _.sampleSize(charListByLevel, 3).map((word)=>{return word.simplified})
   const fakes = [input, input, input].map((word, index)=>{
     const beforeOrAfter = Math.floor(Math.random()*2)
     if (beforeOrAfter === 0){
@@ -148,8 +149,9 @@ function handleSubmit(e){
 }
 
 function preloadAll(){
-  const incomplete = characterList.filter((char)=>char.pinyin.length === 0)
-  incomplete.forEach((char)=>{
+  const needPinyin = characterList.filter((char)=>char.pinyin.length === 0)
+  const needChoices = characterList.filter((char)=>char.choices[1] === "")
+  needPinyin.forEach((char)=>{
     fetch(`https://api.ctext.org/getcharacter?char=${char.simplified}`)
     .then((r)=>r.json())
     .then((data)=>{
@@ -165,6 +167,14 @@ function preloadAll(){
       submitUpdate(updatedChar)
     })
 })
+  needChoices.forEach((char)=>{
+    console.log(char, createFakes(char.simplified, char.hsk_level))
+    const updatedChar = {
+      ...char,
+      choices: createFakes(char.simplified, char.hsk_level)
+    }
+    submitUpdate(updatedChar)
+  })
 }
 
 function submitUpdate(updatedChar){
@@ -175,9 +185,9 @@ function submitUpdate(updatedChar){
     },
     body: JSON.stringify({...updatedChar})
   }).then((r)=>r.json())
-  // .then((newChar)=>{
-  //   // console.log("posted: ", newChar.simplified)
-  // })
+  .then((newChar)=>{
+    console.log("posted: ", newChar, newChar.choices)
+  })
 }
 
 function handleLevelChange(e){
@@ -218,13 +228,14 @@ function handleComplete(e){
           <option value={4}>4</option>
           <option value={5}>5</option>
           <option value={6}>6</option>
+          <option value={7}>7-9</option>
         </select>
         <select value={currentCharacter.id} className="topMargins" name="characters" onChange={(e)=>setCurrentCharacter(characterList.filter((char)=>char.id===parseInt(e.target.value))[0])}>
               {filteredList.map((char)=>{
                 return <option key={char.simplified} value={char.id}>{`${char.simplified} (${char.checked?"checked":"not checked"})`}</option>
               })}
             </select>
-        {/* <button onClick={preloadAll}>Preload all</button> */}
+        <button onClick={preloadAll}>Preload all</button>
       </div>
       <div id="editorCard" className="full card topMargins">
         <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around">
@@ -238,6 +249,7 @@ function handleComplete(e){
               <option value="4">4</option>
               <option value="5">5</option>
               <option value="6">6</option>
+              <option value="7">7-9</option>
             </select>
             components: <input className="short" onChange={handleChange} number="true" name="components" value={currentCharacter.components}/>
             strokes: <input className="short" onChange={handleChange} number="true" name="strokes" value={currentCharacter.strokes}/>
