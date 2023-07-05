@@ -236,7 +236,7 @@ function handleComplete(e){
                 return <option key={char.simplified} value={char.id}>{`${char.simplified} (${char.checked?"checked":"not checked"})`}</option>
               })}
             </select>
-        {/* <button onClick={preloadAll}>Preload all</button> */}
+        <button onClick={preloadAll}>Preload all</button>
       </div>
       <div id="editorCard" className="full card topMargins">
         <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around">
