@@ -4,7 +4,7 @@ function Test(){
   const [charNum, setCharNum] = useState(0)
   const [pinyinInput, setPinyinInput] = useState({
     pinyin: "",
-    umlaut: false,
+    umlaut: "btn btn-outline-primary",
     tone: 0
   })
   const [pinyinFinal, setPinyinFinal] = useState("")
@@ -115,13 +115,15 @@ function Test(){
   }
 
   function handleChange(e){
+    console.log(e)
     const key = e.target.name
     const input = e.target.value
     let value
     if (key === "pinyin"){
       value = validatePinyin(input)
       }else if (key === "umlaut"){
-        value = e.target.className === "btn btn-outline-primary active" ? true : false
+        console.log(pinyinInput)
+        value = e.target.className === "btn btn-outline-primary active" ? "btn btn-outline-primary" : "btn btn-outline-primary active"
       }else{
         value = e.target.value
       }
@@ -135,7 +137,7 @@ function Test(){
 
   function formatPinyin(input){
     const letters = input.pinyin.split('')
-    const lettersWithUmlaut = input.umlaut ?  addUmlaut(letters) : letters
+    const lettersWithUmlaut = input.umlaut === "btn btn-outline-primary active" ?  addUmlaut(letters) : letters
     const lettersWithTone = addTone(lettersWithUmlaut, input.tone)
     setPinyinFinal(lettersWithTone)
   }
@@ -186,7 +188,7 @@ function Test(){
           <div>
             <h3 className="center">input pinyin here</h3>
             <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
-              <button onClick={handleChange} name="umlaut" type="button" className="btn btn-outline-primary" data-bs-toggle="button" autoComplete="off" aria-pressed={pinyinInput.umlaut}>¨</button>
+              <button onClick={handleChange} name="umlaut" type="button" className={pinyinInput.umlaut} data-bs-toggle="button" autoComplete="off" pressed={pinyinInput.umlaut}>¨</button>
 
               <input type="radio" className="btn-check" name="tone" value={1} id="btnradio1" autoComplete="off" onChange={handleChange} />
               <label className="btn btn-outline-primary" htmlFor="btnradio1">¯</label>

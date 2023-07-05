@@ -155,6 +155,7 @@ function preloadAll(){
     fetch(`https://api.ctext.org/getcharacter?char=${char.simplified}`)
     .then((r)=>r.json())
     .then((data)=>{
+      console.log(data)
       const traditional = getTraditional(data)
       const strokes = data.totalstrokes
       const pinyin = data.readings.mandarinpinyin
@@ -235,7 +236,7 @@ function handleComplete(e){
                 return <option key={char.simplified} value={char.id}>{`${char.simplified} (${char.checked?"checked":"not checked"})`}</option>
               })}
             </select>
-        <button onClick={preloadAll}>Preload all</button>
+        {/* <button onClick={preloadAll}>Preload all</button> */}
       </div>
       <div id="editorCard" className="full card topMargins">
         <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around">
@@ -268,7 +269,7 @@ function handleComplete(e){
             </ul>
           <div>
             <h3>Multiple Choice</h3>
-            correct: <input className="short" onChange={handleChangeChoices} name="0" value={currentCharacter.choices[0]}/><br/>
+            correct: <input className="short"  onChange={handleChangeChoices} name="0" value={currentCharacter.choices[0]}/><br/>
             incorrect: 
           <input className="short" onChange={handleChangeChoices} name="1" value={currentCharacter.choices[1]}/>
           <input className="short" onChange={handleChangeChoices} name="2" value={currentCharacter.choices[2]}/>
