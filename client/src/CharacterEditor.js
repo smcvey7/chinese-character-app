@@ -1,26 +1,16 @@
 import React, {useEffect, useState} from "react";
+import PinyinEditor from "./PinyinEditor";
+import CharacterInfo from "./CharacterInfo";
+import MultipleChoiceEditor from "./MultipleChoiceEditor";
+import CharacterFilter from "./CharacterFilter";
 const {set} = require('lodash.set')
 var _ = require('lodash')
 
 function CharacterEditor(){
   const [characterList, setCharacterList] =  useState(null)
   const [currentCharacter, setCurrentCharacter] = useState(null)
-  const [pinyinValue, setPinyinValue] = useState("")
-  const [currentLevel, setCurrentLevel] = useState(1)
   const [filteredList, setFilteredList] = useState(null)
-  const [data, setData] = useState([])
 
-
-
-  const getData=()=>{
-    fetch ('data.json', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    }).then((r)=>r.json())
-    .then((data)=>setData(data))
-  }
   
   useEffect(()=>{
     fetch('/characters').then((r)=>r.json()).then((chars)=>{
@@ -28,7 +18,6 @@ function CharacterEditor(){
       setCharacterList(chars.sort((a, b)=>{return a.id-b.id}))
       setCurrentCharacter(chars[0])
     })
-    getData()
   }, [])
 
 
@@ -43,25 +32,6 @@ function CharacterEditor(){
     })
   }
 
-  function handleChangeChoices(e){
-    const index = parseInt(e.target.name)
-    const newChoices = currentCharacter.choices
-    newChoices[index] = e.target.value
-
-    setCurrentCharacter({
-      ...currentCharacter,
-      choices: newChoices
-    })
-  }
-
-function removePinyin(e){
-  const newPinyin = currentCharacter.pinyin.filter((word)=> word !== e.target.name)
-  setCurrentCharacter({
-    ...currentCharacter,
-    pinyin: newPinyin
-  })
-}
-
 function nextPrevious(e){
   e.preventDefault()
   const nextChar = characterList.filter((char)=>char.id===currentCharacter.id + parseInt(e.target.value))[0]
@@ -70,38 +40,28 @@ function nextPrevious(e){
   if (nextChar) setCurrentCharacter(nextChar)
 }
 
-function addPinyin(e){
-  if (pinyinValue === "") return null
-  e.preventDefault()
-  setCurrentCharacter({
-    ...currentCharacter,
-    pinyin: [...currentCharacter.pinyin, pinyinValue]
-  })
-  setPinyinValue("")
-}
+// function handleAutofill(e){
+//   e.preventDefault()
+//   fetch(`https://api.ctext.org/getcharacter?char=${currentCharacter.simplified}`)
+//   .then((r)=>r.json())
+//   .then((data)=>autofillData(data))
+// }
 
-function handleAutofill(e){
-  e.preventDefault()
-  fetch(`https://api.ctext.org/getcharacter?char=${currentCharacter.simplified}`)
-  .then((r)=>r.json())
-  .then((data)=>autofillData(data))
-}
-
-function autofillData(autoData){
-  const traditional = getTraditional(autoData)
-  const strokes = autoData.totalstrokes
-  const pinyin = autoData.readings.mandarinpinyin
+// function autofillData(autoData){
+//   const traditional = getTraditional(autoData)
+//   const strokes = autoData.totalstrokes
+//   const pinyin = autoData.readings.mandarinpinyin
  
-  const choices = createFakes(autoData.char, autoData.hsk_level)
+//   const choices = createFakes(autoData.char, autoData.hsk_level)
 
-  setCurrentCharacter({
-    ...currentCharacter,
-    traditional: traditional,
-    strokes: strokes,
-    pinyin: pinyin, 
-    choices: choices
-  })
-}
+//   setCurrentCharacter({
+//     ...currentCharacter,
+//     traditional: traditional,
+//     strokes: strokes,
+//     pinyin: pinyin, 
+//     choices: choices
+//   })
+// }
 
 function createFakes(input, level){
   // const dictData = data.filter((char)=>char.ci.includes(input))
@@ -148,35 +108,35 @@ function handleSubmit(e){
   })
 }
 
-function preloadAll(){
-  const needPinyin = characterList.filter((char)=>char.pinyin.length === 0)
-  const needChoices = characterList.filter((char)=>char.choices[1] === "")
-  needPinyin.forEach((char)=>{
-    fetch(`https://api.ctext.org/getcharacter?char=${char.simplified}`)
-    .then((r)=>r.json())
-    .then((data)=>{
-      console.log(data)
-      const traditional = getTraditional(data)
-      const strokes = data.totalstrokes
-      const pinyin = data.readings.mandarinpinyin
-      const updatedChar = {
-        ...char,
-        traditional: traditional,
-        strokes: strokes,
-        pinyin: pinyin
-      }
-      submitUpdate(updatedChar)
-    })
-})
-  needChoices.forEach((char)=>{
-    console.log(char, createFakes(char.simplified, char.hsk_level))
-    const updatedChar = {
-      ...char,
-      choices: createFakes(char.simplified, char.hsk_level)
-    }
-    submitUpdate(updatedChar)
-  })
-}
+// function preloadAll(){
+//   const needPinyin = characterList.filter((char)=>char.pinyin.length === 0)
+//   const needChoices = characterList.filter((char)=>char.choices[1] === "")
+//   needPinyin.forEach((char)=>{
+//     fetch(`https://api.ctext.org/getcharacter?char=${char.simplified}`)
+//     .then((r)=>r.json())
+//     .then((data)=>{
+//       console.log(data)
+//       const traditional = getTraditional(data)
+//       const strokes = data.totalstrokes
+//       const pinyin = data.readings.mandarinpinyin
+//       const updatedChar = {
+//         ...char,
+//         traditional: traditional,
+//         strokes: strokes,
+//         pinyin: pinyin
+//       }
+//       submitUpdate(updatedChar)
+//     })
+// })
+//   needChoices.forEach((char)=>{
+//     console.log(char, createFakes(char.simplified, char.hsk_level))
+//     const updatedChar = {
+//       ...char,
+//       choices: createFakes(char.simplified, char.hsk_level)
+//     }
+//     submitUpdate(updatedChar)
+//   })
+// }
 
 function submitUpdate(updatedChar){
   fetch(`/characters/${updatedChar.id}`, {
@@ -191,24 +151,6 @@ function submitUpdate(updatedChar){
   })
 }
 
-function handleLevelChange(e){
-  const level = parseInt(e.target.value)
-  setCurrentLevel(level)
-  filterCharacters(level)
-  // setCurrentCharacter(filterCharacters[0])
-}
-
-function filterCharacters(level){
-  const newList = characterList.filter((char)=>{
-    return char.hsk_level === level
-  }).sort((a, b)=>{
-    return a.id-b.id
-  })
-
-  setFilteredList(newList)
-  setCurrentCharacter(newList[0])
-}
-
 function handleComplete(e){
   setCurrentCharacter({
     ...currentCharacter,
@@ -220,61 +162,12 @@ function handleComplete(e){
 
   return(
     <div>
-      <div>
-        Level:
-        <select value={currentLevel} onChange={handleLevelChange}>
-          <option value={1}>1</option>
-          <option value={2}>2</option>
-          <option value={3}>3</option>
-          <option value={4}>4</option>
-          <option value={5}>5</option>
-          <option value={6}>6</option>
-          <option value={7}>7-9</option>
-        </select>
-        <select value={currentCharacter.id} className="topMargins" name="characters" onChange={(e)=>setCurrentCharacter(characterList.filter((char)=>char.id===parseInt(e.target.value))[0])}>
-              {filteredList.map((char)=>{
-                return <option key={char.simplified} value={char.id}>{`${char.simplified} (${char.checked?"checked":"not checked"})`}</option>
-              })}
-            </select>
-        <button onClick={preloadAll}>Preload all</button>
-      </div>
+      <CharacterFilter characterList={characterList} setCurrentCharacter={setCurrentCharacter} currentCharacter={currentCharacter} setFilteredList={setFilteredList} filteredList={filteredList}/>
       <div id="editorCard" className="full card topMargins">
         <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around">
-          <div>
-            
-            <h1>Character: {currentCharacter.simplified}{currentCharacter.traditional === "" ? "" : ` / ${currentCharacter.traditional}`}</h1><button onClick={handleAutofill}>autofill</button><br/>
-            HSK level:<select onChange={handleChange} number="true" name="hsk_level" value={currentCharacter.hsk_level}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7-9</option>
-            </select>
-            components: <input className="short" onChange={handleChange} number="true" name="components" value={currentCharacter.components}/>
-            strokes: <input className="short" onChange={handleChange} number="true" name="strokes" value={currentCharacter.strokes}/>
-          </div>
-          <div className="d-flex flex-row justify-content-around">
-            <h3>Pinyin:</h3>
-            
-            <div>
-              add <input onChange={(e)=>setPinyinValue(e.target.value)} name="pinyin" value={pinyinValue} /><button className="btn btn-secondary" onClick={addPinyin}>add</button>
-            </div>
-          </div>
-          <ul>
-              {currentCharacter.pinyin.map((word)=>{
-                return <li key={word}>{word} <button className="btn btn-secondary" onClick={removePinyin} name={word}>x</button></li>
-              })}
-            </ul>
-          <div>
-            <h3>Multiple Choice</h3>
-            correct: <input className="short"  onChange={handleChangeChoices} name="0" value={currentCharacter.choices[0]}/><br/>
-            incorrect: 
-          <input className="short" onChange={handleChangeChoices} name="1" value={currentCharacter.choices[1]}/>
-          <input className="short" onChange={handleChangeChoices} name="2" value={currentCharacter.choices[2]}/>
-          <input className="short" onChange={handleChangeChoices} name="3" value={currentCharacter.choices[3]}/>
-          </div>
+          <CharacterInfo currentCharacter={currentCharacter} handleChange={handleChange}  />
+          <PinyinEditor currentCharacter={currentCharacter} setCurrentCharacter={setCurrentCharacter} />
+          <MultipleChoiceEditor currentCharacter={currentCharacter} setCurrentCharacter={setCurrentCharacter} />
           <div className="d-flex flex-row justify-content-between">
             <div className="topMargin">
               <button value={-1} onClick={nextPrevious}>previous</button>
@@ -288,14 +181,6 @@ function handleComplete(e){
             </div>
           </div>
         </form>
-        <div>
-          <h3>Incorrect Answers</h3>
-            <ul>
-              {Object.keys(currentCharacter.incorrect).map((key)=>{
-                return <li key={key}>{key} - {currentCharacter.incorrect[key]}</li>
-              })}
-            </ul>
-        </div>
       </div>
     </div>
   )

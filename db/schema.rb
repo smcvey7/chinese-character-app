@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_13_171801) do
+ActiveRecord::Schema.define(version: 2023_09_06_160735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,55 @@ ActiveRecord::Schema.define(version: 2023_06_13_171801) do
     t.integer "components", default: 0
     t.integer "strokes", default: 0
     t.json "incorrect", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "class_groups", force: :cascade do |t|
+    t.string "name"
+    t.integer "teacher_id"
+    t.integer "uuid"
+    t.integer "level"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string "username"
+    t.string "email"
+    t.string "password_digest"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "first_language"
+    t.string "country"
+    t.string "state"
+    t.string "school"
+    t.integer "class_id"
+    t.integer "years_studied"
+    t.json "scores", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "teachers", force: :cascade do |t|
+    t.string "username"
+    t.string "email"
+    t.string "password_digest"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "country"
+    t.string "state"
+    t.string "school"
+    t.boolean "admin"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.integer "student_id"
+    t.integer "score"
+    t.integer "version"
+    t.string "items", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

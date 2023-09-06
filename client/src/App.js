@@ -6,6 +6,7 @@ import AddCharacter from './AddCharacter';
 import Test from './Test';
 import QuestionCreator from './QuestionCreator';
 import CharacterEditor from './CharacterEditor';
+import Signup from './Signup';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/test" element={<Test/>} />
       <Route path="/createQuestion" element={<QuestionCreator/>} />
       <Route path="/editor" element={<CharacterEditor/>}/>
+      <Route path="/signup" element={<Signup/>}/>
     </Routes>
     </div>
   );

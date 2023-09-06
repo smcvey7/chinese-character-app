@@ -55,10 +55,25 @@
   margin-top: 15px;
 }
 
+#characterFilter{
+  width: 50%;
+  max-width: 350px;
+}
+
+select{
+  width: 200px;
+  height: 30px;
+}
+
 #editorCard button{
   margin-right: 10px;
 }
 
+.card{
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding: 15px;
+}
 
 .topMargins{
   margin-top: 50px;
