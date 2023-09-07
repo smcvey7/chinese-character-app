@@ -9,7 +9,7 @@ class CreateTeachers < ActiveRecord::Migration[6.1]
       t.string :country
       t.string :state
       t.string :school
-      t.boolean :admin
+      t.boolean :admin, default: false
 
       t.timestamps
     end

@@ -61,7 +61,7 @@
 }
 
 select{
-  width: 200px;
+  width: 250px;
   height: 30px;
 }
 
@@ -79,6 +79,27 @@ select{
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
+}
+
+input.form-control{
+  width: 50%;
+}
+
+.half{
+  width: 50%;
+}
+
+.banner{
+  z-index: 1;
+  position: fixed;
+  top: 50%;
+  width: 70%;
+  height: 100px;
+  background-color: #2932419f;
+  color: #FFFFFF;
+  font-size: 100px;
+  text-align: center;
+  padding-top: 20px;
 }
 
 .full{
@@ -111,4 +132,12 @@ select{
 
 .pinyinBox{
   margin-top: 10px;
+}
+
+.green{
+  color: green;
+}
+
+.red{
+  color: red;
 }

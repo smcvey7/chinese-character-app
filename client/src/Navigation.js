@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 function Navigation(){
@@ -27,18 +27,11 @@ function Navigation(){
         Editor
       </Link>
       <Link
-        to="/createQuestion"
+        to="/signup"
         className="btn btn-lg custom-button"
         role="button"
       >
-        Create Question
-      </Link>
-      <Link
-        to="/addCharacter"
-        className="btn btn-lg custom-button"
-        role="button"
-      >
-        Add Character
+        Sign up/Login
       </Link>
     </nav>
   )

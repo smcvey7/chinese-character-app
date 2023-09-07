@@ -17,9 +17,7 @@ function App() {
       </div>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/addCharacter" element={<AddCharacter />} />
       <Route path="/test" element={<Test/>} />
-      <Route path="/createQuestion" element={<QuestionCreator/>} />
       <Route path="/editor" element={<CharacterEditor/>}/>
       <Route path="/signup" element={<Signup/>}/>
     </Routes>

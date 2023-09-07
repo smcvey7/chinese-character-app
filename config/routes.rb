@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get "/availability/:username", to: "availability#show"
+
   resources :tests
   resources :students
   resources :class_groups

@@ -16,10 +16,10 @@ function MultipleChoiceEditor({currentCharacter, setCurrentCharacter}){
   return(
     <div className="card topMargins full">
       <h3>Multiple Choice</h3>
-      <label>correct:</label>
+      <label>correct</label>
       <input className="short"  onChange={handleChangeChoices} name="0" value={currentCharacter.choices[0]}/><br/>
-      <label>incorrect:</label> 
-      <div className="d-flex flex-row justify-content-around">
+      <label>incorrect</label> 
+      <div className="d-flex flex-row justify-content-between">
         <input className="short" onChange={handleChangeChoices} name="1" value={currentCharacter.choices[1]}/>
         <input className="short" onChange={handleChangeChoices} name="2" value={currentCharacter.choices[2]}/>
         <input className="short" onChange={handleChangeChoices} name="3" value={currentCharacter.choices[3]}/>

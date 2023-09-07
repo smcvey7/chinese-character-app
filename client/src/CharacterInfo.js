@@ -6,7 +6,7 @@ function CharacterInfo({currentCharacter, handleChange, handleAutofill}){
       <h1>Character: {currentCharacter.simplified}{currentCharacter.traditional === "" ? "" : ` / ${currentCharacter.traditional}`}</h1>
       {/* <button onClick={handleAutofill}>autofill</button><br/> */}
       <div className="card d-flex flex-column topMargins">
-        <h3>Data:</h3>
+        <h3>Info</h3>
         <label>HSK level:</label>
         <select onChange={handleChange} number="true" name="hsk_level" value={currentCharacter.hsk_level}>
         <option value="1">1</option>

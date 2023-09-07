@@ -3,14 +3,15 @@ import PinyinEditor from "./PinyinEditor";
 import CharacterInfo from "./CharacterInfo";
 import MultipleChoiceEditor from "./MultipleChoiceEditor";
 import CharacterFilter from "./CharacterFilter";
-const {set} = require('lodash.set')
-var _ = require('lodash')
+// const {set} = require('lodash.set')
+// var _ = require('lodash')
 
 function CharacterEditor(){
   const [characterList, setCharacterList] =  useState(null)
   const [currentCharacter, setCurrentCharacter] = useState(null)
   const [filteredList, setFilteredList] = useState(null)
-
+  const [showBanner, setShowBanner] = useState(false)
+  const [bannerContent, setBannerContent] = useState("")  
   
   useEffect(()=>{
     fetch('/characters').then((r)=>r.json()).then((chars)=>{
@@ -40,6 +41,37 @@ function nextPrevious(e){
   if (nextChar) setCurrentCharacter(nextChar)
 }
 
+function handleSubmit(e){
+  setShowBanner(true)
+  setBannerContent("character updated")
+  setTimeout(()=>{setShowBanner(false)}, 5000)
+  e.preventDefault()
+
+  fetch(`/characters/${currentCharacter.id}`, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({...currentCharacter})
+  }).then((r)=>r.json())
+  .then((updatedChar)=>{
+    const updatedList = characterList.map((char)=>{
+      if (char.id === updatedChar.id){
+        return updatedChar
+      }else return char
+    }).sort((a, b)=>{return a.id-b.id})
+    setCharacterList(updatedList)
+  })
+  
+}
+
+function handleComplete(e){
+  setCurrentCharacter({
+    ...currentCharacter,
+    checked: e.target.checked
+  })
+}
+
 // function handleAutofill(e){
 //   e.preventDefault()
 //   fetch(`https://api.ctext.org/getcharacter?char=${currentCharacter.simplified}`)
@@ -63,50 +95,32 @@ function nextPrevious(e){
 //   })
 // }
 
-function createFakes(input, level){
-  // const dictData = data.filter((char)=>char.ci.includes(input))
-  // const wordList = dictData.map((word)=>{return word.ci})
-  const charListByLevel = characterList.filter((char)=>char.hsk_level <= level)
-  const items = _.sampleSize(charListByLevel, 3).map((word)=>{return word.simplified})
-  const fakes = [input, input, input].map((word, index)=>{
-    const beforeOrAfter = Math.floor(Math.random()*2)
-    if (beforeOrAfter === 0){
-      return word+items[index]
-    }else return items[index]+word
-  })
+// function createFakes(input, level){
+//   // const dictData = data.filter((char)=>char.ci.includes(input))
+//   // const wordList = dictData.map((word)=>{return word.ci})
+//   const charListByLevel = characterList.filter((char)=>char.hsk_level <= level)
+//   const items = _.sampleSize(charListByLevel, 3).map((word)=>{return word.simplified})
+//   const fakes = [input, input, input].map((word, index)=>{
+//     const beforeOrAfter = Math.floor(Math.random()*2)
+//     if (beforeOrAfter === 0){
+//       return word+items[index]
+//     }else return items[index]+word
+//   })
 
 
-  return [currentCharacter.choices[0], ...fakes]
-}
+//   return [currentCharacter.choices[0], ...fakes]
+// }
 
-function getTraditional(char){
-  if (char.variants){
-    const variants = char.variants.filter((char)=>char.relation === "kTraditionalVariant")
-    if (variants.length !== 0){
-      return variants[0].character
-    }else return ""
-  }else return ""
-}
+// function getTraditional(char){
+//   if (char.variants){
+//     const variants = char.variants.filter((char)=>char.relation === "kTraditionalVariant")
+//     if (variants.length !== 0){
+//       return variants[0].character
+//     }else return ""
+//   }else return ""
+// }
 
-function handleSubmit(e){
-  e.preventDefault()
 
-  fetch(`/characters/${currentCharacter.id}`, {
-    method: "PUT",
-    headers: {
-      "content-type": "application/json"
-    },
-    body: JSON.stringify({...currentCharacter})
-  }).then((r)=>r.json())
-  .then((updatedChar)=>{
-    const updatedList = characterList.map((char)=>{
-      if (char.id === updatedChar.id){
-        return updatedChar
-      }else return char
-    }).sort((a, b)=>{return a.id-b.id})
-    setCharacterList(updatedList)
-  })
-}
 
 // function preloadAll(){
 //   const needPinyin = characterList.filter((char)=>char.pinyin.length === 0)
@@ -138,26 +152,6 @@ function handleSubmit(e){
 //   })
 // }
 
-function submitUpdate(updatedChar){
-  fetch(`/characters/${updatedChar.id}`, {
-    method: "PUT",
-    headers: {
-      "content-type": "application/json"
-    },
-    body: JSON.stringify({...updatedChar})
-  }).then((r)=>r.json())
-  .then((newChar)=>{
-    console.log("posted: ", newChar, newChar.choices)
-  })
-}
-
-function handleComplete(e){
-  setCurrentCharacter({
-    ...currentCharacter,
-    checked: e.target.checked
-  })
-}
-
   if (!currentCharacter) return <></>
 
   return(
@@ -165,6 +159,7 @@ function handleComplete(e){
       <CharacterFilter characterList={characterList} setCurrentCharacter={setCurrentCharacter} currentCharacter={currentCharacter} setFilteredList={setFilteredList} filteredList={filteredList}/>
       <div id="editorCard" className="full card topMargins">
         <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around">
+          {showBanner ? <div className="banner"><h2>{bannerContent}</h2></div> : <></>}
           <CharacterInfo currentCharacter={currentCharacter} handleChange={handleChange}  />
           <PinyinEditor currentCharacter={currentCharacter} setCurrentCharacter={setCurrentCharacter} />
           <MultipleChoiceEditor currentCharacter={currentCharacter} setCurrentCharacter={setCurrentCharacter} />

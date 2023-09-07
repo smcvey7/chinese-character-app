@@ -40,7 +40,7 @@ function CharacterFilter({characterList, setCurrentCharacter, currentCharacter, 
           <label>Character:</label>
           <select value={currentCharacter.id} name="characters" onChange={(e)=>setCurrentCharacter(characterList.filter((char)=>char.id===parseInt(e.target.value))[0])}>
                 {filteredList.map((char)=>{
-                  return <option key={char.simplified} value={char.id}>{`${char.simplified} (${char.checked?"checked":"not checked"})`}</option>
+                  return <option key={char.simplified} value={char.id}>{`${char.id} ${char.simplified} (${char.checked?"checked":"not checked"})`}</option>
                 })}
           </select>
         </div>

@@ -31,130 +31,150 @@ hsk6_list = []
 hsk_above_list = []
 
 
-hsk1.each do |char|
+# hsk1.each do |char|
 
-  hsk1_list << {
-    simplified: char,
-    traditional: "",
-    hsk_level: 1,
-    appeared: 0,
-    correct: 0,
-    components: 0,
-    strokes: 0,
-    incorrect: {},
-    pinyin: [],
-    choices: ["", "", "", ""],
-    checked: false
-  }
-end
+#   hsk1_list << {
+#     simplified: char,
+#     traditional: "",
+#     hsk_level: 1,
+#     appeared: 0,
+#     correct: 0,
+#     components: 0,
+#     strokes: 0,
+#     incorrect: {},
+#     pinyin: [],
+#     choices: ["", "", "", ""],
+#     checked: false
+#   }
+# end
 
-hsk2.each do |char|
+# hsk2.each do |char|
 
-  hsk2_list << {
-    simplified: char,
-    traditional: "",
-    hsk_level: 2,
-    appeared: 0,
-    correct: 0,
-    components: 0,
-    strokes: 0,
-    incorrect: {},
-    pinyin: [],
-    choices: ["", "", "", ""],
-    checked: false
-  }
-end
+#   hsk2_list << {
+#     simplified: char,
+#     traditional: "",
+#     hsk_level: 2,
+#     appeared: 0,
+#     correct: 0,
+#     components: 0,
+#     strokes: 0,
+#     incorrect: {},
+#     pinyin: [],
+#     choices: ["", "", "", ""],
+#     checked: false
+#   }
+# end
 
 
-hsk3.each do |char|
+# hsk3.each do |char|
 
-  hsk3_list << {
-    simplified: char,
-    traditional: "",
-    hsk_level: 3,
-    appeared: 0,
-    correct: 0,
-    components: 0,
-    strokes: 0,
-    incorrect: {},
-    pinyin: [],
-    choices: ["", "", "", ""],
-    checked: false
-  }
-end
+#   hsk3_list << {
+#     simplified: char,
+#     traditional: "",
+#     hsk_level: 3,
+#     appeared: 0,
+#     correct: 0,
+#     components: 0,
+#     strokes: 0,
+#     incorrect: {},
+#     pinyin: [],
+#     choices: ["", "", "", ""],
+#     checked: false
+#   }
+# end
 
-hsk4.each do |char|
+# hsk4.each do |char|
 
-  hsk4_list << {
-    simplified: char,
-    traditional: "",
-    hsk_level: 4,
-    appeared: 0,
-    correct: 0,
-    components: 0,
-    strokes: 0,
-    incorrect: {},
-    pinyin: [],
-    choices: ["", "", "", ""],
-    checked: false
-  }
-end
+#   hsk4_list << {
+#     simplified: char,
+#     traditional: "",
+#     hsk_level: 4,
+#     appeared: 0,
+#     correct: 0,
+#     components: 0,
+#     strokes: 0,
+#     incorrect: {},
+#     pinyin: [],
+#     choices: ["", "", "", ""],
+#     checked: false
+#   }
+# end
 
-hsk5.each do |char|
+# hsk5.each do |char|
 
-  hsk5_list << {
-    simplified: char,
-    traditional: "",
-    hsk_level: 5,
-    appeared: 0,
-    correct: 0,
-    components: 0,
-    strokes: 0,
-    incorrect: {},
-    pinyin: [],
-    choices: ["", "", "", ""],
-    checked: false
-  }
-end
+#   hsk5_list << {
+#     simplified: char,
+#     traditional: "",
+#     hsk_level: 5,
+#     appeared: 0,
+#     correct: 0,
+#     components: 0,
+#     strokes: 0,
+#     incorrect: {},
+#     pinyin: [],
+#     choices: ["", "", "", ""],
+#     checked: false
+#   }
+# end
 
-hsk6.each do |char|
+# hsk6.each do |char|
 
-  hsk6_list << {
-    simplified: char,
-    traditional: "",
-    hsk_level: 6,
-    appeared: 0,
-    correct: 0,
-    components: 0,
-    strokes: 0,
-    incorrect: {},
-    pinyin: [],
-    choices: ["", "", "", ""],
-    checked: false
-  }
-end
+#   hsk6_list << {
+#     simplified: char,
+#     traditional: "",
+#     hsk_level: 6,
+#     appeared: 0,
+#     correct: 0,
+#     components: 0,
+#     strokes: 0,
+#     incorrect: {},
+#     pinyin: [],
+#     choices: ["", "", "", ""],
+#     checked: false
+#   }
+# end
 
-hsk_above.each do |char|
+# hsk_above.each do |char|
 
-  hsk_above_list << {
-    simplified: char,
-    traditional: "",
-    hsk_level: 7,
-    appeared: 0,
-    correct: 0,
-    components: 0,
-    strokes: 0,
-    incorrect: {},
-    pinyin: [],
-    choices: ["", "", "", ""],
-    checked: false
-  }
-end
+#   hsk_above_list << {
+#     simplified: char,
+#     traditional: "",
+#     hsk_level: 7,
+#     appeared: 0,
+#     correct: 0,
+#     components: 0,
+#     strokes: 0,
+#     incorrect: {},
+#     pinyin: [],
+#     choices: ["", "", "", ""],
+#     checked: false
+#   }
+# end
 
-Character.create(hsk1_list)
-Character.create(hsk2_list)
-Character.create(hsk3_list)
-Character.create(hsk4_list)
-Character.create(hsk5_list)
-Character.create(hsk6_list)
-Character.create(hsk_above_list)
+# Character.create(hsk1_list)
+# Character.create(hsk2_list)
+# Character.create(hsk3_list)
+# Character.create(hsk4_list)
+# Character.create(hsk5_list)
+# Character.create(hsk6_list)
+# Character.create(hsk_above_list)
+
+# Teacher.create({
+#   username: "admin",
+#   password: "password",
+#   password_confirmation: "password",
+#   first_name: "Steven",
+#   last_name: "McVey",
+#   email: "steven@stevenmcvey.com",
+#   school: "Williams College",
+#   state: "Massachusetts",
+#   country: "United States",
+#   admin: true
+#   })
+
+#   ClassGroup.create({
+#     name: "Generic Class",
+#     teacher_id: 1,
+#     uuid: "d6f927bc-fed7-4ab2-b78d-aefdeef134b1",
+#     level: 0
+#   })

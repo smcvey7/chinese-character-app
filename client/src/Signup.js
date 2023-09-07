@@ -3,8 +3,10 @@ import CountrySelector from "./CountrySelector";
 import QRCode from "qrcode";
 
 function Signup(){
-  const [role, setRole] = useState("student")
-  const [class_id, setClassId] = useState(0)
+  const [role, setRole] = useState("students")
+  const [available, setAvailable] = useState("")
+  const [noClass, setNoClass] = useState(false)
+  const [classUuid, setClassUuid] = useState("")
   const [newUserInfo, setNewUserInfo] = useState({
     username: "",
     email: "",
@@ -23,13 +25,18 @@ function Signup(){
 useEffect(()=>{
   const params = new URL(window.location).searchParams
 
-  setClassId(params.get("class_id"))
+  setClassUuid(params.get("class_id"))
 
-  QRCode.toCanvas(document.getElementById('canvas'), params.get("class_id"), function (error) {
-    if (error) console.error(error)
-    console.log('success!');
-  })
+  // QRCode.toCanvas(document.getElementById('canvas'), params.get("class_group_id"), function (error) {
+  //   if (error) console.error(error)
+  //   console.log('success!');
+  // })
 }, [])
+
+  function handleNoClass(e){
+    setNoClass(e.target.checked)
+    setClassUuid(e.target.checked ? "d6f927bc-fed7-4ab2-b78d-aefdeef134b1" : "")
+  }
 
   function handleChange(e){
     const key = e.target.name
@@ -40,37 +47,64 @@ useEffect(()=>{
     })
   }
 
+  function handleChangeUuid(e){
+    setClassUuid(e.target.value)
+  }
+
   function handleChangeRole(e){
     setRole(e.target.value)
   }
 
-  function handleChangeId(e){
-    setClassId(e.target.value)
-  }
 
   function checkAvailability(e){
     e.preventDefault()
     console.log("checking availability of: ", newUserInfo.username)
+    fetch(`/availability/${newUserInfo.username}`)
+    .then((r)=>r.json())
+    .then((data)=>{
+      setAvailable(data)
+    })
   }
 
+  function handleSubmit(e){
+    e.preventDefault()
+    console.log("submitting: ", newUserInfo)
+    fetch(`/${role}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({newUserInfo: newUserInfo, classUuid: classUuid})
+    })
+    .then((r)=>r.json())
+    .then((data)=>{
+      console.log(data)
+    })
+  }
 
   return(
     <div>
-      <canvas id="canvas">
+      {/* <canvas id="canvas">
         {code}
-      </canvas>
-      <div className="mb-3">
+      </canvas> */}
+      <div className="card full topMargins">
         <h1>Signup</h1>
         I am a:<select value={role} onChange={handleChangeRole}>
-          <option value="student">student</option>
-          <option value="teacher">teacher/researcher</option>
+          <option value="students">student</option>
+          <option value="teachers">teacher/researcher</option>
         </select>
-        <form>
+        <form onSubmit={handleSubmit}>
           {
-            role === "student" ?
+            role === "students" ?
             <div>
-              <label htmlFor="exampleClassId" className="form-label">class id</label>
-              <input name="class_id" className="form-control" value={class_id} onChange={handleChangeId} />
+              <label htmlFor="exampleClassId" className="form-label topMargins">class id</label>
+              <input name="class_uuid" className="form-control" value={classUuid} disabled={noClass ? true : false} onChange={handleChangeUuid} />
+              <input type="checkbox" name="no_class" onChange={handleNoClass} checked={noClass} /> not part of a class<br/>
+              <label htmlFor="exampleLanguage" className="form-label topMargins">first language</label>
+              <input name="first_language" className="form-control" value={newUserInfo.first_language} onChange={handleChange} /><br/>
+              <label htmlFor="exampleYearsStudied" className="form-label">years of chinese studied</label>
+              <input type="number" min="0" max="100" name="years_studied" className="form-control" value={newUserInfo.years_studied} onChange={handleChange} /><br/>
+
             </div>
             :
             <></>
@@ -78,15 +112,19 @@ useEffect(()=>{
         <label htmlFor="exampleFirstName" className="form-label">first name</label>
         <input autoComplete="first-name" className="form-control" name="first_name" value={newUserInfo.first_name} onChange={handleChange} /><br/>
         <label htmlFor="exampleLastName" className="form-label">last name</label>
-        <input name="last-name" className="form-control" autoComplete="last-name" value={newUserInfo.last_name} onChange={handleChange} /><br/>
+        <input name="last_name" className="form-control" autoComplete="last-name" value={newUserInfo.last_name} onChange={handleChange} /><br/>
         <label htmlFor="exampleCountry" className="form-label">country</label>
-        <CountrySelector newUserInfo={newUserInfo} setNewUserInfo={setNewUserInfo} />
+        <div className="half">
+          <CountrySelector newUserInfo={newUserInfo} setNewUserInfo={setNewUserInfo} />
+        </div>
         <label htmlFor="exampleSchool" className="form-label">school</label>
         <input name="school" className="form-control" value={newUserInfo.school} onChange={handleChange} /><br/>
-        <label htmlFor="exampleUsername" className="form-label">username</label>
-        <input name="username" className="form-control" value={newUserInfo.username} onChange={handleChange} /><button onClick={checkAvailability}>check availability</button><br/>
         <label htmlFor="exampleEmail" className="form-label">email</label>
         <input autoComplete="email" className="form-control" name="email" value={newUserInfo.email} onChange={handleChange} /><br/>
+        <label htmlFor="exampleUsername" className="form-label">username</label>
+        <input name="username" className="form-control" value={newUserInfo.username} onChange={handleChange} />
+        {available === "" ? <></> : available ? <p className="green">available</p> : <p className="red">not available</p>}
+        <button onClick={checkAvailability}>check availability</button><br/>
         <label htmlFor="examplePassword" className="form-label">password</label>
         <input autoComplete="new-password" className="form-control" type="password" name="password" value={newUserInfo.password} onChange={handleChange} /><br/>
         <label htmlFor="examplePasswordConfirmation" className="form-label">confirm password</label>

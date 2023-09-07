@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_06_160735) do
+ActiveRecord::Schema.define(version: 2023_09_07_143527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2023_09_06_160735) do
   create_table "class_groups", force: :cascade do |t|
     t.string "name"
     t.integer "teacher_id"
-    t.integer "uuid"
+    t.string "uuid"
     t.integer "level"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -48,9 +48,8 @@ ActiveRecord::Schema.define(version: 2023_09_06_160735) do
     t.string "last_name"
     t.string "first_language"
     t.string "country"
-    t.string "state"
     t.string "school"
-    t.integer "class_id"
+    t.integer "class_group_id"
     t.integer "years_studied"
     t.json "scores", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
@@ -64,7 +63,6 @@ ActiveRecord::Schema.define(version: 2023_09_06_160735) do
     t.string "first_name"
     t.string "last_name"
     t.string "country"
-    t.string "state"
     t.string "school"
     t.boolean "admin"
     t.datetime "created_at", precision: 6, null: false
