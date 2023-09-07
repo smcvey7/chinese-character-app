@@ -4,11 +4,15 @@ import './application.bootstrap.scss'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter as Router} from "react-router-dom";
+import { MyProvider } from './MyContext';
+
 
 ReactDOM.render(
   <Router>
     <React.StrictMode>
-      <App />
+      <MyProvider>
+        <App />
+      </MyProvider>
     </React.StrictMode>
   </Router>,
   document.getElementById('root')

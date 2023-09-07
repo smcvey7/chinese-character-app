@@ -6,7 +6,7 @@ import AddCharacter from './AddCharacter';
 import Test from './Test';
 import QuestionCreator from './QuestionCreator';
 import CharacterEditor from './CharacterEditor';
-import Signup from './Signup';
+import GetStarted from './GetStarted';
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/test" element={<Test/>} />
       <Route path="/editor" element={<CharacterEditor/>}/>
-      <Route path="/signup" element={<Signup/>}/>
+      <Route path="/getstarted" element={<GetStarted/>}/>
     </Routes>
     </div>
   );

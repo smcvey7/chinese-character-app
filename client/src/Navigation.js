@@ -27,7 +27,7 @@ function Navigation(){
         Editor
       </Link>
       <Link
-        to="/signup"
+        to="/getstarted"
         className="btn btn-lg custom-button"
         role="button"
       >
