@@ -10,13 +10,12 @@ class TeachersController < ApplicationController
   end
 
   def create
-    if classGroup
-      newUserInfo = student_params[:newUserInfo]
-      newStudent = classGroup.students.create(newUserInfo)
-  
-      render json: newStudent
+    teacher = Teacher.create(teacher_params[:newUserInfo])
+
+    if teacher.valid?
+      render json: teacher
     else
-      render json: {message: "Class not found"}
+      render json: {message: "Teacher not created"}
     end
   end
 

@@ -12,14 +12,19 @@ class StudentsController < ApplicationController
 
   def create
     classGroup = ClassGroup.find_by(uuid: student_params[:classUuid])
-    if classGroup
-      newUserInfo = student_params[:newUserInfo]
-      newStudent = classGroup.students.create(newUserInfo)
-  
-      render json: newStudent
-    else
+    if !classGroup
       render json: {message: "Class not found"}
+      return
     end
+
+    student = classGroup.students.create(student_params[:newUserInfo])
+
+    if student.valid?
+      render json: student
+    else
+      render json: {message: "Student not created"}
+    end
+    
   end
 
   # def update
