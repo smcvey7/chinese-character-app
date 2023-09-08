@@ -4,13 +4,13 @@ const MyContext = createContext();
 
 export function MyProvider({children}){
   const [user, setUser] = useState(null);
-  const [activities, setActivities] = useState(null);
+  const [characters, setCharacters] = useState(null);
 
   const contextValues = {
     user,
     setUser,
-    activities,
-    setActivities
+    characters,
+    setCharacters
   };
 
   return(

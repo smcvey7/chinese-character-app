@@ -11,8 +11,7 @@ import React, {useContext, useEffect} from 'react';
 import MyContext from './MyContext';
 
 function App() {
-  const {user, setUser} = useContext(MyContext)
-  const {setActivities} = useContext(MyContext)
+  const {user, setUser, characters, setCharacters} = useContext(MyContext)
   const navigate = useNavigate()
 
   // auto-login
@@ -29,6 +28,23 @@ function App() {
       }
     })
   }, [navigate, setUser])
+
+  useEffect(()=>{
+    fetch('/characters')
+    .then((r)=>{
+      if (r.ok){
+        r.json()
+        .then((characters)=>{
+          // order characters by id
+          setCharacters(characters.sort((a, b)=>{
+            return a.id - b.id
+          })
+          )
+          
+        })
+      }
+    })
+  }, [setCharacters])
 
   return (
     <div className="App">
