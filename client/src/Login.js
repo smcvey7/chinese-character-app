@@ -79,14 +79,14 @@ function Login(){
           <option value="teachers">teacher/researcher</option>
         </select>
       <div className="d-flex flex-row justify-content-around">
-        <form id="form" onSubmit={handleLogin} >
-          <label htmlFor="exampleUsername" className="form-label topMargins">username</label>
+        <form className="card" id="form" onSubmit={handleLogin} >
+          <label htmlFor="exampleUsername" className="form-label">username</label>
           <br/><input autoComplete="username" autoCapitalize="none" name="username" value={userInfo.username} onChange={handleChange} ></input><br/>
           <label htmlFor="examplePassword" className="form-label ">password</label>
           <br/><input autoComplete="current-password" type="password" name="password" value={userInfo.password} onChange={handleChange} /><br/>
           <button className="topMargins" type="submit" >{isLoading ? "Loading..." : "Submit"}</button>
         </form>
-        <div className="errors topMargins card">
+        <div className="errors topMargins ">
           {errors ? <ul><li>{errors}</li></ul> : <div/>}
         </div>
       </div>

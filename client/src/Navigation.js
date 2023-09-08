@@ -1,8 +1,23 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Link } from "react-router-dom";
-
+import MyContext from "./MyContext";
+import { useNavigate } from "react-router-dom";
 
 function Navigation(){
+  const {user, setUser} = useContext(MyContext)
+  const navigate = useNavigate();
+
+
+  function onLogout(){
+    fetch('/logout', {method: "DELETE"}).then((r)=>{
+      if (r.ok){
+        navigate('/')
+        setUser(null)
+      }
+    })
+  }
+
+
   return(
     <nav className="navbar navbar-dark bg-dark">
       <Link
@@ -26,13 +41,20 @@ function Navigation(){
       >
         Editor
       </Link>
-      <Link
+      {!user  ? <Link
         to="/getstarted"
         className="btn btn-lg custom-button"
         role="button"
       >
         Sign up/Login
-      </Link>
+      </Link> :
+      <Link
+      className="btn btn-lg custom-button"
+      role="button"
+      onClick={onLogout}
+    >
+      Logout
+    </Link>}
     </nav>
   )
 }
