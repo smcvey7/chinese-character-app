@@ -107,7 +107,7 @@ input.form-control{
 }
 
 #testChar{
-  font-size: 100px;
+  font-size: 80px;
 }
 
 #pinyinFinal{
@@ -146,4 +146,8 @@ input.form-control{
   color: red;
   font-size: 20px;
   padding: 10px 20px 10px 0px;
+}
+
+input.largeFont{
+  font-size: 100px;
 }

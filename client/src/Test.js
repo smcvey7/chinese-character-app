@@ -4,7 +4,6 @@ import MyContext from "./MyContext";
 function Test(){
   const {characters} = useContext(MyContext)
   const [charNum, setCharNum] = useState(0)
-  const [selection, setSelection] = useState("")
   const [testChars, setTestChars] = useState(null)
   const [correct, setCorrect] = useState(false)
 
@@ -28,17 +27,43 @@ function Test(){
     const optionsArray = options.map((option, index)=>{
       return(
         <div key={option} className="form-check">
-          <input onClick={(e)=>console.log(e.target.value)} type="radio" class="btn-check" name="options-outlined" value={index} id={`options${index}`} autocomplete="off" ></input>
-          <label class="btn btn-outline-success" for={`options${index}`}>
+          <input onClick={handleChoice} type="radio" class="btn-check" name="options-outlined" value={index} id={`options${index+1}`} autocomplete="off" ></input>
+          <label class="btn btn-outline-success" for={`options${index+1}`}>
             {option}
           </label>
         </div>
       )
     }
     )
+    // randomize order of options
+    for (let i = optionsArray.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * i)
+      const temp = optionsArray[i]
+      optionsArray[i] = optionsArray[j]
+      optionsArray[j] = temp
+    }
     return optionsArray
-
   }
+
+  function handleChoice(e){
+    if (e.target.value === "0"){
+      setCorrect(true)
+    } else {
+      setCorrect(false)
+    }
+  }
+
+  function handleSubmit(e){
+    e.preventDefault()
+    console.log("value", e.target.value, "answer correct?", correct)
+    if (charNum < testChars.length - 1){
+      setCharNum(charNum + 1)
+    } else {
+      setCharNum(0)
+    }
+  }
+
+
 
   if (!testChars){
     return(<div></div>)
@@ -50,8 +75,17 @@ function Test(){
       <div id="testCard" className="full  topMargins">
         <div className="center border d-flex flex-column">
           <h2 id="testChar">{testChars[charNum].simplified}{testChars[charNum].traditional ? `(${testChars[charNum].traditional})` : ""}</h2>
-          <form className="d-flex flex-row justify-content-around">
-          {createOptions(testChars[charNum].choices)}
+          <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around full card topMargins">
+          <div className="d-flex flex-row justify-content-between">
+            {createOptions(testChars[charNum].choices)}
+            <div className="form-check">
+              <input onClick={handleChoice} type="radio" class="btn-check" name="options-outlined" value={4} id={`options5`} autocomplete="off" ></input>
+              <label class="btn btn-outline-success" for={`options5`}>
+                I don't know
+              </label>
+            </div>
+          </div>
+          <input type="submit" value="Submit" className="btn btn-primary topMargins full"></input>
         </form>
         </div>
       </div>
