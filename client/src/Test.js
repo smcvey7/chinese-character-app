@@ -1,96 +1,44 @@
 import React, {useState, useContext, useEffect} from "react";
 import MyContext from "./MyContext";
+import Testing from "./Testing";
+import Finished from "./Finished";
 
 function Test(){
   const {characters} = useContext(MyContext)
   const [charNum, setCharNum] = useState(0)
   const [testChars, setTestChars] = useState(null)
   const [correct, setCorrect] = useState(false)
+  const [score, setScore] = useState(0)
+  const [wrong, setWrong] = useState(0)
+  const [status, setStatus] = useState("instructions")
 
-  // const character1List = Object.keys(characterList.level1)
-
-  useEffect(()=>{
-    if (!characters){
-      return
-    }
-    const filteredChars = []
-    for (let i = 0; i < 150; i++){
-      filteredChars.push(characters[i*20])
-    }
-    setTestChars(filteredChars)
-  }, [characters])
-
-  function createOptions(options){
-    if (!testChars){
-      return
-    }
-    const optionsArray = options.map((option, index)=>{
-      return(
-        <div key={option} className="form-check">
-          <input onClick={handleChoice} type="radio" class="btn-check" name="options-outlined" value={index} id={`options${index+1}`} autocomplete="off" ></input>
-          <label class="btn btn-outline-success" for={`options${index+1}`}>
-            {option}
-          </label>
-        </div>
-      )
-    }
-    )
-    // randomize order of options
-    for (let i = optionsArray.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * i)
-      const temp = optionsArray[i]
-      optionsArray[i] = optionsArray[j]
-      optionsArray[j] = temp
-    }
-    return optionsArray
-  }
-
-  function handleChoice(e){
-    if (e.target.value === "0"){
-      setCorrect(true)
-    } else {
-      setCorrect(false)
-    }
-  }
-
-  function handleSubmit(e){
-    e.preventDefault()
-    console.log("value", e.target.value, "answer correct?", correct)
-    if (charNum < testChars.length - 1){
-      setCharNum(charNum + 1)
-    } else {
-      setCharNum(0)
-    }
-  }
-
-
-
-  if (!testChars){
-    return(<div></div>)
-  }
-
-  return(
-    <div>
-      <h1>TEST</h1>
-      <div id="testCard" className="full  topMargins">
-        <div className="center border d-flex flex-column">
-          <h2 id="testChar">{testChars[charNum].simplified}{testChars[charNum].traditional ? `(${testChars[charNum].traditional})` : ""}</h2>
-          <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around full card topMargins">
-          <div className="d-flex flex-row justify-content-between">
-            {createOptions(testChars[charNum].choices)}
-            <div className="form-check">
-              <input onClick={handleChoice} type="radio" class="btn-check" name="options-outlined" value={4} id={`options5`} autocomplete="off" ></input>
-              <label class="btn btn-outline-success" for={`options5`}>
-                I don't know
-              </label>
+  if (status === "instructions"){
+    return(
+      <div >
+        <h1>Instructions</h1>
+        <div className="full topMargins bottomMargins">
+          <div id="instructionsCard" className="center border d-flex flex-column">
+            <h2 id="testChar">Instructions</h2>
+            <div className="text-start">
+              <p>For each question of the test, you will be given one simplified character (with the traditional character in parenthesis) and four Chinese word options. Select the word option that demonstrates an accurate use of the Character and then choose Submit.</p>
+              <p>For an accurate assessment of your character recognition, please do not reference any materials other than what you can recall on your own.</p>
+              <ul>
+                <li><p>If you are completely unsure of an answer, select "I don't know".</p></li>
+                <li><p>If you recognize the character and simply can't decide which answer is correct, make your best guess after narrowing down the choices.</p></li>
+              </ul>
+              <p>If you answer incorrectly five times in a row, the test will end automatically, and you will be given your score with an estimate of how many Chinese characters you recognize.</p>
             </div>
+            <button onClick={()=>setStatus("testing")} className="btn btn-primary topMargins full">Begin Test</button>
           </div>
-          <input type="submit" value="Submit" className="btn btn-primary topMargins full"></input>
-        </form>
         </div>
       </div>
-    </div>
-  )
+    )
+  }else if (status === "testing"){
+    return(<Testing score={score} setScore={setScore} status={status} setStatus={setStatus}/>)
+  }else if (status === "finished"){
+    return(
+    <Finished score={score}/>
+  )}
 }
 
 export default Test
