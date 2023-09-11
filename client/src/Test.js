@@ -5,17 +5,36 @@ import Finished from "./Finished";
 
 function Test(){
   const [status, setStatus] = useState("instructions")
-  const {user} = useContext(MyContext)  
-  const [currentTest, setCurrentTest] = useState(null)
+  const {user, currentTest, setCurrentTest} = useContext(MyContext)  
 
   useEffect(()=>{
-    if (user && user.tests.length > 0 && user.tests[user.tests.length - 1] === false){
+    if (status === "testing"){
+      return
+    }
+    if (!user){
+      console.log("option 1", user)
+      return
+    }else if (user.tests.length === 0 || user.tests[user.tests.length - 1].finished === true){
+      console.log("option 2")
+      return
+    }else if (user.tests[user.tests.length - 1].complete === false){
+      console.log("option 3")
       setCurrentTest(user.tests[user.tests.length - 1])
+    }else{
+      console.log("something has gone horribly wrong")
     }
   }, [user])
 
+  //   if (user && user.tests.length > 0 && user.tests[user.tests.length - 1] === false){
+  //     setCurrentTest(user.tests[user.tests.length - 1])
+  //     console.log("set test", user.tests[user.tests.length - 1])
+
+  //   }
+  // }, [user])
+
   function beginTest(){
     if (!currentTest){
+      console.log("creating new test")
       fetch('/tests', {
         method: "POST",
         headers: {

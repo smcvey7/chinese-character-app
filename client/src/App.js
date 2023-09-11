@@ -10,7 +10,7 @@ import React, {useContext, useEffect} from 'react';
 import MyContext from './MyContext';
 
 function App() {
-  const {user, setUser, characters, setCharacters} = useContext(MyContext)
+  const {user, setUser, characters, setCharacters, setCurrentTest} = useContext(MyContext)
   const navigate = useNavigate()
 
   // auto-login
@@ -21,14 +21,12 @@ function App() {
       if (r.ok){
         r.json()
         .then((user)=>{
-          console.log(user)
-          console.log(user)
           setUser(user)
           navigate(path)
         })
       }
     })
-  }, [navigate, setUser])
+  }, [navigate, setUser, setCurrentTest])
 
   useEffect(()=>{
     fetch('/characters')

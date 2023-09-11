@@ -115,14 +115,12 @@ function OldTest(){
   }
 
   function handleChange(e){
-    console.log(e)
     const key = e.target.name
     const input = e.target.value
     let value
     if (key === "pinyin"){
       value = validatePinyin(input)
       }else if (key === "umlaut"){
-        console.log(pinyinInput)
         value = e.target.className === "btn btn-outline-primary active" ? "btn btn-outline-primary" : "btn btn-outline-primary active"
       }else{
         value = e.target.value

@@ -79,6 +79,12 @@ useEffect(()=>{
     .then((r)=>r.json())
     .then((data)=>{
       console.log(data)
+      if (data.errors){
+        alert(data.errors)
+      }else{
+        alert("account created")
+        window.location.href = "/login"
+      }
     })
   }
 

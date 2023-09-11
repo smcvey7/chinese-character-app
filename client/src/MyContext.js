@@ -5,12 +5,15 @@ const MyContext = createContext();
 export function MyProvider({children}){
   const [user, setUser] = useState(null);
   const [characters, setCharacters] = useState(null);
+  const [currentTest, setCurrentTest] = useState(null);
 
   const contextValues = {
     user,
     setUser,
     characters,
-    setCharacters
+    setCharacters,
+    currentTest,
+    setCurrentTest
   };
 
   return(
