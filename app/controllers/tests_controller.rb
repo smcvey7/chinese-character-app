@@ -6,21 +6,13 @@ class TestsController < ApplicationController
   end
 
   def create
-    test = Test.create(
-      name: params[:name],
-      user_id: params[:user_id],
-      character_ids: params[:character_ids]
-    )
+    test = Test.create(test_params)
     render json: test
   end
 
   def update
     test = Test.find_by(id: params[:id])
-    test.update(
-      name: params[:name],
-      user_id: params[:user_id],
-      character_ids: params[:character_ids]
-    )
+    test.update(test_params)
     render json: test
   end
 
@@ -28,5 +20,11 @@ class TestsController < ApplicationController
     test = Test.find_by(id: params[:id])
     test.destroy
     render json: test
+  end
+
+  private
+
+  def test_params
+    params.permit(:score, :student_id, :score, :version, :items, :complete)
   end
 end

@@ -1,12 +1,10 @@
 import React, {useState, useContext, useEffect} from "react";
 import MyContext from "./MyContext";
-import { end } from "@popperjs/core";
 
-function Testing({score, setScore, status, setStatus}){
+function Testing({currentTest, setCurrentTest, setStatus}){
   const {characters} = useContext(MyContext)
   const [charNum, setCharNum] = useState(0)
   const [testChars, setTestChars] = useState(null)
-  const [numCorrect, setNumCorrect] = useState(0)
   const [correct, setCorrect] = useState(false)
   const [wrong, setWrong] = useState(0)
 
@@ -16,7 +14,7 @@ function Testing({score, setScore, status, setStatus}){
     }
     const filteredChars = []
     for (let i = 0; i < 150; i++){
-      filteredChars.push(characters[i*20])
+      filteredChars.push(characters[i*20 + currentTest.version - 1])
     }
     setTestChars(filteredChars)
   }, [characters])
@@ -57,10 +55,11 @@ function Testing({score, setScore, status, setStatus}){
   function handleSubmit(e){
     e.preventDefault()
     if (correct){
-      setScore(score + 1)
+      console.log(currentTest)
+      setCurrentTest({...currentTest, score: currentTest.score + 1})
       setWrong(0)
     }else{
-      wrong === 4 ? endTest() : setWrong(wrong + 1)
+      wrong === 9 ? endTest() : setWrong(wrong + 1)
     }
 
     nextChar()

@@ -2,9 +2,9 @@ class SessionsController < ApplicationController
 
   def show
     if session[:user_id]
-      if session[:role] == "students"
+      if session[:role] == "student"
         user = Student.find_by(id: session[:user_id])
-      elsif session[:role] == "teachers"
+      elsif session[:role] == "teacher"
         user = Teacher.find_by(id: session[:user_id])
       end
       render json: user
@@ -15,15 +15,17 @@ class SessionsController < ApplicationController
   
 
   def create
-    if params[:role] == "students"
+    if params[:role] == "student"
       user = Student.find_by(username: params[:userInfo][:username])
-    elsif params[:role] == "teachers"
+      puts user
+    elsif params[:role] == "teacher"
       user = Teacher.find_by(username: params[:userInfo][:username])
+      
     end
 
     if user&.authenticate(params[:userInfo][:password])
       session[:user_id] = user.id
-      session[:admin] = user.admin unless params[:role] == "students"
+      session[:admin] = user.admin unless params[:role] == "student"
       session[:role] = params[:role]
       render json: user
     else

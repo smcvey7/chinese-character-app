@@ -41,6 +41,16 @@ function Navigation(){
       >
         Editor
       </Link>
+      {user ?
+      <Link
+        to="/account"
+        className="btn btn-lg custom-button"
+        role="button"
+      >
+        My Account
+      </Link>
+      :null
+      }
       {!user  ? <Link
         to="/getstarted"
         className="btn btn-lg custom-button"

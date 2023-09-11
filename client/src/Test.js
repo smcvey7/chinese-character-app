@@ -4,13 +4,33 @@ import Testing from "./Testing";
 import Finished from "./Finished";
 
 function Test(){
-  const {characters} = useContext(MyContext)
-  const [charNum, setCharNum] = useState(0)
-  const [testChars, setTestChars] = useState(null)
-  const [correct, setCorrect] = useState(false)
-  const [score, setScore] = useState(0)
-  const [wrong, setWrong] = useState(0)
   const [status, setStatus] = useState("instructions")
+  const {user} = useContext(MyContext)  
+  const [currentTest, setCurrentTest] = useState(null)
+
+  useEffect(()=>{
+    if (user && user.tests.length > 0 && user.tests[user.tests.length - 1] === false){
+      setCurrentTest(user.tests[user.tests.length - 1])
+    }
+  }, [user])
+
+  function beginTest(){
+    if (!currentTest){
+      fetch('/tests', {
+        method: "POST",
+        headers: {
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify({student_id: user.id, version: 1, score: 0, finished: false})
+      })
+      .then((r)=>r.json())
+      .then((data)=>{
+        console.log(data)
+        setCurrentTest(data)
+      })
+    }
+    setStatus("testing")
+  }
 
   if (status === "instructions"){
     return(
@@ -28,16 +48,16 @@ function Test(){
               </ul>
               <p>If you answer incorrectly five times in a row, the test will end automatically, and you will be given your score with an estimate of how many Chinese characters you recognize.</p>
             </div>
-            <button onClick={()=>setStatus("testing")} className="btn btn-primary topMargins full">Begin Test</button>
+            <button onClick={beginTest} className="btn btn-primary topMargins full">Begin Test</button>
           </div>
         </div>
       </div>
     )
   }else if (status === "testing"){
-    return(<Testing score={score} setScore={setScore} status={status} setStatus={setStatus}/>)
+    return(<Testing currentTest={currentTest} setCurrentTest={setCurrentTest} status={status} setStatus={setStatus}/>)
   }else if (status === "finished"){
     return(
-    <Finished score={score}/>
+    <Finished currentTest={currentTest}/>
   )}
 }
 

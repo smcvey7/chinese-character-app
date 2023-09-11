@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_07_154242) do
+ActiveRecord::Schema.define(version: 2023_09_11_020601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2023_09_07_154242) do
     t.json "scores", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role", default: "student"
   end
 
   create_table "teachers", force: :cascade do |t|
@@ -67,6 +68,7 @@ ActiveRecord::Schema.define(version: 2023_09_07_154242) do
     t.boolean "admin", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role", default: "teacher"
   end
 
   create_table "tests", force: :cascade do |t|
@@ -76,6 +78,7 @@ ActiveRecord::Schema.define(version: 2023_09_07_154242) do
     t.string "items", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "complete", default: false
   end
 
 end

@@ -1,3 +1,3 @@
 class TestSerializer < ActiveModel::Serializer
-  attributes :id, :student_id, :score, :version, :items
+  attributes :id, :student_id, :score, :version, :items, :complete
 end

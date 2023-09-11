@@ -3,7 +3,7 @@ import CountrySelector from "./CountrySelector";
 import QRCode from "qrcode";
 
 function Signup(){
-  const [role, setRole] = useState("students")
+  const [role, setRole] = useState("student")
   const [available, setAvailable] = useState("")
   const [noClass, setNoClass] = useState(false)
   const [classUuid, setClassUuid] = useState("")
@@ -69,7 +69,7 @@ useEffect(()=>{
   function handleSubmit(e){
     e.preventDefault()
     console.log("submitting: ", newUserInfo)
-    fetch(`/${role}`, {
+    fetch(`/${role}s`, {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -90,8 +90,8 @@ useEffect(()=>{
       <div className="card full topMargins">
         <h1>Signup</h1>
         I am a:<select value={role} onChange={handleChangeRole}>
-          <option value="students">student</option>
-          <option value="teachers">teacher/researcher</option>
+          <option value="student">student</option>
+          <option value="teacher">teacher/researcher</option>
         </select>
         <form onSubmit={handleSubmit}>
           {

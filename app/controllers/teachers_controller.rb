@@ -19,11 +19,11 @@ class TeachersController < ApplicationController
     end
   end
 
-  # def update
-  #   teacher = Teacher.find_by(id: params[:id])
-  #   teacher.update()
-  #   render json: teacher
-  # end 
+  def update
+    teacher = Teacher.find_by(id: params[:id])
+    teacher.update(teacher_params)
+    render json: teacher
+  end 
 
   # def destroy
   #   teacher = Teacher.find_by(id: params[:id])
@@ -34,6 +34,6 @@ class TeachersController < ApplicationController
   private
 
   def teacher_params
-    params.permit(newUserInfo: [:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school])
+    params.permit(:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, newUserInfo: [:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school])
   end
 end

@@ -5,7 +5,7 @@ import MyContext from "./MyContext";
 
 function Login(){
   const {setUser} = useContext(MyContext)
-  const [role, setRole] = useState("students")
+  const [role, setRole] = useState("student")
   const [isLoading, setIsLoading]=useState(false)
   const [errors, setErrors]=useState(null)
   const navigate = useNavigate();
@@ -75,8 +75,8 @@ function Login(){
     <div className="card topMargins full">
       <h3>Log in</h3>
       I am a:<select value={role} onChange={handleChangeRole}>
-          <option value="students">student</option>
-          <option value="teachers">teacher/researcher</option>
+          <option value="student">student</option>
+          <option value="teacher">teacher/researcher</option>
         </select>
       <div className="d-flex flex-row justify-content-around">
         <form className="card" id="form" onSubmit={handleLogin} >

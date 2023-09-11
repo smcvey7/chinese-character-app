@@ -2,9 +2,8 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import './application.bootstrap.scss'
 import Navigation from './Navigation.js'
 import Home from './Home.js'
-import AddCharacter from './AddCharacter';
 import Test from './Test';
-import QuestionCreator from './QuestionCreator';
+import Account from './Account';
 import CharacterEditor from './CharacterEditor';
 import GetStarted from './GetStarted';
 import React, {useContext, useEffect} from 'react';
@@ -22,6 +21,8 @@ function App() {
       if (r.ok){
         r.json()
         .then((user)=>{
+          console.log(user)
+          console.log(user)
           setUser(user)
           navigate(path)
         })
@@ -57,6 +58,7 @@ function App() {
       <Route path="/test" element={<Test/>} />
       <Route path="/editor" element={<CharacterEditor/>}/>
       <Route path="/getstarted" element={<GetStarted/>}/>
+      <Route path="/account" element={<Account/>}/>
     </Routes>
     </div>
   );
