@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from "react";
 import MyContext from "./MyContext";
 
-function Testing({currentTest, setCurrentTest, setStatus}){
+function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
   const {characters, user, setUser} = useContext(MyContext)
   const [charNum, setCharNum] = useState(0)
   const [testChars, setTestChars] = useState(null)
@@ -44,6 +44,12 @@ function Testing({currentTest, setCurrentTest, setStatus}){
       optionsArray[i] = optionsArray[j]
       optionsArray[j] = temp
     }
+    optionsArray.push(
+    <div key={charNum} className="form-check">
+      <input onClick={handleChoice} type="radio" className="btn-check" name="options-outlined" value={4} id={`options5`} autoComplete="off"defaultChecked={false}></input>
+      <label className="btn btn-outline-success" htmlFor={`options5`}>I don't know</label>
+    </div>
+    )
     setRandomOptions(optionsArray)
     return optionsArray
   }
@@ -105,6 +111,11 @@ function Testing({currentTest, setCurrentTest, setStatus}){
 
   function endTest(){
     setStatus("finished")
+    setCharNum(0)
+    setCurrentItem(null)
+    setWrong(0)
+    setFinalScore(currentTest.score)
+    setCurrentTest(null)
   }
 
   if (!testChars){
@@ -122,12 +133,6 @@ function Testing({currentTest, setCurrentTest, setStatus}){
           <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around full card topMargins">
           <div className="d-flex flex-row justify-content-between">
             {randomOptions ? randomOptions : createOptions(testChars[charNum].choices)}
-            <div className="form-check">
-              <input onClick={handleChoice} type="radio" className="btn-check" name="options-outlined" value={4} id={`options5`} autoComplete="off" ></input>
-              <label className="btn btn-outline-success" htmlFor={`options5`}>
-                I don't know
-              </label>
-            </div>
           </div>
           <input type="submit" value="Submit" className="btn btn-primary topMargins full"></input>
         </form>

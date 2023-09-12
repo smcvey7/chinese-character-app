@@ -6,34 +6,34 @@ import Finished from "./Finished";
 function Test(){
   const [status, setStatus] = useState("instructions")
   const {user, currentTest, setCurrentTest} = useContext(MyContext)  
+  const [newTest, setNewTest] = useState(null)
+  const [finalScore, setFinalScore] = useState(null)
 
   useEffect(()=>{
     if (status === "testing"){
       return
     }
     if (!user){
-      console.log("option 1", user)
       return
-    }else if (user.tests.length === 0 || user.tests[user.tests.length - 1].finished === true){
-      console.log("option 2")
+    }else if (user.tests.length === 0 || user.tests[user.tests.length - 1].complete === true){
+      setNewTest(true)
       return
     }else if (user.tests[user.tests.length - 1].complete === false){
-      console.log("option 3")
       setCurrentTest(user.tests[user.tests.length - 1])
+      setNewTest(false)
     }else{
-      console.log("something has gone horribly wrong")
     }
-  }, [user])
+  }, [user, newTest])
 
   function beginTest(){
     if (!currentTest){
-      console.log("creating new test")
+      setNewTest(true)
       fetch('/tests', {
         method: "POST",
         headers: {
           'Content-Type': "application/json"
         },
-        body: JSON.stringify({student_id: user.id, version: 1, score: 0, finished: false})
+        body: JSON.stringify({student_id: user.id, version: 1, score: 0, complete: false})
       })
       .then((r)=>r.json())
       .then((data)=>{
@@ -65,17 +65,17 @@ function Test(){
               </ul>
               <p>If you answer incorrectly five times in a row, the test will end automatically, and you will be given your score with an estimate of how many Chinese characters you recognize.</p>
             </div>
-            { currentTest ? currentTest.char_num === 1 ? <></> : <strong><em>You already have a test in progress. Click below to continue</em></strong> : <></>}
-            <button onClick={beginTest} className="btn btn-primary topMargins full">Begin Test</button>
+            { currentTest ? currentTest.char_num === 0 ? <></> : <strong><em>You already have a test in progress. Click below to continue</em></strong> : <></>}
+            <button onClick={beginTest} className="btn btn-primary topMargins full">{newTest === true ? "Begin Test" : "Continue Test"}</button>
           </div>
         </div>
       </div>
     )
   }else if (status === "testing"){
-    return(<Testing currentTest={currentTest} setCurrentTest={setCurrentTest} status={status} setStatus={setStatus}/>)
+    return(<Testing setFinalScore={setFinalScore} currentTest={currentTest} setCurrentTest={setCurrentTest} status={status} setStatus={setStatus}/>)
   }else if (status === "finished"){
     return(
-    <Finished currentTest={currentTest}/>
+    <Finished finalScore={finalScore} currentTest={currentTest}/>
   )}
 }
 

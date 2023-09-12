@@ -168,7 +168,6 @@ hsk_above_list = []
   #     last_name: "Hou",
   #     email: "xh1@williams.edu",
   #     school: "Williams College",
-  #     state: "Massachusetts",
   #     country: "United States",
   #     admin: true
   #   },
@@ -180,7 +179,6 @@ hsk_above_list = []
   #     last_name: "McVey",
   #     email: "steven@stevenmcvey.com",
   #     school: "Williams College",
-  #     state: "Massachusetts",
   #     country: "United States",
   #     admin: true
   #     }
