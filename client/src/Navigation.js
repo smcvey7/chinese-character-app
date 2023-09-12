@@ -27,20 +27,21 @@ function Navigation(){
       >
         Home
       </Link>
-      <Link
+      {user && user.role === "student" ? <Link
         to="/test"
         className="btn btn-lg custom-button"
         role="button"
       >
         Test
-      </Link>
+      </Link> : <></>}
+      {user && user.admin ?
       <Link
         to="/editor"
         className="btn btn-lg custom-button"
         role="button"
       >
         Editor
-      </Link>
+      </Link> : <></>}
       {user ?
       <Link
         to="/account"
