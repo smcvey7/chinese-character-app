@@ -1,6 +1,6 @@
 class Teacher < ApplicationRecord
-  has_many :classGroups
-  has_many :students, through: :classGroups
+  has_many :class_groups
+  has_many :students, through: :class_groups
   has_many :tests, through: :students
 
   has_secure_password

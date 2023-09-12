@@ -27,10 +27,10 @@ useEffect(()=>{
 
   setClassUuid(params.get("class_id"))
 
-  // QRCode.toCanvas(document.getElementById('canvas'), params.get("class_group_id"), function (error) {
-  //   if (error) console.error(error)
-  //   console.log('success!');
-  // })
+  QRCode.toCanvas(document.getElementById('canvas'), params.get("class_group_id"), function (error) {
+    if (error) console.error(error)
+    console.log('success!');
+  })
 }, [])
 
   function handleNoClass(e){
@@ -90,9 +90,8 @@ useEffect(()=>{
 
   return(
     <div>
-      {/* <canvas id="canvas">
-        {code}
-      </canvas> */}
+      <canvas id="canvas">
+      </canvas>
       <div className="card full topMargins">
         <h1>Signup</h1>
         I am a:<select value={role} onChange={handleChangeRole}>

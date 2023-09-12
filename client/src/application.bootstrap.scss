@@ -159,3 +159,40 @@ input.form-control{
 input.largeFont{
   font-size: 100px;
 }
+
+// add borders for tables and fit cells to content and wrap text
+table, th, td {
+  width: 50%;
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+// make qr-card class width 30% with all items centered and a border with rounded corners
+.qr-card{
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+// button within qr-card class is 50% width with rounded corners and centered
+
+.qr-card button{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+canvas{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input-short{
+  width: 100px;
+}

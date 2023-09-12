@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect} from "react";
 import MyContext from "./MyContext";
 
 function Testing({currentTest, setCurrentTest, setStatus}){
-  const {characters} = useContext(MyContext)
+  const {characters, user, setUser} = useContext(MyContext)
   const [charNum, setCharNum] = useState(0)
   const [testChars, setTestChars] = useState(null)
   const [currentItem, setCurrentItem] = useState(null)
@@ -86,7 +86,7 @@ function Testing({currentTest, setCurrentTest, setStatus}){
     })
     .then((r)=>r.json())
     .then((data)=>{
-      console.log(data)
+      setUser({...user, tests: [...user.tests.slice(0, user.tests.length - 1), data]})
       setCurrentTest(data)
     })
 
@@ -95,7 +95,6 @@ function Testing({currentTest, setCurrentTest, setStatus}){
   }
 
   function nextChar(){
-    console.log("number", charNum)
     setRandomOptions(null)
     if (charNum < testChars.length - 1){
       setCharNum(charNum + 1)

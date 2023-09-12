@@ -26,7 +26,7 @@ function App() {
         })
       }
     })
-  }, [navigate, setUser, setCurrentTest])
+  }, [navigate, setUser])
 
   useEffect(()=>{
     fetch('/characters')

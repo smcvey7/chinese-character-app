@@ -10,27 +10,26 @@ class ClassGroupsController < ApplicationController
   end
 
   def create
-    class_group = ClassGroup.create(
-      name: params[:name],
-      teacher_id: params[:teacher_id]
-    )
+    class_group = ClassGroup.create(class_group_params)
     render json: class_group
   end
 
   def update
     class_group = ClassGroup.find_by(id: params[:id])
-    class_group.update(
-      name: params[:name],
-      teacher_id: params[:teacher_id]
-    )
+    class_group.update(class_group_params)
     render json: class_group
   end
 
   def destroy
     class_group = ClassGroup.find_by(id: params[:id])
     class_group.destroy
-    render json: {message: "Class Group successfully deleted"}
+    head :no_content
   end
 
+  private
+
+  def class_group_params
+    params.permit(:name, :teacher_id, :uuid, :level)
+  end
   
 end
