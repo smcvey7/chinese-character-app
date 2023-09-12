@@ -48,7 +48,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        <h1>Character Recognition Test</h1>
+        <h1>Chinese Character Recognition Test</h1>
         <Navigation/>
       </div>
     <Routes>

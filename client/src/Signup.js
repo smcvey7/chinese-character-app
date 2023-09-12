@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import CountrySelector from "./CountrySelector";
 import QRCode from "qrcode";
 
-function Signup(){
+function Signup({QRUUID}){
   const [role, setRole] = useState("student")
   const [available, setAvailable] = useState("")
   const [noClass, setNoClass] = useState(false)
@@ -19,23 +19,17 @@ function Signup(){
     school: "",
     years_studied: 0,
   })
-  const [code, setCode] = useState(null)
 
 
 useEffect(()=>{
   const params = new URL(window.location).searchParams
 
   setClassUuid(params.get("class_id"))
-
-  QRCode.toCanvas(document.getElementById('canvas'), params.get("class_group_id"), function (error) {
-    if (error) console.error(error)
-    console.log('success!');
-  })
 }, [])
 
   function handleNoClass(e){
     setNoClass(e.target.checked)
-    setClassUuid(e.target.checked ? "d6f927bc-fed7-4ab2-b78d-aefdeef134b1" : "")
+    setClassUuid(e.target.checked ? "d6f927bc-fed7-4ab2-b78d-aefdeef134b1" : QRUUID)
   }
 
   function handleChange(e){
@@ -90,8 +84,6 @@ useEffect(()=>{
 
   return(
     <div>
-      <canvas id="canvas">
-      </canvas>
       <div className="card full topMargins">
         <h1>Signup</h1>
         I am a:<select value={role} onChange={handleChangeRole}>
@@ -100,10 +92,10 @@ useEffect(()=>{
         </select>
         <form onSubmit={handleSubmit}>
           {
-            role === "students" ?
+            role === "student" ?
             <div>
               <label htmlFor="exampleClassId" className="form-label topMargins">class id</label>
-              <input name="class_uuid" className="form-control" value={classUuid} disabled={noClass ? true : false} onChange={handleChangeUuid} />
+              <input name="class_uuid" className="form-control" value={classUuid} disabled={noClass || QRUUID ? true : false} onChange={handleChangeUuid} />
               <input type="checkbox" name="no_class" onChange={handleNoClass} checked={noClass} /> not part of a class<br/>
               <label htmlFor="exampleLanguage" className="form-label topMargins">first language</label>
               <input name="first_language" className="form-control" value={newUserInfo.first_language} onChange={handleChange} /><br/>

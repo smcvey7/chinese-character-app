@@ -25,13 +25,6 @@ function Test(){
     }
   }, [user])
 
-  //   if (user && user.tests.length > 0 && user.tests[user.tests.length - 1] === false){
-  //     setCurrentTest(user.tests[user.tests.length - 1])
-  //     console.log("set test", user.tests[user.tests.length - 1])
-
-  //   }
-  // }, [user])
-
   function beginTest(){
     if (!currentTest){
       console.log("creating new test")
@@ -44,12 +37,12 @@ function Test(){
       })
       .then((r)=>r.json())
       .then((data)=>{
-        console.log(data)
         setCurrentTest(data)
       })
     }
     setStatus("testing")
   }
+
 
   if (status === "instructions"){
     return(
@@ -67,6 +60,7 @@ function Test(){
               </ul>
               <p>If you answer incorrectly five times in a row, the test will end automatically, and you will be given your score with an estimate of how many Chinese characters you recognize.</p>
             </div>
+            { currentTest ? currentTest.char_num === 1 ? <></> : <strong><em>You already have a test in progress. Click below to continue</em></strong> : <></>}
             <button onClick={beginTest} className="btn btn-primary topMargins full">Begin Test</button>
           </div>
         </div>

@@ -13,14 +13,19 @@ function TeacherAccount(){
     level: ""
   })
   const [selectedClass, setSelectedClass] = useState(null)
+  const [classStudents, setClassStudents] = useState(["none"])
 
 
   useEffect(()=>{
     if (!selectedClass){
       return
     }
+    const students = user.students.filter((student)=>{
+      return student.class_group_id === selectedClass.id
+    })
+    setClassStudents(students)
    
-    QRCode.toCanvas(document.getElementById('canvas'), `http://localhost:4000/getstarted?class_id=${selectedClass.uuid}`, function (error) {
+    QRCode.toCanvas(document.getElementById('canvas'), `https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`, function (error) {
       if (error) console.error(error)
       console.log('success!');
     })
@@ -117,7 +122,8 @@ function TeacherAccount(){
               )}
             </select>
           </div>
-          {selectedClass ? <div className="card">
+          {selectedClass ?
+          <div className="card">
             <div className="d-flex flex-row justify-content-between">
               <h3>Class info</h3>
               <h4>{selectedClass.name}</h4>
@@ -128,6 +134,17 @@ function TeacherAccount(){
               <button onClick={handleDownload}>Download</button>
               <canvas id="canvas">
               </canvas><br/>
+            </div>
+            <div>
+              <h4>Students</h4>
+              <ul>
+                {classStudents.map((student)=>{
+                  return(
+                    <li key={student.id}>{student.first_name} {student.last_name}</li>
+                  )
+                }
+                )}
+              </ul>
             </div>
           </div> : <></>}
           
