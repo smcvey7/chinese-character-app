@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import PinyinEditor from "./PinyinEditor";
 import CharacterInfo from "./CharacterInfo";
 import MultipleChoiceEditor from "./MultipleChoiceEditor";
 import CharacterFilter from "./CharacterFilter";
+import MyContext from "./MyContext";
 // const {set} = require('lodash.set')
 // var _ = require('lodash')
 
 function CharacterEditor(){
+  const {user} = useContext(MyContext)
   const [characterList, setCharacterList] =  useState(null)
   const [currentCharacter, setCurrentCharacter] = useState(null)
   const [filteredList, setFilteredList] = useState(null)
@@ -151,6 +153,12 @@ function handleComplete(e){
 //     submitUpdate(updatedChar)
 //   })
 // }
+
+if (!user || !user.admin){
+  return(
+    <em>Character editor is only available to admins.</em>
+  )
+}
 
   if (!currentCharacter) return <></>
 

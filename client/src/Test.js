@@ -43,6 +43,11 @@ function Test(){
     setStatus("testing")
   }
 
+  if (user && user.role !== "student"){
+    return(
+      <em>Tests are only available to students.</em>
+    )
+  }
 
   if (status === "instructions"){
     return(
