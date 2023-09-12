@@ -159,35 +159,38 @@ hsk_above_list = []
 # Character.create(hsk6_list)
 # Character.create(hsk_above_list)
 
-Teacher.create({
-  username: "admin",
-  password: "password",
-  password_confirmation: "password",
-  first_name: "Steven",
-  last_name: "McVey",
-  email: "steven@stevenmcvey.com",
-  school: "Williams College",
-  state: "Massachusetts",
-  country: "United States",
-  admin: true
-  })
+  # teachers = [
+  #   {
+  #     username: "xiaominghou",
+  #     password: "password",
+  #     password_confirmation: "password",
+  #     first_name: "Xiaoming",
+  #     last_name: "Hou",
+  #     email: "xh1@williams.edu",
+  #     school: "Williams College",
+  #     state: "Massachusetts",
+  #     country: "United States",
+  #     admin: true
+  #   },
+  #   {
+  #     username: "admin",
+  #     password: "password",
+  #     password_confirmation: "password",
+  #     first_name: "Steven",
+  #     last_name: "McVey",
+  #     email: "steven@stevenmcvey.com",
+  #     school: "Williams College",
+  #     state: "Massachusetts",
+  #     country: "United States",
+  #     admin: true
+  #     }
+  # ]
 
-  Teacher.create({
-    username: "xiaominghou",
-    password: "password",
-    password_confirmation: "password",
-    first_name: "Xiaoming",
-    last_name: "Hou",
-    email: "xh1@williams.edu",
-    school: "Williams College",
-    state: "Massachusetts",
-    country: "United States",
-    admin: true
-    })
+  # Teacher.create(teachers)
 
-  ClassGroup.create({
-    name: "Generic Class",
-    teacher_id: 1,
-    uuid: "d6f927bc-fed7-4ab2-b78d-aefdeef134b1",
-    level: 0
-  })
+  # ClassGroup.create({
+  #   name: "Generic Class",
+  #   teacher_id: 1,
+  #   uuid: "d6f927bc-fed7-4ab2-b78d-aefdeef134b1",
+  #   level: 0
+  # })
