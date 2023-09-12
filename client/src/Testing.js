@@ -5,7 +5,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
   const {characters, user, setUser} = useContext(MyContext)
   const [charNum, setCharNum] = useState(0)
   const [testChars, setTestChars] = useState(null)
-  const [currentItem, setCurrentItem] = useState(null)
+  // const [currentItem, setCurrentItem] = useState(null)
   const [wrong, setWrong] = useState(0)
   const [randomOptions, setRandomOptions] = useState(null)
   const [errors, setErrors] = useState(null)
@@ -55,20 +55,14 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
   }
 
   function handleChoice(e){
-    if (e.target.value === "0"){
-      setCurrentItem({correct: true, choice: e.target.getAttribute("choice")})
-    } else {
-      setCurrentItem({correct: false, choice: e.target.getAttribute("choice")})
-    }
+    const currentItem = {choice: e.target.getAttribute("choice")}
+    currentItem.correct = e.target.value === "0" ? true : false
+
+    handleSubmit(currentItem)
+
   }
 
-  function handleSubmit(e){
-    e.preventDefault()
-
-    if (!currentItem){
-      setErrors("please select an answer")
-      return
-    }
+  function handleSubmit(currentItem){
 
     const testUpdate = currentItem.correct ? {...currentTest, char_num: charNum + 1, score: currentTest.score + 1} : {...currentTest, char_num: charNum + 1}
     
@@ -112,7 +106,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
   function endTest(){
     setStatus("finished")
     setCharNum(0)
-    setCurrentItem(null)
+    // setCurrentItem(null)
     setWrong(0)
     setFinalScore(currentTest.score)
     setCurrentTest(null)
@@ -130,7 +124,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
         <div className="center border d-flex flex-column">
         <h2 id="testChar"> {testChars[charNum].simplified}</h2>
           {/* <h2 id="testChar">{testChars[charNum].simplified}{testChars[charNum].traditional ? `(${testChars[charNum].traditional})` : ""}</h2> */}
-          <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-around full card topMargins">
+          <form id="testForm" className="d-flex flex-column justify-content-around full card topMargins">
           <div className="d-flex flex-row justify-content-between">
             {randomOptions ? randomOptions : createOptions(testChars[charNum].choices)}
           </div>
