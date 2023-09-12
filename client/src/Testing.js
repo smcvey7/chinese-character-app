@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from "react";
 import MyContext from "./MyContext";
 
-function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
+function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}){
   const {characters, user, setUser} = useContext(MyContext)
   const [charNum, setCharNum] = useState(0)
   const [testChars, setTestChars] = useState(null)
@@ -9,6 +9,9 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
   const [wrong, setWrong] = useState(0)
   const [randomOptions, setRandomOptions] = useState(null)
   const [errors, setErrors] = useState(null)
+  const [timer, setTimer] = useState(20)
+
+  
 
   useEffect(()=>{
     if (!characters || !currentTest){
@@ -21,6 +24,26 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
     setTestChars(filteredChars)
     setCharNum(currentTest.char_num)
   }, [characters, currentTest])
+
+  useEffect(()=>{
+    if (timer === 0){
+      handleSubmit({choice: "I don't know", correct: false})
+      setTimer(20)
+    }
+
+    if (status === "testing"){
+      let timerId = setTimeout(()=>{
+        setTimer(timer - 1)
+      }, 1000)
+
+      return ()=>clearTimeout(timerId)
+    }
+
+
+
+  }, [timer, status, setTimer])
+
+
 
   function createOptions(options){
     if (!testChars){
@@ -68,6 +91,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
     
     if (currentItem.correct){
       setWrong(0)
+      testUpdate.complete = false
     }else{
       if (wrong === 9){
         testUpdate.complete = true
@@ -76,6 +100,8 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
         setWrong(wrong + 1)
       }
     }
+
+    console.log("testUpdate", testUpdate)
 
     fetch(`/tests/${currentTest.id}`, {
       method: "PATCH",
@@ -88,10 +114,12 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
     .then((data)=>{
       setUser({...user, tests: [...user.tests.slice(0, user.tests.length - 1), data]})
       setCurrentTest(data)
+      console.log(user.tests[user.tests.length - 1])
     })
 
 
     nextChar()
+    setTimer(20)
   }
 
   function nextChar(){
@@ -119,7 +147,8 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
   return(
     <div>
       <h1>TEST</h1>
-      <h2 className="red">Wrong: {wrong}</h2>
+      {/* <h2 className="red">Wrong: {wrong}</h2> */}
+      <h2 className="red">Timer: {timer}</h2>
       <div id="testCard" className="full  topMargins">
         <div className="center border d-flex flex-column">
         <h2 id="testChar"> {testChars[charNum].simplified}</h2>
@@ -128,7 +157,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore}){
           <div className="d-flex flex-row justify-content-between">
             {randomOptions ? randomOptions : createOptions(testChars[charNum].choices)}
           </div>
-          <input type="submit" value="Submit" className="btn btn-primary topMargins full"></input>
+          {/* <input type="submit" value="Submit" className="btn btn-primary topMargins full"></input> */}
         </form>
         </div>
       </div>

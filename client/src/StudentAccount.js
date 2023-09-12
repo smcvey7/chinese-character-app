@@ -3,7 +3,6 @@ import MyContext from "./MyContext";
 
 function StudentAccount(){
   const {user} = useContext(MyContext)
-
   return(
     <div>
       <div id="testCard" className="full  topMargins">
@@ -23,15 +22,14 @@ function StudentAccount(){
               </tr>
             </thead>
             <tbody>
-              {user.tests.map((test, index)=>{
+              {user.tests.filter((test)=>{return test.complete}).map((test, index)=>{
                 return(
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{test.complete ? test.score : "in progress"}</td>
-                    <td>{test.complete ? test.score * 20 : "in progress"}</td>
+                    <td>{test.score}</td>
+                    <td>{test.score * 20}</td>
                   </tr>
-                )
-              }
+                )}
               )}
             </tbody>
           </table>
