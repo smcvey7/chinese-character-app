@@ -27,11 +27,24 @@ class StudentsController < ApplicationController
     
   end
 
-  # def update
-  #   student = Student.find_by(id: params[:id])
-  #   student.update()
-  #   render json: student
-  # end 
+  
+
+  def update
+    student = Student.find_by(id: params[:id])
+
+    if params[:student][:password].blank? && params[:student][:password_confirmation].blank?
+      params[:student].delete(:password)
+      params[:student].delete(:password_confirmation)
+    end
+
+    if student.update(
+      scores: student_params[:scores],
+    )
+      render json: student
+    else
+      render json: student.errors, status: :unprocessable_entity
+    end
+  end 
 
   # def destroy
   #   student = Student.find_by(id: params[:id])
@@ -42,7 +55,7 @@ class StudentsController < ApplicationController
   private
 
   def student_params
-    params.permit(:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :years_studied, :first_language, :classUuid, newUserInfo: [:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :years_studied, :first_language])
+    params.permit(:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :years_studied, :first_language, :classUuid, {scores: []}, :id, newUserInfo: [:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :years_studied, :first_language])
   end
 
 end

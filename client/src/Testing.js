@@ -87,7 +87,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
 
   function handleSubmit(currentItem){
 
-    const testUpdate = currentItem.correct ? {...currentTest, char_num: charNum + 1, score: currentTest.score + 1} : {...currentTest, char_num: charNum + 1}
+    const testUpdate = currentItem.correct ? {...currentTest, char_num: charNum + 1, score: currentTest.score + 1} : {...currentTest, char_num: charNum + 1, score: currentTest.score}
     
     if (currentItem.correct){
       setWrong(0)
@@ -95,14 +95,13 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     }else{
       if (wrong === 9){
         testUpdate.complete = true
+        updateStudentScores(testUpdate.score)
         endTest()
       }else{
         setWrong(wrong + 1)
       }
     }
-
-    console.log("testUpdate", testUpdate)
-
+    
     fetch(`/tests/${currentTest.id}`, {
       method: "PATCH",
       headers: {
@@ -114,13 +113,28 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     .then((data)=>{
       setUser({...user, tests: [...user.tests.slice(0, user.tests.length - 1), data]})
       setCurrentTest(data)
-      console.log(user.tests[user.tests.length - 1])
     })
-
 
     nextChar()
     setTimer(20)
   }
+
+  function updateStudentScores(score){
+    const updatedScores = [...user.scores, score]
+    
+    fetch(`/students/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify({scores: updatedScores})
+    })
+    .then((r)=>r.json())
+    .then((data)=>{
+      setUser(data)
+    })
+  }
+
 
   function nextChar(){
     setRandomOptions(null)

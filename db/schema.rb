@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_11_170832) do
+ActiveRecord::Schema.define(version: 2023_09_13_140637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,10 +51,10 @@ ActiveRecord::Schema.define(version: 2023_09_11_170832) do
     t.string "school"
     t.integer "class_group_id"
     t.integer "years_studied"
-    t.json "scores", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "role", default: "student"
+    t.integer "scores", default: [], array: true
   end
 
   create_table "teachers", force: :cascade do |t|

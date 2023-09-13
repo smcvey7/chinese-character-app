@@ -10,5 +10,6 @@ class Student < ApplicationRecord
   validates :email, {presence: true, uniqueness: true}
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :password, {presence: true, length: {minimum: 6}}
+  validates :password, {presence: true, length: {minimum: 6}, allow_blank: true}
+  validates :password_confirmation, {presence: true, allow_blank: true}
 end

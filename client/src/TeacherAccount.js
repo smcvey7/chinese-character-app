@@ -9,18 +9,17 @@ function TeacherAccount(){
   const [newClass, setNewClass] = useState({
     name: "",
     teacher_id: user.id,
-    uuid: uuidv4(),
-    level: ""
+    uuid: uuidv4()
   })
   const [selectedClass, setSelectedClass] = useState(null)
-  const [classStudents, setClassStudents] = useState(["none"])
+  const [classStudents, setClassStudents] = useState([])
 
 
   useEffect(()=>{
     if (!selectedClass){
       return
     }
-    const students = user.students.filter((student)=>{
+    const students = selectedClass.students.filter((student)=>{
       return student.class_group_id === selectedClass.id
     })
     setClassStudents(students)
@@ -29,7 +28,7 @@ function TeacherAccount(){
       if (error) console.error(error)
       console.log('success!');
     })
-  }, [selectedClass])
+  }, [selectedClass, user])
 
   function handleDownload(e){
     e.preventDefault()
@@ -51,10 +50,12 @@ function TeacherAccount(){
   }
 
   function handleSelectClass(e){
-    const selectedClass = user.class_groups.find((class_group)=>{
-      return class_group.id === parseInt(e.target.value)
+    fetch(`/class_groups/${e.target.value}`)
+    .then((r)=>r.json())
+    .then((data)=>{
+      console.log(data)
+      setSelectedClass(data)
     })
-    setSelectedClass(selectedClass)
   }
 
   function createClass(e){
@@ -104,8 +105,6 @@ function TeacherAccount(){
             <div>
               <form className="d-flex justify-content-around">
                 <input name="name" value={newClass.name} onChange={handleChange} placeholder="class name"/>
-                <input className="input-short" name="level" value={newClass.level} onChange={handleChange} placeholder="level"/>
-
                 <button onClick={createClass}>Create new class</button>
               </form>
             </div>
@@ -137,10 +136,31 @@ function TeacherAccount(){
             </div>
             <div>
               <h4>Students</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Attempts</th>
+                    <th>Highest score</th>
+                  </tr>
+                </thead> 
+                <tbody>
+                  {classStudents.map((student)=>{
+                    return(
+                      <tr key={uuidv4()}>
+                        <td>{student.first_name} {student.last_name}</td>
+                        <td>{student.scores.length}</td>
+                        <td>{student.scores.length === 0 ? null :student.scores.length > 0 ? Math.max(...student.scores) : 0}</td>
+                      </tr>
+                    )
+                  }
+                  )}
+                </tbody>
+              </table>
               <ul>
                 {classStudents.map((student)=>{
                   return(
-                    <li key={student.id}>{student.first_name} {student.last_name}</li>
+                    <li key={uuidv4()}>{student.first_name} {student.last_name}</li>
                   )
                 }
                 )}

@@ -9,6 +9,13 @@ function Test(){
   const [finalScore, setFinalScore] = useState(null)
   const [currentTest, setCurrentTest] = useState(null)
 
+  // window.addEventListener("beforeunload", function (e){
+  //   var confirmationMessage = "\o/";
+  //   (e).returnValue = confirmationMessage;
+  //   return confirmationMessage;
+  // })
+
+
   useEffect(()=>{
     if (status === "testing" || !user){
       return
@@ -55,7 +62,7 @@ function Test(){
               </ul>
               <p>If you answer incorrectly ten times in a row, the test will end automatically, and you will be given your score with an estimate of how many Chinese characters you recognize.</p>
             </div>
-            <button onClick={beginTest} className="btn btn-primary topMargins full">"Begin Test"</button>
+            <button onClick={beginTest} className="btn btn-primary topMargins full">Begin Test</button>
           </div>
         </div>
       </div>

@@ -6,9 +6,7 @@ class TeachersController < ApplicationController
 
   def show
     teacher = Teacher.find_by(id: params[:id])
-    render json: teacher,
-    serializer: TeacherSerializer, 
-    include: ['class_groups', 'class_groups.students', 'class_groups.tests']
+    render json: teacher
   end
 
   def create

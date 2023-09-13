@@ -22,12 +22,12 @@ function StudentAccount(){
               </tr>
             </thead>
             <tbody>
-              {user.tests.filter((test)=>{return test.complete}).map((test, index)=>{
+              {user.scores.map((score, index)=>{
                 return(
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{test.score}</td>
-                    <td>{test.score * 20}</td>
+                    <td>{score}</td>
+                    <td>{score * 20}</td>
                   </tr>
                 )}
               )}
