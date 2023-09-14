@@ -28,7 +28,9 @@ function TeacherAccount(){
       if (error) console.error(error)
       console.log('success!');
     })
+
   }, [selectedClass, user])
+
 
   function handleDownload(e){
     e.preventDefault()

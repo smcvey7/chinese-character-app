@@ -69,7 +69,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     }
     optionsArray.push(
     <div key={charNum} className="form-check">
-      <input onClick={handleChoice} type="radio" className="btn-check" name="options-outlined" value={4} id={`options5`} autoComplete="off"defaultChecked={false}></input>
+      <input onClick={handleChoice} type="radio" className="btn-check" name="options-outlined" choice="I don't know" value={4} id={`options5`} autoComplete="off"defaultChecked={false}></input>
       <label className="btn btn-outline-success" htmlFor={`options5`}>I don't know</label>
     </div>
     )
@@ -78,7 +78,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   }
 
   function handleChoice(e){
-    const currentItem = {choice: e.target.getAttribute("choice")}
+    const currentItem = {character_id: testChars[charNum].id, choice: e.target.value}
     currentItem.correct = e.target.value === "0" ? true : false
 
     handleSubmit(currentItem)
@@ -92,6 +92,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     if (currentItem.correct){
       setWrong(0)
       testUpdate.complete = false
+      testUpdate.items.push(currentItem)
     }else{
       if (wrong === 9){
         testUpdate.complete = true
@@ -101,7 +102,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
         setWrong(wrong + 1)
       }
     }
-    
+
     fetch(`/tests/${currentTest.id}`, {
       method: "PATCH",
       headers: {
@@ -154,7 +155,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     setCurrentTest(null)
   }
 
-  if (!testChars){
+  if (!testChars || !testChars[charNum]){
     return(<div></div>)
   }
 

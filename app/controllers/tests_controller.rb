@@ -16,9 +16,16 @@ class TestsController < ApplicationController
   end
 
   def update
-    # receive an array in params[:items]
+
+    param_items = {
+      correct: test_params[:items][0][:correct],
+      choice: test_params[:items][0][:choice],
+      character_id: test_params[:items][0][:character_id]
+    }
+        
     test = Test.find_by(id: params[:id])
     test.update(test_params)
+    test.update(items: param_items)
     render json: test
   end
 
@@ -31,6 +38,6 @@ class TestsController < ApplicationController
   private
 
   def test_params
-    params.permit(:score, :student_id, :version, :complete, :char_num, :items => [])
+    params.permit(:id, :score, :student_id, :version, :complete, :char_num, :items => [:correct, :choice, :character_id])
   end
 end

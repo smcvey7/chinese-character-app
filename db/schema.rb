@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_13_140637) do
+ActiveRecord::Schema.define(version: 2023_09_14_233835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,9 +26,9 @@ ActiveRecord::Schema.define(version: 2023_09_13_140637) do
     t.boolean "checked", default: false
     t.integer "components", default: 0
     t.integer "strokes", default: 0
-    t.json "incorrect", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "incorrect", default: [], null: false, array: true
   end
 
   create_table "class_groups", force: :cascade do |t|
@@ -75,11 +75,11 @@ ActiveRecord::Schema.define(version: 2023_09_13_140637) do
     t.integer "student_id"
     t.integer "score"
     t.integer "version"
-    t.string "items", default: [], array: true
+    t.jsonb "items", default: [], null: false, array: true
+    t.boolean "complete"
+    t.integer "char_num"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "complete", default: false
-    t.integer "char_num", default: 0
   end
 
 end
