@@ -50,12 +50,19 @@ function TeacherAccount(){
   }
 
   function handleSelectClass(e){
-    fetch(`/class_groups/${e.target.value}`)
-    .then((r)=>r.json())
-    .then((data)=>{
-      console.log(data)
-      setSelectedClass(data)
-    })
+
+    const selectedClass = user.class_groups.filter((class_group)=>{
+      return class_group.id === parseInt(e.target.value)
+    })[0]
+    setSelectedClass(selectedClass)
+    console.log(selectedClass)
+
+    // fetch(`/class_groups/${e.target.value}`)
+    // .then((r)=>r.json())
+    // .then((data)=>{
+    //   console.log(data)
+    //   setSelectedClass(data)
+    // })
   }
 
   function createClass(e){
