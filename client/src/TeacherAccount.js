@@ -14,7 +14,8 @@ function TeacherAccount(){
   const [selectedClass, setSelectedClass] = useState(null)
   const [classStudents, setClassStudents] = useState([])
   const [studentTests, setStudentTests] = useState(null)
-  const [currentTest, setCurrentTest] = useState("default")
+  const [currentTestNumber, setCurrentTestNumber] = useState("default")
+  const [currentTest, setCurrentTest] = useState(null)
 
 
   useEffect(()=>{
@@ -239,7 +240,10 @@ function TeacherAccount(){
           {studentTests ?
             <div>
               <h4>Tests: {studentTests.student.last_name}, {studentTests.student.first_name}</h4>
-              <select value={currentTest} onChange={(e)=>setCurrentTest(studentTests.tests[e.target.value])}>
+              <select value={currentTestNumber} onChange={(e)=>{
+                setCurrentTest(studentTests.tests[e.target.value])
+                setCurrentTestNumber(e.target.value)
+                }}>
                 <option value="default" disabled>select test</option>
                 {studentTests.tests.map((test, index)=>{
                   return(
@@ -248,7 +252,7 @@ function TeacherAccount(){
                 }
                 )}
               </select>
-              {currentTest !== "default" ?
+              {currentTest ?
               <table>
                 <thead>
                   <tr>
@@ -263,7 +267,7 @@ function TeacherAccount(){
                     return(
                       <tr key={item.id}>
                         <td>{item.character_id}</td>
-                        <td>{characters[item.character_id].simplified}</td>
+                        <td>{characters[item.character_id-1].simplified}</td>
                         <td>{item.correct ? "correct" : "incorrect"}</td>
                         <td>{item.choice}</td>
                       </tr>

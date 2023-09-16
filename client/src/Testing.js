@@ -26,13 +26,11 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     setTestChars(filteredChars)
     setCharNum(currentTest.char_num)
 
-    console.log("charnum", charNum, "user", user, "currentTest", currentTest, "status", status)
-
   }, [characters, currentTest])
 
   useEffect(()=>{
     if (timer === 0){
-      handleSubmit({choice: "I don't know", correct: false})
+      handleSubmit({choice: "IDK", correct: false})
       setTimer(20)
     }
 
@@ -71,43 +69,55 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     }
     optionsArray.push(
     <div key={charNum} className="form-check">
-      <input onClick={handleChoice} type="radio" className="btn-check" name="options-outlined" choice="I don't know" value={4} id={`options5`} autoComplete="off"defaultChecked={false}></input>
+      <input onClick={handleChoice} type="radio" className="btn-check" name="options-outlined" choice="IDK" value={4} id={`options5`} autoComplete="off"defaultChecked={false}></input>
       <label className="btn btn-outline-success" htmlFor={`options5`}>I don't know</label>
     </div>
     )
     setRandomOptions(optionsArray)
+    console.log(optionsArray)
     return optionsArray
   }
 
   function handleChoice(e){
-    const currentItem = {character_id: testChars[charNum].id, choice: parseInt(e.target.value)}
-    currentItem.correct = e.target.value === "0" ? true : false
-
+    const currentItem = {
+      character_id: testChars[charNum].id,
+      choice: e.target.getAttribute("choice"),
+      correct: e.target.value === "0" ? true : false
+    }
+    // currentItem.correct = e.target.value === "0" ? true : false
+    console.log(currentItem)
     handleSubmit(currentItem)
 
   }
 
   function handleSubmit(currentItem){
 
-    const testUpdate = currentItem.correct ? {...currentTest, char_num: charNum + 1, score: score + 1} : {...currentTest, char_num: charNum + 1, score: score}
-    
+    setCurrentTest((prevTest) => ({
+      ...prevTest,
+      char_num: charNum + 1,
+      score: prevTest.score + (currentItem.correct ? 1 : 0),
+      items: [...prevTest.items, currentItem],
+      complete: !currentItem.correct && wrong === 9,
+    }));
+  
+    // Construct the testUpdate object based on the previous state
+    const testUpdate = {
+      char_num: charNum + 1,
+      score: currentTest.score + (currentItem.correct ? 1 : 0),
+      items: [...currentTest.items, currentItem],
+      complete: !currentItem.correct && wrong === 9,
+    };
+
     if (currentItem.correct){
       setWrong(0)
-      setScore((prevScore) => (prevScore + 1))
-      testUpdate.complete = false
-      testUpdate.items.push(currentItem)
-      
     }else{
       if (wrong === 9){
-        testUpdate.complete = true
         updateStudentScores(score)
         endTest()
       }else{
         setWrong(wrong + 1)
       }
     }
-
-    console.log("testUpdate", testUpdate)
 
     fetch(`/tests/${currentTest.id}`, {
       method: "PATCH",
@@ -118,7 +128,8 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     })
     .then((r)=>r.json())
     .then((data)=>{
-      setUser({...user, tests: [...user.tests.slice(0, user.tests.length - 1), data]})
+      setUser((prevUser)=>({...prevUser, tests: [...user.tests.slice(0, user.tests.length - 1), data]}))
+      // setUser({...user, tests: [...user.tests.slice(0, user.tests.length - 1), data]})
       setCurrentTest(data)
     })
 
