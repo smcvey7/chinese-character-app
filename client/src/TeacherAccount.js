@@ -269,7 +269,7 @@ function TeacherAccount(){
                         <td>{item.character_id}</td>
                         <td>{characters[item.character_id-1].simplified}</td>
                         <td>{item.correct ? "correct" : "incorrect"}</td>
-                        <td>{item.choice}</td>
+                        <td>{item.choice}</td> 
                       </tr>
                     )
                   }
