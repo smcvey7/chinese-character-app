@@ -106,8 +106,6 @@ function TeacherAccount(){
       return test.student_id === student.id
     }
     )
-    console.log(student, tests)
-
     setStudentTests({
       student: student,
       tests: tests
@@ -247,7 +245,7 @@ function TeacherAccount(){
                 <option value="default" disabled>select test</option>
                 {studentTests.tests.map((test, index)=>{
                   return(
-                    <option key={test.id} value={index}>Test {index + 1} (score: {test.score})</option>
+                    <option key={uuidv4()} value={index}>Test {index + 1} (score: {test.score})</option>
                   )
                 }
                 )}
@@ -265,7 +263,7 @@ function TeacherAccount(){
                 <tbody>
                   {currentTest.items.map((item)=>{
                     return(
-                      <tr key={item.id}>
+                      <tr key={uuidv4()}>
                         <td>{item.character_id}</td>
                         <td>{characters[item.character_id-1].simplified}</td>
                         <td>{item.correct ? "correct" : "incorrect"}</td>

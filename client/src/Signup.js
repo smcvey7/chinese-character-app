@@ -66,7 +66,6 @@ useEffect(()=>{
 
   function handleSubmit(e){
     e.preventDefault()
-    console.log("submitting: ", newUserInfo)
     fetch(`/${role}s`, {
       method: "POST",
       headers: {
@@ -76,7 +75,6 @@ useEffect(()=>{
     })
     .then((r)=>r.json())
     .then((data)=>{
-      console.log(data)
       if (data.errors){
         setErrors(data.errors)
       }else{
@@ -95,16 +93,23 @@ useEffect(()=>{
           <option value="teacher">teacher/researcher</option>
         </select>
         <form onSubmit={handleSubmit}>
-          {
-            role === "student" ?
+          {role === "student" ?
             <div>
               <label htmlFor="exampleClassId" className="form-label topMargins">class id</label>
               <input name="class_uuid" className="form-control" value={classUuid} disabled={noClass || QRUUID ? true : false} onChange={handleChangeUuid} />
               <input type="checkbox" name="no_class" onChange={handleNoClass} checked={noClass} /> not part of a class<br/>
               <label htmlFor="exampleLanguage" className="form-label topMargins">first language</label>
               <input name="first_language" className="form-control" value={newUserInfo.first_language} onChange={handleChange} /><br/>
-              
-
+              <label htmlFor="exampleAge" className="form-label">age</label>
+              <input type="number" min="0" max="100" name="age" className="form-control" value={newUserInfo.age} onChange={handleChange} /><br/>
+              <label htmlFor="exampleClassLearning" className="form-label">Years spent learning Chinese in a formal class</label>
+              <input type="number" min="0" max="100" name="class_learning" className="form-control" value={newUserInfo.class_learning} onChange={handleChange} /><br/>
+              <label htmlFor="exampleHomeLearning" className="form-label">Years spent learning Chinese independently (at home)</label>
+              <input type="number" min="0" max="100" name="home_learning" className="form-control" value={newUserInfo.home_learning} onChange={handleChange} /><br/>
+              <label htmlFor="exampleOtherL2" className="form-label">other languages spoken</label>
+              <input name="other_L2" className="form-control" value={newUserInfo.other_L2} onChange={handleChange} /><br/>
+              <label htmlFor="exampleOtherInfo" className="form-label">other info</label>
+              <textarea name="other_info" className="form-control" value={newUserInfo.other_info} onChange={handleChange} /><br/>
             </div>
             :
             <></>
@@ -129,18 +134,7 @@ useEffect(()=>{
         <input autoComplete="new-password" className="form-control" type="password" name="password" value={newUserInfo.password} onChange={handleChange} /><br/>
         <label htmlFor="examplePasswordConfirmation" className="form-label">confirm password</label>
         <input autoComplete="new-password" className="form-control" type="password" name="password_confirmation" value={newUserInfo.password_confirmation} onChange={handleChange} /><br/>
-        
-        <label htmlFor="exampleAge" className="form-label">age</label>
-        <input type="number" min="0" max="100" name="age" className="form-control" value={newUserInfo.age} onChange={handleChange} /><br/>
-        <label htmlFor="exampleClassLearning" className="form-label">Years spent learning Chinese in a formal class</label>
-        <input type="number" min="0" max="100" name="class_learning" className="form-control" value={newUserInfo.class_learning} onChange={handleChange} /><br/>
-        <label htmlFor="exampleHomeLearning" className="form-label">Years spent learning Chinese independently (at home)</label>
-        <input type="number" min="0" max="100" name="home_learning" className="form-control" value={newUserInfo.home_learning} onChange={handleChange} /><br/>
-        <label htmlFor="exampleOtherL2" className="form-label">other languages spoken</label>
-        <input name="other_L2" className="form-control" value={newUserInfo.other_L2} onChange={handleChange} /><br/>
-        <label htmlFor="exampleOtherInfo" className="form-label">other info</label>
-        <textarea name="other_info" className="form-control" value={newUserInfo.other_info} onChange={handleChange} /><br/>
-        
+        <input type="submit" />
         </form>
         <div>
           <ul>
@@ -149,7 +143,6 @@ useEffect(()=>{
                 <li className="red" key={error}>{error}</li>
               )
             })}
-            <input type="submit" />
           </ul>
         </div>
       </div>

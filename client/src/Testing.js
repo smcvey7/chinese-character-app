@@ -74,7 +74,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     </div>
     )
     setRandomOptions(optionsArray)
-    console.log(optionsArray)
     return optionsArray
   }
 
@@ -85,7 +84,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
       correct: e.target.value === "0" ? true : false
     }
     // currentItem.correct = e.target.value === "0" ? true : false
-    console.log(currentItem)
     handleSubmit(currentItem)
 
   }
