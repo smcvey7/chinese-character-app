@@ -55,7 +55,7 @@ class StudentsController < ApplicationController
   private
 
   def student_params
-    params.permit(:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :years_studied, :first_language, :classUuid, {scores: []}, :id, newUserInfo: [:username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :years_studied, :first_language])
+    params.permit(:age, :other_L2, :home_learning, :class_learning, :other_info, :username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :first_language, :classUuid, {scores: []}, :id, newUserInfo: [:age, :other_L2, :home_learning, :class_learning, :other_info, :username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :first_language])
   end
 
 end

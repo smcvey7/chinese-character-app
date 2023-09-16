@@ -9,13 +9,6 @@ function Test(){
   const [finalScore, setFinalScore] = useState(null)
   const [currentTest, setCurrentTest] = useState(null)
 
-  // window.addEventListener("beforeunload", function (e){
-  //   var confirmationMessage = "\o/";
-  //   (e).returnValue = confirmationMessage;
-  //   return confirmationMessage;
-  // })
-
-
   useEffect(()=>{
     if (status === "testing" || !user){
       return
@@ -28,7 +21,7 @@ function Test(){
       headers: {
         'Content-Type': "application/json"
       },
-      body: JSON.stringify({student_id: user.id, version: 1, score: 0, complete: false})
+      body: JSON.stringify({student_id: user.id, version: 1, score: 0, complete: false, char_num: 0})
     })
     .then((r)=>r.json())
     .then((data)=>{

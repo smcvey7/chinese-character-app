@@ -7,6 +7,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   const [testChars, setTestChars] = useState(null)
   // const [currentItem, setCurrentItem] = useState(null)
   const [wrong, setWrong] = useState(0)
+  const [score, setScore] = useState(0)
   const [randomOptions, setRandomOptions] = useState(null)
   const [errors, setErrors] = useState(null)
   const [timer, setTimer] = useState(20)
@@ -14,6 +15,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   
 
   useEffect(()=>{
+    
     if (!characters || !currentTest){
       return
     }
@@ -23,6 +25,9 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     }
     setTestChars(filteredChars)
     setCharNum(currentTest.char_num)
+
+    console.log("charnum", charNum, "user", user, "currentTest", currentTest, "status", status)
+
   }, [characters, currentTest])
 
   useEffect(()=>{
@@ -38,9 +43,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
 
       return ()=>clearTimeout(timerId)
     }
-
-
-
   }, [timer, status, setTimer])
 
 
@@ -78,7 +80,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   }
 
   function handleChoice(e){
-    const currentItem = {character_id: testChars[charNum].id, choice: e.target.value}
+    const currentItem = {character_id: testChars[charNum].id, choice: parseInt(e.target.value)}
     currentItem.correct = e.target.value === "0" ? true : false
 
     handleSubmit(currentItem)
@@ -87,21 +89,25 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
 
   function handleSubmit(currentItem){
 
-    const testUpdate = currentItem.correct ? {...currentTest, char_num: charNum + 1, score: currentTest.score + 1} : {...currentTest, char_num: charNum + 1, score: currentTest.score}
+    const testUpdate = currentItem.correct ? {...currentTest, char_num: charNum + 1, score: score + 1} : {...currentTest, char_num: charNum + 1, score: score}
     
     if (currentItem.correct){
       setWrong(0)
+      setScore((prevScore) => (prevScore + 1))
       testUpdate.complete = false
       testUpdate.items.push(currentItem)
+      
     }else{
       if (wrong === 9){
         testUpdate.complete = true
-        updateStudentScores(testUpdate.score)
+        updateStudentScores(score)
         endTest()
       }else{
         setWrong(wrong + 1)
       }
     }
+
+    console.log("testUpdate", testUpdate)
 
     fetch(`/tests/${currentTest.id}`, {
       method: "PATCH",
@@ -162,7 +168,8 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   return(
     <div>
       <h1>TEST</h1>
-      {/* <h2 className="red">Wrong: {wrong}</h2> */}
+      <h2 className="red">Wrong: {wrong}</h2>
+      <h2 className="green">Score: {currentTest.score}</h2>
       <h2 className="red">Timer: {timer}</h2>
       <div id="testCard" className="full  topMargins">
         <div className="center border d-flex flex-column">

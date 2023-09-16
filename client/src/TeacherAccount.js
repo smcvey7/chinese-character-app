@@ -5,7 +5,7 @@ import QRCode from "qrcode";
 
 
 function TeacherAccount(){
-  const {user, setUser} = useContext(MyContext)
+  const {user, setUser, characters} = useContext(MyContext)
   const [newClass, setNewClass] = useState({
     name: "",
     teacher_id: user.id,
@@ -13,6 +13,8 @@ function TeacherAccount(){
   })
   const [selectedClass, setSelectedClass] = useState(null)
   const [classStudents, setClassStudents] = useState([])
+  const [studentTests, setStudentTests] = useState(null)
+  const [currentTest, setCurrentTest] = useState("default")
 
 
   useEffect(()=>{
@@ -23,11 +25,20 @@ function TeacherAccount(){
       return student.class_group_id === selectedClass.id
     })
     setClassStudents(students)
+
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext("2d");
+
+    // include QRcode with class id below it in canvas
    
-    QRCode.toCanvas(document.getElementById('canvas'), `https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`, function (error) {
-      if (error) console.error(error)
-      console.log('success!');
+    QRCode.toCanvas(canvas, `https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`, {width: 300, height: 300},
+    () => {
+      canvas.style.width = `300px`
+      canvas.style.height = `300px`
     })
+    ctx.font = "15px Arial";
+    ctx.fillText(selectedClass.uuid, 10, 300);
+
 
   }, [selectedClass, user])
 
@@ -57,14 +68,49 @@ function TeacherAccount(){
       return class_group.id === parseInt(e.target.value)
     })[0]
     setSelectedClass(selectedClass)
-    console.log(selectedClass)
+  }
 
-    // fetch(`/class_groups/${e.target.value}`)
-    // .then((r)=>r.json())
-    // .then((data)=>{
-    //   console.log(data)
-    //   setSelectedClass(data)
-    // })
+  // download table with id studentInfo as csv
+  function downloadCSV(csv, filename){
+    const csvFile = new Blob([csv], {type: "text/csv"})
+    const downloadLink = document.createElement("a")
+    downloadLink.download = filename
+    downloadLink.href = window.URL.createObjectURL(csvFile)
+    downloadLink.style.display = "none"
+    document.body.appendChild(downloadLink)
+    downloadLink.click()
+  }
+
+  function exportTableToCSV(filename){
+    const csv = []
+    const rows = document.querySelectorAll("table tr")
+    for (const row of rows){
+      const cols = row.querySelectorAll("td, th")
+      const rowArray = []
+      for (const col of cols){
+        rowArray.push(col.innerText)
+      }
+      csv.push(rowArray.join(","))
+    }
+    downloadCSV(csv.join("\n"), filename)
+  }
+
+  function viewStudentTests(e){
+    e.preventDefault()
+    const studentId = e.target.parentElement.parentElement.getAttribute("value")
+    const student = classStudents.filter((student)=>{
+      return student.id === parseInt(studentId)
+    })[0]
+    const tests = user.tests.filter((test)=>{
+      return test.student_id === student.id
+    }
+    )
+    console.log(student, tests)
+
+    setStudentTests({
+      student: student,
+      tests: tests
+    })
   }
 
   function createClass(e){
@@ -106,7 +152,7 @@ function TeacherAccount(){
   
   return(
     <div className="full  topMargins">
-      <div className="  d-flex flex-column">
+      <div className="d-flex flex-column">
         <h2>Account info</h2>
         <div>
           <div className="d-flex flex-column card full topMargins">
@@ -131,51 +177,103 @@ function TeacherAccount(){
             </select>
           </div>
           {selectedClass ?
-          <div className="card">
-            <div className="d-flex flex-row justify-content-between">
-              <h3>Class info</h3>
-              <h4>{selectedClass.name}</h4>
-              <button onClick={handleDelete}>Delete class</button>
-            </div>
-            <div className="d-flex flex-column qr-card">
-              <h4>QR Code</h4>
-              <button onClick={handleDownload}>Download</button>
-              <canvas id="canvas">
-              </canvas><br/>
+          <div>
+            <div className="card">
+              <div className="d-flex flex-row justify-content-between">
+                <h3>Class info</h3>
+                <h4>{selectedClass.name}</h4>
+                <button onClick={handleDelete}>Delete class</button>
+              </div>
+              <div className="d-flex flex-column qr-card">
+                <h4>QR Code</h4>
+                <button onClick={handleDownload}>Download</button>
+                <canvas id="canvas">
+                </canvas><br/>
+              </div>
+              
             </div>
             <div>
-              <h4>Students</h4>
+                <button onClick={()=>exportTableToCSV("studentInfo.csv")}>Download excel file</button>
+                <h4>Students</h4>
+                <table id="studentInfo">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Attempts</th>
+                      <th>Highest score</th>
+                      <th>First Language</th>
+                      <th>Other L2</th>
+                      <th>Chinese in class</th>
+                      <th>Chinese at home</th>
+                      <th>Age</th>
+                      <th>Country</th>
+                      <th>School</th>
+                      <th>Other info</th>
+                      <th>Test details</th>
+                    </tr>
+                  </thead> 
+                  <tbody>
+                    {classStudents.map((student)=>{
+                      return(
+                        <tr key={uuidv4()} value={student.id}>
+                          <td>{student.last_name}, {student.first_name}</td>
+                          <td>{student.scores.length}</td>
+                          <td>{student.scores.length === 0 ? null :student.scores.length > 0 ? Math.max(...student.scores) : 0}</td>
+                          <td>{student.first_language}</td>
+                          <td>{student.other_L2s}</td>
+                          <td>{student.class_learning}</td>
+                          <td>{student.home_learning}</td>
+                          <td>{student.age}</td>
+                          <td>{student.country}</td>
+                          <td>{student.school}</td>
+                          <td>{student.other_info}</td>
+                          <td><button onClick={viewStudentTests}>view tests</button></td>
+                        </tr>
+                      )
+                    }
+                    )}
+                  </tbody>
+                </table>
+              </div>
+          </div> : <></>}
+          {studentTests ?
+            <div>
+              <h4>Tests: {studentTests.student.last_name}, {studentTests.student.first_name}</h4>
+              <select value={currentTest} onChange={(e)=>setCurrentTest(studentTests.tests[e.target.value])}>
+                <option value="default" disabled>select test</option>
+                {studentTests.tests.map((test, index)=>{
+                  return(
+                    <option key={test.id} value={index}>Test {index + 1} (score: {test.score})</option>
+                  )
+                }
+                )}
+              </select>
+              {currentTest !== "default" ?
               <table>
                 <thead>
                   <tr>
-                    <th>Student</th>
-                    <th>Attempts</th>
-                    <th>Highest score</th>
+                    <th>Character ID</th>
+                    <th>Character</th>
+                    <th>Correct</th>
+                    <th>Choice</th>
                   </tr>
-                </thead> 
+                </thead>
                 <tbody>
-                  {classStudents.map((student)=>{
+                  {currentTest.items.map((item)=>{
                     return(
-                      <tr key={uuidv4()}>
-                        <td>{student.first_name} {student.last_name}</td>
-                        <td>{student.scores.length}</td>
-                        <td>{student.scores.length === 0 ? null :student.scores.length > 0 ? Math.max(...student.scores) : 0}</td>
+                      <tr key={item.id}>
+                        <td>{item.character_id}</td>
+                        <td>{characters[item.character_id].simplified}</td>
+                        <td>{item.correct ? "correct" : "incorrect"}</td>
+                        <td>{item.choice}</td>
                       </tr>
                     )
                   }
                   )}
                 </tbody>
               </table>
-              <ul>
-                {classStudents.map((student)=>{
-                  return(
-                    <li key={uuidv4()}>{student.first_name} {student.last_name}</li>
-                  )
-                }
-                )}
-              </ul>
-            </div>
-          </div> : <></>}
+              : <></>}
+            </div> : <></>}
           
         </div>
         

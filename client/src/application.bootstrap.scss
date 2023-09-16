@@ -172,7 +172,7 @@ table, th, td {
 
 // make qr-card class width 30% with all items centered and a border with rounded corners
 .qr-card{
-  width: 30%;
+  width: 60%;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -189,10 +189,16 @@ table, th, td {
 }
 
 canvas{
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
 .input-short{
   width: 100px;
+}
+
+canvas.qr-code{
+  height: 600px;
+  width: 600px;
 }

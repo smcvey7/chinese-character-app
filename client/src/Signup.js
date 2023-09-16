@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import CountrySelector from "./CountrySelector";
-import QRCode from "qrcode";
 
 function Signup({QRUUID}){
   const [role, setRole] = useState("student")
@@ -15,10 +14,16 @@ function Signup({QRUUID}){
     password: "",
     password_confirmation: "",
     first_language: "",
+    other_L2: "",
     country: "",
     school: "",
-    years_studied: 0,
+    age: 0,
+    class_learning: 0,
+    home_learning: 0,
+    other_info: ""
   })
+  const [errors, setErrors] = useState([])
+
 
 
 useEffect(()=>{
@@ -52,7 +57,6 @@ useEffect(()=>{
 
   function checkAvailability(e){
     e.preventDefault()
-    console.log("checking availability of: ", newUserInfo.username)
     fetch(`/availability/${newUserInfo.username}`)
     .then((r)=>r.json())
     .then((data)=>{
@@ -74,7 +78,7 @@ useEffect(()=>{
     .then((data)=>{
       console.log(data)
       if (data.errors){
-        alert(data.errors)
+        setErrors(data.errors)
       }else{
         alert("account created")
         window.location.href = "/login"
@@ -99,8 +103,7 @@ useEffect(()=>{
               <input type="checkbox" name="no_class" onChange={handleNoClass} checked={noClass} /> not part of a class<br/>
               <label htmlFor="exampleLanguage" className="form-label topMargins">first language</label>
               <input name="first_language" className="form-control" value={newUserInfo.first_language} onChange={handleChange} /><br/>
-              <label htmlFor="exampleYearsStudied" className="form-label">years of chinese studied</label>
-              <input type="number" min="0" max="100" name="years_studied" className="form-control" value={newUserInfo.years_studied} onChange={handleChange} /><br/>
+              
 
             </div>
             :
@@ -126,8 +129,29 @@ useEffect(()=>{
         <input autoComplete="new-password" className="form-control" type="password" name="password" value={newUserInfo.password} onChange={handleChange} /><br/>
         <label htmlFor="examplePasswordConfirmation" className="form-label">confirm password</label>
         <input autoComplete="new-password" className="form-control" type="password" name="password_confirmation" value={newUserInfo.password_confirmation} onChange={handleChange} /><br/>
-          <input type="submit" />
+        
+        <label htmlFor="exampleAge" className="form-label">age</label>
+        <input type="number" min="0" max="100" name="age" className="form-control" value={newUserInfo.age} onChange={handleChange} /><br/>
+        <label htmlFor="exampleClassLearning" className="form-label">Years spent learning Chinese in a formal class</label>
+        <input type="number" min="0" max="100" name="class_learning" className="form-control" value={newUserInfo.class_learning} onChange={handleChange} /><br/>
+        <label htmlFor="exampleHomeLearning" className="form-label">Years spent learning Chinese independently (at home)</label>
+        <input type="number" min="0" max="100" name="home_learning" className="form-control" value={newUserInfo.home_learning} onChange={handleChange} /><br/>
+        <label htmlFor="exampleOtherL2" className="form-label">other languages spoken</label>
+        <input name="other_L2" className="form-control" value={newUserInfo.other_L2} onChange={handleChange} /><br/>
+        <label htmlFor="exampleOtherInfo" className="form-label">other info</label>
+        <textarea name="other_info" className="form-control" value={newUserInfo.other_info} onChange={handleChange} /><br/>
+        
         </form>
+        <div>
+          <ul>
+            {errors.map((error)=>{
+              return(
+                <li className="red" key={error}>{error}</li>
+              )
+            })}
+            <input type="submit" />
+          </ul>
+        </div>
       </div>
     </div>
   )
