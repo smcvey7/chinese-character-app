@@ -2,15 +2,12 @@ import React, {useContext, useState, useEffect} from "react";
 import MyContext from "./MyContext";
 import { v4 as uuidv4 } from 'uuid';
 import QRCode from "qrcode";
+import CreateNewClass from "./CreateNewClass";
 
 
 function TeacherAccount(){
   const {user, setUser, characters} = useContext(MyContext)
-  const [newClass, setNewClass] = useState({
-    name: "",
-    teacher_id: user.id,
-    uuid: uuidv4()
-  })
+  
   const [selectedClass, setSelectedClass] = useState(null)
   const [classStudents, setClassStudents] = useState([])
   const [studentTests, setStudentTests] = useState(null)
@@ -54,17 +51,8 @@ function TeacherAccount(){
     link.click()
   }
 
-  function handleChange(e){
-    const key = e.target.name
-    const value = e.target.value
-    setNewClass({
-      ...newClass,
-      [key]: value
-    })
-  }
-
   function handleSelectClass(e){
-
+    setClassStudents([])
     const selectedClass = user.class_groups.filter((class_group)=>{
       return class_group.id === parseInt(e.target.value)
     })[0]
@@ -84,9 +72,9 @@ function TeacherAccount(){
 
   function exportTableToCSV(filename){
     const csv = []
-    const rows = document.querySelectorAll("table tr")
+    const rows = document.querySelectorAll("table.classInfo tr.classInfo")
     for (const row of rows){
-      const cols = row.querySelectorAll("td, th")
+      const cols = row.querySelectorAll("td.classInfo, th.classInfo")
       const rowArray = []
       for (const col of cols){
         rowArray.push(col.innerText)
@@ -112,27 +100,6 @@ function TeacherAccount(){
     })
   }
 
-  function createClass(e){
-    e.preventDefault()
-    fetch('/class_groups', {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(newClass)
-    })
-    .then((r)=>r.json())
-    .then((data)=>{
-      setUser({...user, class_groups: [...user.class_groups, data]})
-      setNewClass({
-        name: "",
-        uuid: uuidv4(),
-        teacher_id: user.id,
-        level: ""
-      })
-    })
-  }
-
   function handleDelete(e){
     e.preventDefault()
     fetch(`/class_groups/${selectedClass.id}`, {
@@ -150,19 +117,11 @@ function TeacherAccount(){
   )}
   
   return(
-    <div className="full  topMargins">
+    <div className="full topMargins">
       <div className="d-flex flex-column">
         <h2>Account info</h2>
         <div>
-          <div className="d-flex flex-column card full topMargins">
-            <h3>Create a new class</h3>
-            <div>
-              <form className="d-flex justify-content-around">
-                <input name="name" value={newClass.name} onChange={handleChange} placeholder="class name"/>
-                <button onClick={createClass}>Create new class</button>
-              </form>
-            </div>
-          </div>
+          <CreateNewClass/>
           <div className="topMargins">
             <h3>My classes</h3>
             <select defaultValue="default" onChange={handleSelectClass}>
@@ -171,8 +130,7 @@ function TeacherAccount(){
                 return(
                   <option value={class_group.id} key={class_group.id}>{class_group.name}</option>
                 )
-              }
-              )}
+              })}
             </select>
           </div>
           {selectedClass ?
@@ -191,48 +149,54 @@ function TeacherAccount(){
               </div>
               
             </div>
-            <div>
-                <button onClick={()=>exportTableToCSV("studentInfo.csv")}>Download excel file</button>
+
+              <div>
                 <h4>Students</h4>
-                <table id="studentInfo">
-                  <thead>
-                    <tr>
-                      <th>Student</th>
-                      <th>Attempts</th>
-                      <th>Highest score</th>
-                      <th>First Language</th>
-                      <th>Other L2</th>
-                      <th>Chinese in class</th>
-                      <th>Chinese at home</th>
-                      <th>Age</th>
-                      <th>Country</th>
-                      <th>School</th>
-                      <th>Other info</th>
-                      <th>Test details</th>
-                    </tr>
-                  </thead> 
-                  <tbody>
-                    {classStudents.map((student)=>{
-                      return(
-                        <tr key={uuidv4()} value={student.id}>
-                          <td>{student.last_name}, {student.first_name}</td>
-                          <td>{student.scores.length}</td>
-                          <td>{student.scores.length === 0 ? null :student.scores.length > 0 ? Math.max(...student.scores) : 0}</td>
-                          <td>{student.first_language}</td>
-                          <td>{student.other_L2s}</td>
-                          <td>{student.class_learning}</td>
-                          <td>{student.home_learning}</td>
-                          <td>{student.age}</td>
-                          <td>{student.country}</td>
-                          <td>{student.school}</td>
-                          <td>{student.other_info}</td>
-                          <td><button onClick={viewStudentTests}>view tests</button></td>
-                        </tr>
-                      )
-                    }
-                    )}
-                  </tbody>
-                </table>
+                {classStudents.length === 0 ? <em>No students</em> :
+                <div>
+                  <button onClick={()=>exportTableToCSV(`${selectedClass.name}-studentInfo.csv`)}>Download csv file</button>
+                  <table id="studentInfo" className="classInfo">
+                    <thead>
+                      <tr className="classInfo">
+                        <th className="classInfo">First name</th>
+                        <th className="classInfo">Last name</th>
+                        <th className="classInfo">Attempts</th>
+                        <th className="classInfo">Highest score</th>
+                        <th className="classInfo">First Language</th>
+                        <th className="classInfo">Other L2</th>
+                        <th className="classInfo">Chinese in class</th>
+                        <th className="classInfo">Chinese at home</th>
+                        <th className="classInfo">Age</th>
+                        <th className="classInfo">Country</th>
+                        <th className="classInfo">School</th>
+                        <th className="classInfo">Other info</th>
+                        <th className="classInfo">Test details</th>
+                      </tr>
+                    </thead> 
+                    <tbody>
+                      {classStudents.map((student)=>{
+                        return(
+                          <tr key={uuidv4()} value={student.id} className="classInfo">
+                            <td className="classInfo">{student.last_name}</td>
+                            <td className="classInfo">{student.first_name}</td>
+                            <td className="classInfo">{student.scores.length}</td>
+                            <td className="classInfo">{student.scores.length === 0 ? null :student.scores.length > 0 ? Math.max(...student.scores) : 0}</td>
+                            <td className="classInfo">{student.first_language}</td>
+                            <td className="classInfo">{student.other_L2s}</td>
+                            <td className="classInfo">{student.class_learning}</td>
+                            <td className="classInfo">{student.home_learning}</td>
+                            <td className="classInfo">{student.age}</td>
+                            <td className="classInfo">{student.country}</td>
+                            <td className="classInfo">{student.school}</td>
+                            <td className="classInfo">{student.other_info}</td>
+                            <td className="classInfo"><button onClick={viewStudentTests}>view tests</button></td>
+                          </tr>
+                        )
+                      }
+                      )}
+                    </tbody>
+                  </table>
+                </div>}
               </div>
           </div> : <></>}
           {studentTests ?
@@ -251,23 +215,23 @@ function TeacherAccount(){
                 )}
               </select>
               {currentTest ?
-              <table>
+              <table className="studentInfo">
                 <thead>
-                  <tr>
-                    <th>Character ID</th>
-                    <th>Character</th>
-                    <th>Correct</th>
-                    <th>Choice</th>
+                  <tr className="studentInfo">
+                    <th className="studentInfo">Character ID</th>
+                    <th className="studentInfo">Character</th>
+                    <th className="studentInfo">Correct</th>
+                    <th className="studentInfo">Choice</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentTest.items.map((item)=>{
                     return(
-                      <tr key={uuidv4()}>
-                        <td>{item.character_id}</td>
-                        <td>{characters[item.character_id-1].simplified}</td>
-                        <td>{item.correct ? "correct" : "incorrect"}</td>
-                        <td>{item.choice}</td> 
+                      <tr key={uuidv4()} className="studentInfo">
+                        <td className="studentInfo">{item.character_id}</td>
+                        <td className="studentInfo">{characters[item.character_id-1].simplified}</td>
+                        <td className="studentInfo">{item.correct ? "correct" : "incorrect"}</td>
+                        <td className="studentInfo">{item.choice}</td> 
                       </tr>
                     )
                   }

@@ -20,7 +20,6 @@ class SessionsController < ApplicationController
       puts user
     elsif params[:role] == "teacher"
       user = Teacher.find_by(username: params[:userInfo][:username])
-      
     end
 
     if user&.authenticate(params[:userInfo][:password])
