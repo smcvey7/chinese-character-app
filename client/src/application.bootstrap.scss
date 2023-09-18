@@ -170,7 +170,6 @@ table, th, td {
   word-wrap: break-word;
 }
 
-// make qr-card class width 30% with all items centered and a border with rounded corners
 .qr-card{
   width: 60%;
   margin-left: auto;
@@ -180,12 +179,15 @@ table, th, td {
   border-radius: 10px;
 }
 
-// button within qr-card class is 50% width with rounded corners and centered
-
 .qr-card button{
-  width: 50%;
+  width: 150px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.qr-card input{
+  width: 100%;
+  text-align: center;
 }
 
 canvas{
