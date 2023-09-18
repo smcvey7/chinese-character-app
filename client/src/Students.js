@@ -2,6 +2,7 @@ import React, {useState, useContext} from "react";
 import {v4 as uuidv4} from "uuid"
 import MyContext from "./MyContext";
 import StudentTests from "./StudentTests";
+import SelectedTest from "./SelectedTest";
 
 function Students({selectedClass, classStudents}){
   const {user, characters} = useContext(MyContext) 
@@ -99,34 +100,10 @@ function Students({selectedClass, classStudents}){
         </table>
       </div>
       {studentTests ?
-      <div>
-        <StudentTests selectedTestNumber={selectedTestNumber} studentTests={studentTests} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
-        {selectedTest ?
-        <table className="studentInfo">
-          <thead>
-            <tr className="studentInfo">
-              <th className="studentInfo">Character ID</th>
-              <th className="studentInfo">Character</th>
-              <th className="studentInfo">Correct</th>
-              <th className="studentInfo">Choice</th>
-            </tr>
-          </thead>
-          <tbody>
-            {selectedTest.items.map((item)=>{
-              return(
-                <tr key={uuidv4()} className="studentInfo">
-                  <td className="studentInfo">{item.character_id}</td>
-                  <td className="studentInfo">{characters[item.character_id-1].simplified}</td>
-                  <td className="studentInfo">{item.correct ? "correct" : "incorrect"}</td>
-                  <td className="studentInfo">{item.choice}</td> 
-                </tr>
-              )
-            }
-            )}
-          </tbody>
-        </table>
-        : <></>}
-      </div> : <></>}
+        <div>
+          <StudentTests selectedTestNumber={selectedTestNumber} studentTests={studentTests} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
+          {selectedTest ? <SelectedTest selectedTest={selectedTest} /> : <></> }
+        </div> : <></>}
     </div>
   )
 }
