@@ -208,3 +208,26 @@ canvas.qr-code{
 #root{
   padding-bottom: 100px;
 }
+
+#editStudentInfo input{
+  width: 50%;
+  margin-top: 15px;
+  margin-right: 10px;
+}
+
+#editStudentInfo button{
+  width: 100px;
+  border-width: 1px;
+  border-radius: 2px;
+  margin-top: 15px;
+  margin-right: 10px;
+}
+
+input#editStudentInfoSubmit{
+  width: 100px;
+  margin-left: 10px;
+}
+
+.forty{
+  width: 40%;
+}

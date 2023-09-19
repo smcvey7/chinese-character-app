@@ -5,17 +5,12 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   const {characters, user, setUser} = useContext(MyContext)
   const [charNum, setCharNum] = useState(0)
   const [testChars, setTestChars] = useState(null)
-  // const [currentItem, setCurrentItem] = useState(null)
   const [wrong, setWrong] = useState(0)
-  const [score, setScore] = useState(0)
   const [randomOptions, setRandomOptions] = useState(null)
-  const [errors, setErrors] = useState(null)
   const [timer, setTimer] = useState(20)
 
-  
-
   useEffect(()=>{
-    
+
     if (!characters || !currentTest){
       return
     }
@@ -60,7 +55,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
       )
     }
     )
-    // randomize order of options
     for (let i = optionsArray.length - 1; i > 0; i--){
       const j = Math.floor(Math.random() * i)
       const temp = optionsArray[i]
@@ -83,9 +77,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
       choice: e.target.getAttribute("choice"),
       correct: e.target.value === "0" ? true : false
     }
-    // currentItem.correct = e.target.value === "0" ? true : false
     handleSubmit(currentItem)
-
   }
 
   function handleSubmit(currentItem){
@@ -98,7 +90,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
       complete: !currentItem.correct && wrong === 9,
     }));
   
-    // Construct the testUpdate object based on the previous state
     const testUpdate = {
       char_num: charNum + 1,
       score: currentTest.score + (currentItem.correct ? 1 : 0),
@@ -110,7 +101,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
       setWrong(0)
     }else{
       if (wrong === 9){
-        updateStudentScores(score)
+        updateStudentScores(currentTest.score)
         endTest()
       }else{
         setWrong(wrong + 1)
@@ -127,7 +118,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     .then((r)=>r.json())
     .then((data)=>{
       setUser((prevUser)=>({...prevUser, tests: [...user.tests.slice(0, user.tests.length - 1), data]}))
-      // setUser({...user, tests: [...user.tests.slice(0, user.tests.length - 1), data]})
       setCurrentTest(data)
     })
 
@@ -137,6 +127,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
 
   function updateStudentScores(score){
     const updatedScores = [...user.scores, score]
+    console.log("updated user score", score)
     
     fetch(`/students/${user.id}`, {
       method: "PATCH",
@@ -147,10 +138,10 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     })
     .then((r)=>r.json())
     .then((data)=>{
+      console.log("completed update", data)
       setUser(data)
     })
   }
-
 
   function nextChar(){
     setRandomOptions(null)
@@ -164,7 +155,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   function endTest(){
     setStatus("finished")
     setCharNum(0)
-    // setCurrentItem(null)
     setWrong(0)
     setFinalScore(currentTest.score)
     setCurrentTest(null)
@@ -188,7 +178,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
           <div className="d-flex flex-row justify-content-between">
             {randomOptions ? randomOptions : createOptions(testChars[charNum].choices)}
           </div>
-          {/* <input type="submit" value="Submit" className="btn btn-primary topMargins full"></input> */}
         </form>
         </div>
       </div>

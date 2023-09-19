@@ -41,7 +41,7 @@ function Test(){
   if (status === "instructions"){
     return(
       <div id="testComponent" >
-        <h1>Instructions</h1>
+        <h1>Character Test</h1>
         <div className="full topMargins bottomMargins">
           <div id="instructionsCard" className="center border d-flex flex-column">
             <h2 id="testChar">Instructions</h2>
@@ -63,6 +63,7 @@ function Test(){
   }else if (status === "testing"){
     return(<Testing status={status} setFinalScore={setFinalScore} currentTest={currentTest} setCurrentTest={setCurrentTest} setStatus={setStatus}/>)
   }else if (status === "finished"){
+    console.log("finished", user, user.role)
     return(
     <Finished finalScore={finalScore} currentTest={currentTest}/>
   )}

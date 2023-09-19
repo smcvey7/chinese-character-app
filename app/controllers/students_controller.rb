@@ -1,4 +1,6 @@
 class StudentsController < ApplicationController
+  
+  
 
   def index
     students = Student.all
@@ -32,14 +34,8 @@ class StudentsController < ApplicationController
   def update
     student = Student.find_by(id: params[:id])
 
-    if params[:student][:password].blank? && params[:student][:password_confirmation].blank?
-      params[:student].delete(:password)
-      params[:student].delete(:password_confirmation)
-    end
-
-    if student.update(
-      scores: student_params[:scores],
-    )
+    if student
+      student.update(student_params)
       render json: student
     else
       render json: student.errors, status: :unprocessable_entity
