@@ -1,18 +1,23 @@
 import React, {useContext, useState, useEffect} from "react";
 import MyContext from "./MyContext";
+import {useNavigate} from "react-router-dom";
 
 function StudentAccount(){
   const {user, setUser} = useContext(MyContext)
   const [userUpdate, setUserUpdate] = useState(null)
   const [edit, setEdit] = useState(false)
   const [errors, setErrors] = useState(null)
+  const [deleteAccount, setDeleteAccount] = useState(false)
+  const [deleteAccountError, setDeleteAccountError] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(()=>{
     if (!user){
       return
     }
     setUserUpdate(user)
-  }, [user, edit])
+    errors ? console.log(errors) : console.log("no errors")
+  }, [user, edit, errors])
 
   function handleChange(e){
     const key = e.target.name
@@ -45,12 +50,28 @@ function StudentAccount(){
         })
       }else{
         r.json().then((error_list)=>{
-          setErrors(error_list.error)
+          console.log("new error list", error_list)
+          setErrors(error_list)
         })
       }
     })
   }
 
+  function handleDeleteAccount(e){
+    e.preventDefault()
+    if (!deleteAccount){
+      setDeleteAccountError("Please check the box to confirm account deletion")
+      return
+    }
+    fetch(`/students/${user.id}`, {
+      method: "DELETE"
+    })
+    .then((r)=>{
+      setDeleteAccountError(null)
+      setUser(null)
+      navigate("/")
+    })
+  }
 
   if (!user){
     return(
@@ -62,15 +83,26 @@ function StudentAccount(){
     <div>
       <div id="testCard" className="full  topMargins">
         <div className=" border d-flex flex-column">
-          <h2>Account info</h2>
-          <h3>Class name</h3>
-          <em>{user.class_group.name}</em>
-          <h3>Instructor</h3>
-          <em>{user.teacher.last_name}</em>
+          <div className="d-flex flex-row justify-content-between">
+            <h2>Account info</h2>
+            <div className="d-flex flex-column">
+              <div>
+                <label className="margin-small">check to confirm delete </label>
+                <input onChange={(e)=>setDeleteAccount(e.target.checked)} className="margin-small" type="checkbox" name="delete" value={deleteAccount} />
+                <button onClick={handleDeleteAccount}>Delete Account</button>
+              </div>
+              <em className='red' >{deleteAccountError}</em>
+            </div>
+          </div>
+          
+          <h4>Class name: <em>{user.class_group.name}</em></h4>
+          
+          <h4>Instructor: <em>{user.teacher.last_name}</em></h4>
+          
           <div className="d-flex flex-row justify-content-around">
             <div className="card forty">
               <h3>Student info</h3>
-              <div>
+              <div className="d-flex flex-row justify-content-between">
                 {userUpdate ? <form onSubmit={handleSubmit} id="editStudentInfo">
                   {edit ? <em> editing</em> : <></>}<br/>
                   <input name="username" value={userUpdate.username} onChange={handleChange} readOnly={!edit}/><br/>
@@ -93,19 +125,22 @@ function StudentAccount(){
                   <label>class learning</label><br/>
                   <input type="number" name="age" value={userUpdate.age} onChange={handleChange} readOnly={!edit}/><br/>
                   <label>age</label><br/>
-                  <input name="other_info" value={userUpdate.other_info} onChange={handleChange} readOnly={!edit}/><br/>
+                  <textarea  name="other_info" value={userUpdate.other_info} onChange={handleChange} readOnly={!edit}/><br/>
                   <label>other info</label><br/>
 
                   <button onClick={changeEdit}>{edit ? "Cancel" : "Edit"}</button>
                   {edit ? <input id="editStudentInfoSubmit" type="submit" /> : <></>}
                 </form> : <></>}
-                <ul>
-                  {errors ? errors.map((error, index)=>{
-                    return(
-                      <li key={index}>{error}</li>
-                    )
-                  }) : <></>}
-                </ul>
+                <div className="d-flex flex-column justify-content-around">
+                  <ul>
+                    {errors ? errors.errors.map((error)=>{
+                      return(
+                        <li className="red" key={error}>{error}</li>
+                      )
+                    }) : <></>}
+
+                  </ul>
+                </div>
               </div>
             </div>
             <div className="card forty">

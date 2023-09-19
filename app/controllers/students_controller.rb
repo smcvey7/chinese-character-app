@@ -29,24 +29,21 @@ class StudentsController < ApplicationController
     
   end
 
-  
-
   def update
     student = Student.find_by(id: params[:id])
-
-    if student
-      student.update(student_params)
+    student.update(student_params)
+    if student.valid?
       render json: student
     else
-      render json: student.errors, status: :unprocessable_entity
+      render json: {errors: student.errors.full_messages}, status: :unprocessable_entity
     end
   end 
 
-  # def destroy
-  #   student = Student.find_by(id: params[:id])
-  #   student.destroy
-  #   render json: {message: "Student successfully deleted"}
-  # end
+  def destroy
+    student = Student.find_by(id: params[:id])
+    student.destroy
+    head: no_content
+  end
 
   private
 

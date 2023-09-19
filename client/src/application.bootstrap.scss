@@ -210,7 +210,7 @@ canvas.qr-code{
 }
 
 #editStudentInfo input{
-  width: 50%;
+  width: 100%;
   margin-top: 15px;
   margin-right: 10px;
 }
@@ -230,4 +230,13 @@ input#editStudentInfoSubmit{
 
 .forty{
   width: 40%;
+}
+
+.margin-small{
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.thirty{
+  width: 30%;
 }
