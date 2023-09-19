@@ -15,16 +15,16 @@ class StudentsController < ApplicationController
   def create
     classGroup = ClassGroup.find_by(uuid: student_params[:classUuid])
     if !classGroup
-      render json: {message: "Class not found"}
+      render json: {errors: ["Class not found"]}, status: :not_found
       return
     end
 
     student = classGroup.students.create(student_params[:newUserInfo])
 
     if student.valid?
-      render json: student
+      render json: student, status: :created
     else
-      render json: {message: "Student not created"}
+      render json: {errors: student.errors.full_messages}, status: :unprocessable_entity
     end
     
   end
@@ -42,7 +42,7 @@ class StudentsController < ApplicationController
   def destroy
     student = Student.find_by(id: params[:id])
     student.destroy
-    head: no_content
+    head :no_content
   end
 
   private

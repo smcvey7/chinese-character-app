@@ -46,10 +46,6 @@ useEffect(()=>{
     })
   }
 
-  function handleChangeUuid(e){
-    setClassUuid(e.target.value)
-  }
-
   function handleChangeRole(e){
     setRole(e.target.value)
   }
@@ -65,6 +61,7 @@ useEffect(()=>{
   }
 
   function handleSubmit(e){
+    console.log("newUserCompleteInfo", {newUserInfo: newUserInfo, classUuid: classUuid})
     e.preventDefault()
     fetch(`/${role}s`, {
       method: "POST",
@@ -75,11 +72,13 @@ useEffect(()=>{
     })
     .then((r)=>r.json())
     .then((data)=>{
-      if (data.errors){
-        setErrors(data.errors)
-      }else{
+      console.log(data.ok)
+      if (data.ok){
         alert("account created")
         window.location.href = "/login"
+      }else{
+        console.log("the errors", data)
+        setErrors(data.errors)
       }
     })
   }
@@ -96,7 +95,7 @@ useEffect(()=>{
           {role === "student" ?
             <div>
               <label htmlFor="exampleClassId" className="form-label topMargins">class id</label>
-              <input name="class_uuid" className="form-control" value={classUuid} disabled={noClass || QRUUID ? true : false} onChange={handleChangeUuid} />
+              <input name="class_uuid" className="form-control" value={classUuid} disabled={noClass || QRUUID ? true : false} onChange={(e)=>setClassUuid(e.target.value)} />
               <input type="checkbox" name="no_class" onChange={handleNoClass} checked={noClass} /> not part of a class<br/>
               <label htmlFor="exampleLanguage" className="form-label topMargins">first language</label>
               <input name="first_language" className="form-control" value={newUserInfo.first_language} onChange={handleChange} /><br/>

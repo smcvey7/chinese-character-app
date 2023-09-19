@@ -49,12 +49,13 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
   }
 
   function copyCode(){
-    const code = document.querySelector("input#classCode").value
+    const code = document.querySelector("input#classCode")
     if (!navigator.clipboard){
       code.select()
       document.execCommand("copy")
     } else{
-        navigator.clipboard.writeText(code)
+        code.select()
+        navigator.clipboard.writeText(code.value)
     }  
   }
 
@@ -71,14 +72,14 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
                 <button onClick={handleDelete}>Delete class</button>
               </div>
               <div className="d-flex flex-column qr-card">
-                <h4>QR Code</h4>
-                <button onClick={handleDownload}>Download</button>
+                <h4>Class id</h4>
                 <canvas id="canvas">
                 </canvas><br/>
-                <em>Students can scan this QR code to join your class</em>
-                <em>or use this code:</em>
+                <button onClick={handleDownload}>Download</button>
+
+                <strong className="margins"><em>Students can scan this QR code to join your class or use this link:</em></strong>
                 <div className="d-flex flex-column">
-                  <input onClick={selectAll} id="classCode" value={selectedClass.uuid} readOnly/>
+                  <input onClick={selectAll} id="classCode" value={`https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`} readOnly/>
                   <button className="smallButton" onClick={copyCode}>Copy</button>
                 </div>
               </div>
