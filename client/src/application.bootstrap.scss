@@ -209,10 +209,10 @@ canvas.qr-code{
   padding-bottom: 100px;
 }
 
-#editStudentInfo input{
+#editStudentInfo input, textarea{
   width: 100%;
-  margin-top: 15px;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 #editStudentInfo button{

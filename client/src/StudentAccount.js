@@ -104,29 +104,28 @@ function StudentAccount(){
               <h3>Student info</h3>
               <div className="d-flex flex-row justify-content-between">
                 {userUpdate ? <form onSubmit={handleSubmit} id="editStudentInfo">
-                  {edit ? <em> editing</em> : <></>}<br/>
-                  <input name="username" value={userUpdate.username} onChange={handleChange} readOnly={!edit}/><br/>
                   <label>username</label><br/>
-                  <input name="email" value={userUpdate.email} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input name="username" value={userUpdate.username} onChange={handleChange}/> : <strong>{user.username}</strong>}<br/>
                   <label>email</label><br/>
-                  <input name="first_name" value={userUpdate.first_name} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input name="email" value={userUpdate.email} onChange={handleChange}/> : <strong>{user.email}</strong>}<br/>
                   <label>first name</label><br/>
-                  <input name="last_name" value={userUpdate.last_name} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input name="first_name" value={userUpdate.first_name} onChange={handleChange}/> : <strong>{user.first_name}</strong>}<br/>
                   <label>last name</label><br/>
-                  <input name="first_language" value={userUpdate.first_language} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input name="last_name" value={userUpdate.last_name} onChange={handleChange}/> : <strong>{user.last_name}</strong>}<br/>
                   <label>first language</label><br/>
-                  <input name="other_L2" value={userUpdate.other_L2} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input name="first_language" value={userUpdate.first_language} onChange={handleChange}/> : <strong>{user.first_language}</strong>}<br/>
                   <label>other L2</label><br/>
-                  <input name="school" value={userUpdate.school} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input name="other_L2" value={userUpdate.other_L2} onChange={handleChange}/> : <strong>{user.other_L2}</strong>}<br/>
                   <label>school</label><br/>
-                  <input type="number" name="home_learning" value={userUpdate.home_learning} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input name="school" value={userUpdate.school} onChange={handleChange}/> : <strong>{user.school}</strong>}<br/>
                   <label>home learning</label><br/>
-                  <input type="number" name="class_learning" value={userUpdate.class_learning} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input type="number" name="home_learning" value={userUpdate.home_learning} onChange={handleChange}/> : <strong>{user.home_learning}</strong>}<br/>
                   <label>class learning</label><br/>
-                  <input type="number" name="age" value={userUpdate.age} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input type="number" name="class_learning" value={userUpdate.class_learning} onChange={handleChange}/> : <strong>{user.class_learning}</strong>}<br/>
                   <label>age</label><br/>
-                  <textarea  name="other_info" value={userUpdate.other_info} onChange={handleChange} readOnly={!edit}/><br/>
+                  {edit ? <input type="number" name="age" value={userUpdate.age} onChange={handleChange}/> : <strong>{user.age}</strong>}<br/>
                   <label>other info</label><br/>
+                  {edit ? <textarea name="other_info" value={userUpdate.other_info} onChange={handleChange}/> : <strong>{user.other_info}</strong>}<br/>
 
                   <button onClick={changeEdit}>{edit ? "Cancel" : "Edit"}</button>
                   {edit ? <input id="editStudentInfoSubmit" type="submit" /> : <></>}
