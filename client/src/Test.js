@@ -2,40 +2,46 @@ import React, {useState, useContext, useEffect} from "react";
 import MyContext from "./MyContext";
 import Testing from "./Testing";
 import Finished from "./Finished";
+import { useNavigate } from "react-router-dom";
 
 function Test(){
   const [status, setStatus] = useState("instructions")
   const {user, setUser} = useContext(MyContext)  
   const [finalScore, setFinalScore] = useState(null)
   const [currentTest, setCurrentTest] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(()=>{
-    if (status === "testing" || !user){
+    if (!user){
+      navigate("/getstarted")
+      return null
+    }else if (user.role !== "student"){
+      return(
+        <em>Tests are only available to students.</em>
+      )
+    }else if (status === "testing"){
       return
     }
-  }, [user, status, setUser])
+  }, [user, navigate, status])
 
   function beginTest(){
+    const testVersion = Math.floor(Math.random() * 4) + 1
+
     fetch('/tests', {
       method: "POST",
       headers: {
         'Content-Type': "application/json"
       },
-      body: JSON.stringify({student_id: user.id, version: 1, score: 0, complete: false, char_num: 0})
+      body: JSON.stringify({student_id: user.id, version: testVersion, score: 0, complete: false, char_num: 0})
     })
     .then((r)=>r.json())
     .then((data)=>{
       setUser({...user, tests: [...user.tests, data]})
+      console.log(data)
       setCurrentTest(data)
     })
 
     setStatus("testing")
-  }
-
-  if (user && user.role !== "student"){
-    return(
-      <em>Tests are only available to students.</em>
-    )
   }
 
   if (status === "instructions"){
@@ -63,7 +69,6 @@ function Test(){
   }else if (status === "testing"){
     return(<Testing status={status} setFinalScore={setFinalScore} currentTest={currentTest} setCurrentTest={setCurrentTest} setStatus={setStatus}/>)
   }else if (status === "finished"){
-    console.log("finished", user, user.role)
     return(
     <Finished finalScore={finalScore} currentTest={currentTest}/>
   )}

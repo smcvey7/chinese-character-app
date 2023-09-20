@@ -16,7 +16,6 @@ function StudentAccount(){
       return
     }
     setUserUpdate(user)
-    errors ? console.log(errors) : console.log("no errors")
   }, [user, edit, errors])
 
   function handleChange(e){
@@ -50,7 +49,6 @@ function StudentAccount(){
         })
       }else{
         r.json().then((error_list)=>{
-          console.log("new error list", error_list)
           setErrors(error_list)
         })
       }

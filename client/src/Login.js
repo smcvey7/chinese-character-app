@@ -43,7 +43,6 @@ function Login(){
   function handleLogin(e){
     e.preventDefault()
     const loginData = {userInfo: userInfo, role: role}
-    console.log(loginData)
     setIsLoading(true)
     if (userInfo.username === "" || userInfo.password === ""){
       setErrors("username/password cannot be blank")
@@ -67,7 +66,6 @@ function Login(){
         })
       }else{
         r.json().then((error_list)=>{
-          console.log("new error list", error_list)
           setErrors(error_list.error)
         })
             }

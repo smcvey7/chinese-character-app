@@ -61,7 +61,6 @@ useEffect(()=>{
   }
 
   function handleSubmit(e){
-    console.log("newUserCompleteInfo", {newUserInfo: newUserInfo, classUuid: classUuid})
     e.preventDefault()
     fetch(`/${role}s`, {
       method: "POST",
@@ -72,12 +71,10 @@ useEffect(()=>{
     })
     .then((r)=>r.json())
     .then((data)=>{
-      console.log(data.ok)
       if (data.ok){
         alert("account created")
         window.location.href = "/login"
       }else{
-        console.log("the errors", data)
         setErrors(data.errors)
       }
     })

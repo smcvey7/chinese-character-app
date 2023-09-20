@@ -1,4 +1,7 @@
 class ClassGroupsController < ApplicationController
+
+  before_action :authorize, only: [:create, :update, :destroy]
+
   def index
     class_groups = ClassGroup.all
     render json: class_groups
@@ -11,7 +14,11 @@ class ClassGroupsController < ApplicationController
 
   def create
     class_group = ClassGroup.create(class_group_params)
-    render json: class_group
+    if class_group.valid?
+      render json: class_group, status: :created
+    else
+      render json: {errors: class_group.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -30,6 +37,10 @@ class ClassGroupsController < ApplicationController
 
   def class_group_params
     params.permit(:name, :teacher_id, :uuid, :level)
+  end
+
+  def authorize
+    return render json: {errors: ["Not authorized"]}, status: :unauthorized unless params[:teacher_id] == session[:user_id]
   end
   
 end

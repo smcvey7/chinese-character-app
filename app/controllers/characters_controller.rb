@@ -1,5 +1,7 @@
 class CharactersController < ApplicationController
 
+  before_action :authorize, only: [:update]
+
   def index
     characters = Character.all
     render json: characters
@@ -20,5 +22,14 @@ class CharactersController < ApplicationController
 
   end
 
+  private
+
+  def character_params
+    params.permit(:traditional, :hsk_level, :strokes, :components, :choices, :pinyin, :checked, :appeared, :correct)
+  end
+
+  def authorize
+    return render json: {errors: ["Not authorized"]}, status: :unauthorized unless session[:admin]
+  end
 
 end

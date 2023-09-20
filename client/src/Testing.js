@@ -91,6 +91,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     }));
   
     const testUpdate = {
+      student_id: user.id,
       char_num: charNum + 1,
       score: currentTest.score + (currentItem.correct ? 1 : 0),
       items: [...currentTest.items, currentItem],
@@ -127,7 +128,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
 
   function updateStudentScores(score){
     const updatedScores = [...user.scores, score]
-    console.log("updated user score", score)
     
     fetch(`/students/${user.id}`, {
       method: "PATCH",
@@ -138,7 +138,6 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
     })
     .then((r)=>r.json())
     .then((data)=>{
-      console.log("completed update", data)
       setUser(data)
     })
   }

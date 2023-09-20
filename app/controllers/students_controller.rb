@@ -15,13 +15,16 @@ class StudentsController < ApplicationController
   def create
     classGroup = ClassGroup.find_by(uuid: student_params[:classUuid])
     if !classGroup
-      render json: {errors: ["Class not found"]}, status: :not_found
+      render json: {errors: ["Class not found. If you do not have a class id, please select 'not part of a class'"]}, status: :not_found
       return
     end
 
     student = classGroup.students.create(student_params[:newUserInfo])
 
     if student.valid?
+      session[:user_id] = student.id
+      session[:role] = "student"
+
       render json: student, status: :created
     else
       render json: {errors: student.errors.full_messages}, status: :unprocessable_entity
