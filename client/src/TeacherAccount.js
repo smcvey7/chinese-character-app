@@ -25,7 +25,7 @@ function TeacherAccount(){
       <div className="d-flex flex-column">
         <h2>Account info</h2>
         <div>
-          <CreateNewClass/>
+          <CreateNewClass setSelectedClass={setSelectedClass}/>
           <MyClasses setClassStudents={setClassStudents} setSelectedClass={setSelectedClass} />
           {selectedClass ? <SelectedClass selectedClass={selectedClass} classStudents={classStudents} setClassStudents={setClassStudents} /> : <></>}
         </div>

@@ -160,7 +160,7 @@ input.largeFont{
   font-size: 100px;
 }
 
-// add borders for tables and fit cells to content and wrap text
+
 table, th, td {
   width: 50%;
   border: 1px solid black;
@@ -244,4 +244,26 @@ input#editStudentInfoSubmit{
 .margins{
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+td.bold{
+  font-weight: bold;
+  border: 3px solid black;
+}
+
+// 5px space around text in cells with text centered vertically and horizontally
+table#selected-test td{
+  white-space: nowrap;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+td.red-background{
+  background-color: rgba(251, 76, 76, 0.71);
+}
+
+td.green-background{
+  background-color: rgba(76, 251, 76, 0.71);
 }

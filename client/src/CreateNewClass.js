@@ -2,7 +2,7 @@ import React, {useState, useContext} from "react";
 import MyContext from "./MyContext";
 import {v4 as uuidv4} from "uuid"
 
-function CreateNewClass(){
+function CreateNewClass({setSelectedClass}){
   const {user, setUser} = useContext(MyContext)
   const [newClass, setNewClass] = useState({
     name: "",
@@ -37,6 +37,7 @@ function CreateNewClass(){
         teacher_id: user.id,
         level: ""
       })
+      setSelectedClass(data)
     })
   }
 

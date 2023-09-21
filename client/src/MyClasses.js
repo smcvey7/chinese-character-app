@@ -24,7 +24,7 @@ function MyClasses({setSelectedClass, setClassStudents, selectedClass}){
   return(
     <div className="topMargins">
       <h3>My classes</h3>
-      <select defaultValue="default" onChange={handleSelectClass}>
+      <select defaultValue="default" value={selectedClass} onChange={handleSelectClass}>
         <option value="default" disabled>select class</option>
         {user.class_groups.map((class_group)=>{
           return(

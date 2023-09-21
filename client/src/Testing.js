@@ -36,7 +36,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
 
       return ()=>clearTimeout(timerId)
     }
-  }, [timer, status, setTimer])
+  }, [timer, status, setTimer, handleSubmit])
 
 
 
@@ -166,9 +166,9 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   return(
     <div>
       <h1>TEST</h1>
-      <h2 className="red">Wrong: {wrong}</h2>
+      {/* <h2 className="red">Wrong: {wrong}</h2>
       <h2 className="green">Score: {currentTest.score}</h2>
-      <h2 className="red">Timer: {timer}</h2>
+      <h2 className="red">Timer: {timer}</h2> */}
       <div id="testCard" className="full  topMargins">
         <div className="center border d-flex flex-column">
         <h2 id="testChar"> {testChars[charNum].simplified}</h2>

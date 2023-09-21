@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import CountrySelector from "./CountrySelector";
+import MyContext from "./MyContext";
 
 function Signup({QRUUID}){
+  const {user, setUser} = useContext(MyContext)
   const [role, setRole] = useState("student")
   const [available, setAvailable] = useState("")
   const [noClass, setNoClass] = useState(false)
@@ -28,8 +30,8 @@ function Signup({QRUUID}){
 
 useEffect(()=>{
   const params = new URL(window.location).searchParams
-
-  setClassUuid(params.get("class_id"))
+  
+  setClassUuid(params.get("class_id") ? params.get("class_id") : "")
 }, [])
 
   function handleNoClass(e){
@@ -52,6 +54,10 @@ useEffect(()=>{
 
 
   function checkAvailability(e){
+    if (newUserInfo.username === ""){
+      setAvailable(false)
+      return
+    }
     e.preventDefault()
     fetch(`/availability/${newUserInfo.username}`)
     .then((r)=>r.json())
@@ -61,6 +67,7 @@ useEffect(()=>{
   }
 
   function handleSubmit(e){
+    setErrors([])
     e.preventDefault()
     fetch(`/${role}s`, {
       method: "POST",
@@ -69,14 +76,19 @@ useEffect(()=>{
       },
       body: JSON.stringify({newUserInfo: newUserInfo, classUuid: classUuid})
     })
-    .then((r)=>r.json())
-    .then((data)=>{
-      if (data.ok){
-        alert("account created")
-        window.location.href = "/login"
+    .then((r)=>{
+      if (r.ok){
+        r.json().then((data)=>{
+          setUser(data)
+          alert("account created")
+          window.location.href = "/login"        }
+        )
       }else{
-        setErrors(data.errors)
+        r.json().then((data)=>{
+          setErrors(data.errors)
+        })
       }
+
     })
   }
 

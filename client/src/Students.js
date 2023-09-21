@@ -102,7 +102,7 @@ function Students({selectedClass, classStudents}){
       {studentTests ?
         <div>
           <StudentTests selectedTestNumber={selectedTestNumber} studentTests={studentTests} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
-          {selectedTest ? <SelectedTest selectedTest={selectedTest} /> : <></> }
+          {selectedTest ? <SelectedTest selectedClass={selectedClass} selectedTest={selectedTest} student={studentTests.student} /> : <></> }
         </div> : <></>}
     </div>
   )

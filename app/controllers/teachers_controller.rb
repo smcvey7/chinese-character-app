@@ -16,7 +16,7 @@ class TeachersController < ApplicationController
     teacher = Teacher.create(teacher_params[:newUserInfo])
 
     if teacher.valid?
-      session[:user]= teacher.id
+      session[:user_id] = teacher.id
       session[:role] = "teacher"
       session[:admin] = teacher.admin
 

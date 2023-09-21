@@ -37,7 +37,6 @@ function Test(){
     .then((r)=>r.json())
     .then((data)=>{
       setUser({...user, tests: [...user.tests, data]})
-      console.log(data)
       setCurrentTest(data)
     })
 
