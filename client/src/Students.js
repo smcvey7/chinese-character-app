@@ -1,12 +1,10 @@
-import React, {useState, useContext} from "react";
+import React, {useState} from "react";
 import {v4 as uuidv4} from "uuid"
-import MyContext from "./MyContext";
 import StudentTests from "./StudentTests";
 import SelectedTest from "./SelectedTest";
 
 function Students({selectedClass, classStudents}){
-  const {user, characters} = useContext(MyContext) 
-  const [studentTests, setStudentTests] = useState(null)
+  const [selectedStudent, setSelectedStudent] = useState(null)
   const [selectedTestNumber, setSelectedTestNumber] = useState("default")
   const [selectedTest, setSelectedTest] = useState(null)
 
@@ -18,14 +16,8 @@ function Students({selectedClass, classStudents}){
     const student = classStudents.filter((student)=>{
       return student.id === parseInt(studentId)
     })[0]
-    const tests = user.tests.filter((test)=>{
-      return test.student_id === student.id
-    }
-    )
-    setStudentTests({
-      student: student,
-      tests: tests
-    })
+
+    setSelectedStudent(student)
   }
 
   function exportTableToCSV(filename){
@@ -99,10 +91,10 @@ function Students({selectedClass, classStudents}){
           </tbody>
         </table>
       </div>
-      {studentTests ?
+      {selectedStudent ?
         <div>
-          <StudentTests selectedTestNumber={selectedTestNumber} studentTests={studentTests} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
-          {selectedTest ? <SelectedTest selectedClass={selectedClass} selectedTest={selectedTest} student={studentTests.student} /> : <></> }
+          <StudentTests selectedTestNumber={selectedTestNumber} selectedStudent={selectedStudent} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
+          {selectedTest ? <SelectedTest selectedClass={selectedClass} selectedTest={selectedTest} student={selectedStudent} /> : <></> }
         </div> : <></>}
     </div>
   )

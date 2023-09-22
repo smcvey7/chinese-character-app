@@ -10,7 +10,7 @@ import React, {useContext, useEffect} from 'react';
 import MyContext from './MyContext';
 
 function App() {
-  const {user, setUser, characters, setCharacters, setCurrentTest} = useContext(MyContext)
+  const {setUser, setCharacters} = useContext(MyContext)
   const navigate = useNavigate()
 
   // auto-login
@@ -34,12 +34,9 @@ function App() {
       if (r.ok){
         r.json()
         .then((characters)=>{
-          // order characters by id
           setCharacters(characters.sort((a, b)=>{
             return a.id - b.id
-          })
-          )
-          
+          })) 
         })
       }
     })

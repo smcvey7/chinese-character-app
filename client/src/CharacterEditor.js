@@ -8,7 +8,7 @@ import MyContext from "./MyContext";
 // var _ = require('lodash')
 
 function CharacterEditor(){
-  const {user} = useContext(MyContext)
+  const {user, characters} = useContext(MyContext)
   const [characterList, setCharacterList] =  useState(null)
   const [currentCharacter, setCurrentCharacter] = useState(null)
   const [filteredList, setFilteredList] = useState(null)
@@ -16,12 +16,14 @@ function CharacterEditor(){
   const [bannerContent, setBannerContent] = useState("")  
   
   useEffect(()=>{
-    fetch('/characters').then((r)=>r.json()).then((chars)=>{
-      setFilteredList(chars.filter((char)=>char.hsk_level === 1).sort((a, b)=>{return a.id-b.id}))
-      setCharacterList(chars.sort((a, b)=>{return a.id-b.id}))
-      setCurrentCharacter(chars[0])
-    })
-  }, [])
+    if (!characters){
+      return(<em>loading</em>)
+    }
+
+    setFilteredList(characters.filter((char)=>char.hsk_level === 1).sort((a, b)=>{return a.id-b.id}))
+    setCharacterList(characters.sort((a, b)=>{return a.id-b.id}))
+    setCurrentCharacter(characters[0])
+  }, [characters])
 
 
   function handleChange(e){
@@ -173,8 +175,8 @@ if (!user || !user.admin){
           <MultipleChoiceEditor currentCharacter={currentCharacter} setCurrentCharacter={setCurrentCharacter} />
           <div className="d-flex flex-row justify-content-between">
             <div className="topMargin">
-              <button value={-1} onClick={nextPrevious}>previous</button>
-              <button value={1} onClick={nextPrevious}>next</button>
+              {currentCharacter.id === 1 ? <></> :<button value={-1} onClick={nextPrevious}>previous</button>}
+              {currentCharacter.id === 3000 ? <></> :<button value={1} onClick={nextPrevious}>next</button>}
             </div>
             <div className="d-flex flex-column">
               <div>

@@ -2,7 +2,6 @@ import React, {useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import MyContext from "./MyContext";
 
-
 function Login(){
   const {setUser} = useContext(MyContext)
   const [role, setRole] = useState("student")
@@ -13,10 +12,6 @@ function Login(){
     username: "",
     password: ""
   })
-
-  function onLogin(user){
-    setUser(user)
-  }
 
   function resetUserData(){
     setUserInfo(
@@ -60,7 +55,7 @@ function Login(){
       setIsLoading(false)
       if (r.ok){
         r.json().then((user)=>{
-          onLogin(user)
+          setUser(user)
           resetUserData()
           navigate("/")
         })

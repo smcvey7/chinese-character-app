@@ -17,7 +17,6 @@ function Navigation(){
     })
   }
 
-
   return(
     <nav className="navbar navbar-dark bg-dark justify-content-around">
       <Link

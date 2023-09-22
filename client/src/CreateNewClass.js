@@ -37,7 +37,7 @@ function CreateNewClass({setSelectedClass}){
         teacher_id: user.id,
         level: ""
       })
-      setSelectedClass(data)
+      setSelectedClass({...data, students: []})
     })
   }
 

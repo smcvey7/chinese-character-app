@@ -15,7 +15,7 @@ class ClassGroupsController < ApplicationController
   def create
     class_group = ClassGroup.create(class_group_params)
     if class_group.valid?
-      render json: class_group, status: :created
+      render json: class_group, serializer: NewClassGroupSerializer, status: :created
     else
       render json: {errors: class_group.errors.full_messages}, status: :unprocessable_entity
     end

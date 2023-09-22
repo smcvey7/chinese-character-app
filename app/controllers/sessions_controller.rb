@@ -7,7 +7,9 @@ class SessionsController < ApplicationController
       elsif session[:role] == "teacher"
         user = Teacher.find_by(id: session[:user_id])
       end
-      render json: user
+      render json: user,
+      serializer: TeacherSerializer,
+      include: ['class_groups', 'class_groups.students', 'students.tests']
     else
       render json: {errors: ["Not logged in"]}, status: :unauthorized
     end
@@ -26,7 +28,9 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       session[:admin] = user.admin unless params[:role] == "student"
       session[:role] = params[:role]
-      render json: user
+      render json: user,
+      serializer: TeacherSerializer,
+      include: ['class_groups', 'class_groups.students', 'students.tests']
     else
       render json: {errors: ["Invalid username or password", "Confirm student/teacher selection"]}, status: :unauthorized
     end

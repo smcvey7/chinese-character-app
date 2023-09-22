@@ -3,7 +3,7 @@ import CountrySelector from "./CountrySelector";
 import MyContext from "./MyContext";
 
 function Signup({QRUUID}){
-  const {user, setUser} = useContext(MyContext)
+  const {setUser} = useContext(MyContext)
   const [role, setRole] = useState("student")
   const [available, setAvailable] = useState("")
   const [noClass, setNoClass] = useState(false)
