@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
       session[:role] = params[:role]
       render json: user
     else
-      render json: {message: "Invalid username or password"}, status: :unauthorized
+      render json: {errors: ["Invalid username or password", "Confirm student/teacher selection"]}, status: :unauthorized
     end
   end
 

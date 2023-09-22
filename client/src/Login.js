@@ -66,7 +66,7 @@ function Login(){
         })
       }else{
         r.json().then((error_list)=>{
-          setErrors(error_list.error)
+          setErrors(error_list.errors)
         })
             }
     })
@@ -75,20 +75,30 @@ function Login(){
   return (
     <div className="card topMargins full">
       <h3>Log in</h3>
-      I am a:<select value={role} onChange={handleChangeRole}>
-          <option value="student">student</option>
-          <option value="teacher">teacher/researcher</option>
-        </select>
+      
       <div className="d-flex flex-row justify-content-around">
         <form className="card" id="form" onSubmit={handleLogin} >
-          <label htmlFor="exampleUsername" className="form-label">username</label>
-          <br/><input autoComplete="username" autoCapitalize="none" name="username" value={userInfo.username} onChange={handleChange} ></input><br/>
-          <label htmlFor="examplePassword" className="form-label ">password</label>
-          <br/><input autoComplete="current-password" type="password" name="password" value={userInfo.password} onChange={handleChange} /><br/>
+          <div>
+            <label htmlFor="exampleRole" className="form-label">I am a:</label><br/>
+            <select value={role} onChange={handleChangeRole}>
+              <option value="student">student</option>
+              <option value="teacher">teacher/researcher</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="exampleUsername" className="form-label">username</label><br/>
+            <input autoComplete="username" autoCapitalize="none" name="username" value={userInfo.username} onChange={handleChange} ></input><br/>
+            <label htmlFor="examplePassword" className="form-label ">password</label><br/>
+            <input autoComplete="current-password" type="password" name="password" value={userInfo.password} onChange={handleChange} /><br/>
+          </div>
           <button className="topMargins" type="submit" >{isLoading ? "Loading..." : "Submit"}</button>
         </form>
         <div className="errors topMargins ">
-          {errors ? <ul><li>{errors}</li></ul> : <div/>}
+          {errors ? <ul>
+            {errors.map((error)=>{
+              return <li key={error}>{error}</li>
+            })}
+          </ul> : <div/>}
         </div>
       </div>
     </div>

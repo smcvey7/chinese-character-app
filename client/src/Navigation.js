@@ -19,7 +19,7 @@ function Navigation(){
 
 
   return(
-    <nav className="navbar navbar-dark bg-dark">
+    <nav className="navbar navbar-dark bg-dark justify-content-around">
       <Link
         to="/"
         className="btn btn-lg custom-button"

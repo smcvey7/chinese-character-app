@@ -16,15 +16,13 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
     setClassStudents(students)
 
     const canvas = document.getElementById('canvas')
-    const ctx = canvas.getContext("2d");
 
-    QRCode.toCanvas(canvas, `https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`, {width: 300, height: 300},
+    QRCode.toCanvas(canvas, `https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`, {width: 150, height: 150},
     () => {
-      canvas.style.width = `300px`
-      canvas.style.height = `300px`
+      canvas.style.width = `150px`
+      canvas.style.height = `150px`
     })
-    ctx.font = "15px Arial";
-    ctx.fillText(selectedClass.uuid, 10, 300);
+
   }, [selectedClass, setClassStudents])
 
   function handleDelete(e){
@@ -77,9 +75,9 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
                 </canvas><br/>
                 <button onClick={handleDownload}>Download</button>
 
-                <strong className="margins"><em>Students can scan this QR code to join your class or use this link:</em></strong>
+                <strong className="margins"><em>Students can scan the QR code above to join your class or use the following link:</em></strong>
                 <div className="d-flex flex-column">
-                  <input onClick={selectAll} id="classCode" value={`https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`} readOnly/>
+                  <textarea onClick={selectAll} id="classCode" value={`https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`} readOnly/>
                   <button className="smallButton" onClick={copyCode}>Copy</button>
                 </div>
               </div>

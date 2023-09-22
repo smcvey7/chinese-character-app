@@ -75,6 +75,8 @@ select{
   padding: 15px;
 }
 
+
+
 .topMargins{
   margin-top: 50px;
   margin-left: auto;
@@ -171,7 +173,7 @@ table, th, td {
 }
 
 .qr-card{
-  width: 60%;
+  width: 40%;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -266,4 +268,8 @@ td.red-background{
 
 td.green-background{
   background-color: rgba(76, 251, 76, 0.71);
+}
+
+table{
+  margin-top: 10px;
 }
