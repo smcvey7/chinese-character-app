@@ -7,6 +7,9 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 require 'chinese_pinyin'
+require 'faker'
+require 'securerandom'
+
 
 hsk1 = ["爱", "八", "爸", "吧", "白", "百", "班", "半", "帮", "包", "杯", "北", "备", "本", "比", "边", "别", "病", "不", "菜", "茶", "差", "常", "场", "唱", "车", "吃", "出", "穿", "床", "次", "从", "错", "答", "打", "大", "蛋", "到", "道", "得", "地", "的", "等", "弟", "第", "点", "电", "店", "东", "动", "都", "读", "对", "多", "饿", "儿", "二", "饭", "方", "房", "放", "飞", "非", "分", "风", "服", "干", "高", "告", "哥", "歌", "个", "给", "跟", "工", "关", "馆", "贵", "国", "果", "过", "还", "孩", "汉", "好", "号", "喝", "和", "很", "后", "候", "花", "话", "坏", "欢", "回", "会", "火", "机", "鸡", "几", "记", "家", "假", "间", "见", "教", "叫", "觉", "姐", "介", "今", "进", "京", "净", "九", "就", "开", "看", "考", "渴", "客", "课", "口", "块", "快", "来", "老", "了", "累", "冷", "里", "两", "零", "六", "楼", "路", "妈", "马", "吗", "买", "慢", "忙", "毛", "么", "没", "妹", "门", "们", "米", "面", "名", "明", "拿", "哪", "那", "奶", "男", "南", "难", "脑", "呢", "能", "你", "年", "您", "牛", "女", "旁", "跑", "朋", "票", "七", "期", "起", "气", "汽", "前", "钱", "请", "球", "去", "热", "人", "认", "日", "肉", "三", "山", "商", "上", "少", "绍", "身", "什", "生", "师", "十", "时", "识", "事", "试", "视", "是", "手", "书", "树", "谁", "水", "睡", "说", "四", "送", "诉", "岁", "他", "她", "太", "体", "天", "条", "听", "同", "图", "外", "玩", "晚", "网", "忘", "文", "问", "我", "五", "午", "西", "息", "习", "洗", "喜", "系", "下", "先", "现", "想", "小", "校", "笑", "些", "写", "谢", "新", "星", "行", "兴", "休", "学", "样", "要", "爷", "也", "页", "一", "衣", "医", "影", "用", "友", "有", "右", "雨", "语", "元", "远", "院", "月", "再", "在", "早", "怎", "站", "找", "这", "着", "真", "正", "知", "中", "重", "住", "准", "桌", "子", "字", "走", "最", "昨", "左", "作", "坐", "做"]
 
@@ -159,32 +162,113 @@ hsk_above_list = []
 # Character.create(hsk6_list)
 # Character.create(hsk_above_list)
 
-  # teachers = [
-  #   {
-  #     username: "xiaominghou",
-  #     password: "password",
-  #     password_confirmation: "password",
-  #     first_name: "Xiaoming",
-  #     last_name: "Hou",
-  #     email: "xh1@williams.edu",
-  #     school: "Williams College",
-  #     country: "United States",
-  #     admin: true
-  #   },
-  #   {
-  #     username: "admin",
-  #     password: "password",
-  #     password_confirmation: "password",
-  #     first_name: "Steven",
-  #     last_name: "McVey",
-  #     email: "steven@stevenmcvey.com",
-  #     school: "Williams College",
-  #     country: "United States",
-  #     admin: true
-  #     }
-  # ]
+#   teachers = [
+#     {
+#       username: "wangpeng",
+#       password: "password",
+#       password_confirmation: "password",
+#       first_name: "Peng",
+#       last_name: "Wang",
+#       email: "wangpeng@williams.edu",
+#       school: "Williams College",
+#       country: "United States",
+#       admin: false
+#     },
+#     {
+#       username: "liyou",
+#       password: "password",
+#       password_confirmation: "password",
+#       first_name: "You",
+#       last_name: "Li",
+#       email: "liyou@uoregon.edu",
+#       school: "University of Oregon",
+#       country: "United States",
+#       admin: false
+#       },
+#       {
+#         username: "zhangheng",
+#         password: "password",
+#         password_confirmation: "password",
+#         first_name: "Heng",
+#         last_name: "Zhang",
+#         email: "zhangheng@mit.edu",
+#         school: "MIT",
+#         country: "United States",
+#         admin: false
+#         }
+#   ]
 
-  # Teacher.create(teachers)
+#   Teacher.create(teachers)
+
+#   classGroups = []
+
+# 20.times do |i|
+#   random_groups = ['CHN101', 'CHN102', 'CHN103', 'CHN201', 'CHN202', 'CHN203', 'CHN301', 'CHN302', 'CHN303', 'CHN401', 'CHN402', 'CHN403']
+#   classGroups << {
+#     name: random_groups.sample,
+#     teacher_id: Teacher.all.sample.id,
+#     uuid: SecureRandom.uuid
+#   }
+# end
+
+# ClassGroup.create(classGroups)
+
+# students = []
+
+# 300.times do |i|
+#   students << {
+#     username: Faker::Internet.username,
+#     password: "password",
+#     password_confirmation: "password",
+#     first_name: Faker::Name.first_name,
+#     last_name: Faker::Name.last_name,
+#     email: Faker::Internet.email,
+#     first_language: Faker::Nation.language,
+#     country: Faker::Address.country,
+#     school: Faker::University.name,
+#     class_group_id: ClassGroup.all.sample.id,
+#     role: "student",
+#     age: rand(18..70),
+#     other_L2: Faker::Nation.language,
+#     home_learning: rand(0..10),
+#     class_learning: rand(0..10),
+#     other_info: Faker::Lorem.sentence
+#   }
+# end
+
+# Student.create(students)
+
+# tests = []
+
+# 1000.times do |i|
+#   items = []
+#   correct = 0
+#   rand(1..100).times do |j|
+#     selection = rand(0..4)
+#     if selection==0
+#       correct+=1
+#     end
+#     items << {
+#       character_id: 1+j*20,
+#       correct: selection==0 ? true : false,
+#       choice: selection==4 ? "IDK" : Character.find(1+j*20).choices[selection]
+#     }
+#   end
+
+#   student_id = Student.all.sample.id
+#   tests << {
+#     student_id: student_id,
+#     score: correct,
+#     items: items
+#   }
+
+#   Student.find(student_id).update({scores: Student.find(student_id).scores << correct})
+
+# end
+
+# Test.create(tests)
+
+
 
   # ClassGroup.create({
   #   name: "Generic Class",

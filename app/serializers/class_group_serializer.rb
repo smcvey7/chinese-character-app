@@ -1,5 +1,5 @@
 class ClassGroupSerializer < ActiveModel::Serializer
-  attributes :id, :name, :teacher_id, :uuid, :level, :students
+  attributes :id, :name, :teacher_id, :uuid, :students
 
   belongs_to :teacher
   has_many :students

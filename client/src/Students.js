@@ -27,7 +27,7 @@ function Students({selectedClass, classStudents}){
       const cols = row.querySelectorAll("td.classInfo, th.classInfo")
       const rowArray = []
       for (const col of cols){
-        rowArray.push(col.innerText)
+        rowArray.push(`"${col.innerText}"`)
       }
       csv.push(rowArray.join(","))
     }
@@ -52,8 +52,8 @@ function Students({selectedClass, classStudents}){
         <table id="studentInfo" className="classInfo">
           <thead>
             <tr className="classInfo">
-              <th className="classInfo">First name</th>
               <th className="classInfo">Last name</th>
+              <th className="classInfo">First name</th>
               <th className="classInfo">Attempts</th>
               <th className="classInfo">Highest score</th>
               <th className="classInfo">First Language</th>
@@ -63,8 +63,8 @@ function Students({selectedClass, classStudents}){
               <th className="classInfo">Age</th>
               <th className="classInfo">Country</th>
               <th className="classInfo">School</th>
-              <th className="classInfo">Other info</th>
-              <th className="classInfo">Test details</th>
+              <th className="classInfo" >Other info</th>
+              <th>Test details</th>
             </tr>
           </thead> 
           <tbody>
@@ -73,17 +73,17 @@ function Students({selectedClass, classStudents}){
                 <tr key={uuidv4()} value={student.id} className="classInfo">
                   <td className="classInfo">{student.last_name}</td>
                   <td className="classInfo">{student.first_name}</td>
-                  <td className="classInfo">{student.scores.length}</td>
+                  <td className="classInfo">{student.scores.filter((score)=> score !== 0).length}</td>
                   <td className="classInfo">{student.scores.length === 0 ? null :student.scores.length > 0 ? Math.max(...student.scores) : 0}</td>
                   <td className="classInfo">{student.first_language}</td>
-                  <td className="classInfo">{student.other_L2s}</td>
+                  <td className="classInfo">{student.other_L2}</td>
                   <td className="classInfo">{student.class_learning}</td>
                   <td className="classInfo">{student.home_learning}</td>
                   <td className="classInfo">{student.age}</td>
                   <td className="classInfo">{student.country}</td>
                   <td className="classInfo">{student.school}</td>
                   <td className="classInfo">{student.other_info}</td>
-                  <td className="classInfo"><button onClick={viewStudentTests}>view tests</button></td>
+                  <td><button onClick={viewStudentTests}>view tests</button></td>
                 </tr>
               )
             }

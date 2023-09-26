@@ -1,6 +1,6 @@
 class ClassGroupsController < ApplicationController
 
-  before_action :authorize, only: [:create, :update, :destroy]
+  # before_action :authorize, only: [:create, :update, :destroy]
 
   def index
     class_groups = ClassGroup.all
@@ -36,7 +36,7 @@ class ClassGroupsController < ApplicationController
   private
 
   def class_group_params
-    params.permit(:name, :teacher_id, :uuid, :level)
+    params.permit(:name, :teacher_id, :uuid)
   end
 
   def authorize

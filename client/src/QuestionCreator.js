@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 function QuestionCreator(){
   const [charInput, setCharInput] = useState('')
-  const [result, setResult] = useState(null)
+  // const [result, setResult] = useState(null)
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -32,11 +32,11 @@ function QuestionCreator(){
         <input type="submit" />
       </form>
       <h2>Result</h2>
-      <ul>
+      {/* <ul>
         {result ? Object.keys(result).map((char)=>{
           return <li key={char}>{char}: {result[char][0]+result[char][1]+result[char][2]+result[char][3]}</li>
         }) :<li>no items</li>}
-      </ul>
+      </ul> */}
     </div>
   )
 }

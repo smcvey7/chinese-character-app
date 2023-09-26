@@ -1,6 +1,6 @@
 class TestsController < ApplicationController
   
-    before_action :authorize, only: [:create, :update]
+    before_action :authorize_student, only: [:create, :update]
 
     # def delete_blank_tests
     #   Test.all.each do |test|
@@ -33,11 +33,11 @@ class TestsController < ApplicationController
     render json: test
   end
 
-  def destroy
-    test = Test.find_by(id: params[:id])
-    test.destroy
-    head :no_content
-  end
+  # def destroy
+  #   test = Test.find_by(id: params[:id])
+  #   test.destroy
+  #   head :no_content
+  # end
 
   private
 
@@ -45,7 +45,7 @@ class TestsController < ApplicationController
     params.permit(:id, :score, :student_id, :version, :complete, :char_num, {items: [:correct, :choice, :character_id]})
   end
 
-  def authorize
+  def authorize_student
     return render json: {errors: ["Not authorized"]}, status: :unauthorized unless params[:student_id] == session[:user_id]
   end
 

@@ -10,20 +10,22 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
     if (!selectedClass){
       return
     }
-    const students = selectedClass.students.filter((student)=>{
-      return student.class_group_id === selectedClass.id
-    })
-    setClassStudents(students)
+    if (selectedClass.students){
+      const students = selectedClass.students.filter((student)=>{
+        return student.class_group_id === selectedClass.id
+      })
+      setClassStudents(students)
+    }
 
     const canvas = document.getElementById('canvas')
 
-    QRCode.toCanvas(canvas, `https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`, {width: 150, height: 150},
+    QRCode.toCanvas(canvas, `https://chinesecharactertest.com/getstarted?class_id=${selectedClass.uuid}`, {width: 150, height: 150},
     () => {
       canvas.style.width = `150px`
       canvas.style.height = `150px`
     })
 
-  }, [selectedClass, setClassStudents])
+  }, [selectedClass, setClassStudents, user])
 
   function handleDelete(e){
     e.preventDefault()
@@ -47,12 +49,13 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
   }
 
   function copyCode(){
-    const code = document.querySelector("input#classCode")
+    const code = document.querySelector("textarea#classCode")
     if (!navigator.clipboard){
       code.select()
       document.execCommand("copy")
     } else{
-        code.select()
+      console.log(code)
+        // code.select()
         navigator.clipboard.writeText(code.value)
     }  
   }
@@ -77,7 +80,7 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
 
                 <strong className="margins"><em>Students can scan the QR code above to join your class or use the following link:</em></strong>
                 <div className="d-flex flex-column">
-                  <textarea onClick={selectAll} id="classCode" value={`https://chinese-character-app.onrender.com/getstarted?class_id=${selectedClass.uuid}`} readOnly/>
+                  <textarea onClick={selectAll} id="classCode" value={`https://chinesecharactertest.com/getstarted?class_id=${selectedClass.uuid}`} readOnly/>
                   <button className="smallButton" onClick={copyCode}>Copy</button>
                 </div>
               </div>

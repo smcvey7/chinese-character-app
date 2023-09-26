@@ -8,6 +8,7 @@ import CharacterEditor from './CharacterEditor';
 import GetStarted from './GetStarted';
 import React, {useContext, useEffect} from 'react';
 import MyContext from './MyContext';
+import Footer from './Footer';
 
 function App() {
   const {setUser, setCharacters} = useContext(MyContext)
@@ -55,6 +56,9 @@ function App() {
       <Route path="/getstarted" element={<GetStarted/>}/>
       <Route path="/account" element={<Account/>}/>
     </Routes>
+    <div>
+      <Footer/>
+    </div>
     </div>
   );
 }
