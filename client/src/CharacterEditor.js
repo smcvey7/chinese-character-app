@@ -177,6 +177,7 @@ if (!user || !user.admin){
             <div className="topMargin">
               {currentCharacter.id === 1 ? <></> :<button value={-1} onClick={nextPrevious}>previous</button>}
               {currentCharacter.id === 3000 ? <></> :<button value={1} onClick={nextPrevious}>next</button>}
+              {currentCharacter.id > 2980 ? <></> :<button value={20} onClick={nextPrevious}>forward 20</button>}
             </div>
             <div className="d-flex flex-column">
               <div>
