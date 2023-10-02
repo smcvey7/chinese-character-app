@@ -46,7 +46,7 @@ function App() {
   return (
     <div className="App">
       <div className='entire-page'>
-        <h1>Chinese Character Recognition Test</h1>
+        <h1>Chinese Character Test</h1>
         <Navigation/>
       </div>
     <Routes>

@@ -22,7 +22,18 @@ function CharacterEditor(){
 
     setFilteredList(characters.filter((char)=>char.hsk_level === 1).sort((a, b)=>{return a.id-b.id}))
     setCharacterList(characters.sort((a, b)=>{return a.id-b.id}))
-    setCurrentCharacter(characters[0])
+    const params = new URL(window.location).searchParams
+    const characterId = params.get("character_id")
+    if (characterId){
+      const character = characters.filter((char)=>char.id === parseInt(characterId))[0]
+      setCurrentCharacter(character)
+    }else{
+      setCurrentCharacter(characters[0])
+    }
+
+    // setCurrentCharacter(characters[0])
+
+
   }, [characters])
 
 
@@ -42,7 +53,14 @@ function nextPrevious(e){
   const nextChar = characterList.filter((char)=>char.id===currentCharacter.id + parseInt(e.target.value))[0]
 
   // if (degree === 1 && currentCharacter.)
-  if (nextChar) setCurrentCharacter(nextChar)
+  if (nextChar){
+    setCurrentCharacter(nextChar)
+    // set url to include character_id param
+    const url = new URL(window.location)
+    url.searchParams.set("character_id", nextChar.id)
+    window.history.pushState({}, "", url)
+
+  }
 }
 
 function handleSubmit(e){
