@@ -25,7 +25,7 @@ function Test(){
   }, [user, navigate, status])
 
   function beginTest(){
-    const testVersion = Math.floor(Math.random() * 4) + 1
+    const testVersion = Math.floor(Math.random() * 1) + 1
 
     fetch('/tests', {
       method: "POST",
