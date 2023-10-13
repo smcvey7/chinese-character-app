@@ -3,9 +3,11 @@ This application is intended for Chinese teachers and language researchers to ob
 
 -A back-end built with Ruby on Rails and PostgreSQL
 
--A front-end built with React where users can interact with the API to view student .
+-A front-end built with React where teachers/researchers can create classes, invite students to join, and view student test scores and information about individual questions and responses.
 
--Camp staff can view the rosters for each camp and can view and respond to communications from parents.
+-Students can optionally join a specific class and can take the test to see their estimated character recognition ability.
+
+-Administrators can update the character database, editing individual character information and available responses.
 
 ## Running
 First set up:
@@ -14,11 +16,13 @@ First set up:
  $ rails db: migrate db:seed
  $ npm install --prefix client
 
-Then to start run:
-$ foreman start -f Procfile.dev
+Then to run, in two separate tabs
+ $ rails s
+ $ npm start --prefix client
 
----IMPORTANT---
-Users are required to log in to access most of the functionality of the app. Users can create a new account under sign up. To access the admin version of the site you need to log in as:
 
-username: admin
-password: password
+## Test info
+
+-This test characters are based on HSK (Hanyu Shuiping Kaoshi 汉语水平考试) vocabulary levels 1-9.
+-During the test the student is provided with a test character and four words containing that character as well as the option "I don't know". One option is a real Chinese word and the other three are made up (incorrect) words. The student has 20 seconds to choose or the answer is marked as incorrect, and the test progresses to the next question.
+-Once the student has answered 10 questions in a row incorrectly, the test concludes and the student is given their results.
