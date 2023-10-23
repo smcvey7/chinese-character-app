@@ -5,7 +5,7 @@ function Footer(){
 
 
   return(
-    <div className="footer">
+    <div id="footer" className="footer">
       <footer className="d-flex flex-row justify-content-between">
         <div>
           Contact:<a href="mailto:info@chinesecharactertest.com">info@chinesecharactertest.com</a><br/>

@@ -98,11 +98,13 @@ function Students({selectedClass, classStudents}){
           </tbody>
         </table>
       </div>
-      {selectedStudent ?
-        <div id="selectedStudent" className="bottomMargins">
-          <StudentTests selectedTestNumber={selectedTestNumber} selectedStudent={selectedStudent} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
-          {selectedTest ? <SelectedTest selectedTestNumber={selectedTestNumber} exportTableToCSV={exportTableToCSV} downloadCSV={exportTableToCSV} selectedClass={selectedClass} selectedTest={selectedTest} student={selectedStudent} /> : <></> }
-        </div> : <></>}
+      <div id="selectedStudent" className="bottomMargins">
+        {selectedStudent ?
+          <div>
+            <StudentTests selectedTestNumber={selectedTestNumber} selectedStudent={selectedStudent} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
+            {selectedTest ? <SelectedTest selectedTestNumber={selectedTestNumber} exportTableToCSV={exportTableToCSV} downloadCSV={exportTableToCSV} selectedClass={selectedClass} selectedTest={selectedTest} student={selectedStudent} /> : <></> }
+          </div> : <></>}
+      </div>
     </div>
   )
 }
