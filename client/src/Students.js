@@ -21,11 +21,11 @@ function Students({selectedClass, classStudents}){
     scrollToInfo()
   }
 
-  function exportTableToCSV(filename){
+  function exportTableToCSV(filename, tableName){
     const csv = []
-    const rows = document.querySelectorAll("table.classInfo tr.classInfo")
+    const rows = document.querySelectorAll(`table.${tableName} tr.${tableName}`)
     for (const row of rows){
-      const cols = row.querySelectorAll("td.classInfo, th.classInfo")
+      const cols = row.querySelectorAll(`td.${tableName}, th.${tableName}`)
       const rowArray = []
       for (const col of cols){
         rowArray.push(`"${col.innerText}"`)
@@ -55,7 +55,7 @@ function Students({selectedClass, classStudents}){
     <div>
       <h4>Students</h4>
       <div>
-        <button onClick={()=>exportTableToCSV(`${selectedClass.name}-studentInfo.csv`)}>Download csv file</button>
+        <button onClick={()=>exportTableToCSV(`${selectedClass.name}-studentInfo.csv`, "classInfo")}>Download csv file</button>
         <table id="studentInfo" className="classInfo">
           <thead>
             <tr className="classInfo">
@@ -99,9 +99,9 @@ function Students({selectedClass, classStudents}){
         </table>
       </div>
       {selectedStudent ?
-        <div id="selectedStudent">
+        <div id="selectedStudent" className="bottomMargins">
           <StudentTests selectedTestNumber={selectedTestNumber} selectedStudent={selectedStudent} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
-          {selectedTest ? <SelectedTest selectedClass={selectedClass} selectedTest={selectedTest} student={selectedStudent} /> : <></> }
+          {selectedTest ? <SelectedTest selectedTestNumber={selectedTestNumber} exportTableToCSV={exportTableToCSV} downloadCSV={exportTableToCSV} selectedClass={selectedClass} selectedTest={selectedTest} student={selectedStudent} /> : <></> }
         </div> : <></>}
     </div>
   )
