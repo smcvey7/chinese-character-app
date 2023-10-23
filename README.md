@@ -12,18 +12,15 @@ This application is intended for Chinese teachers and language researchers to ob
 ## Running
 First set up:
 
- From the root directory run
+ From the root directory run:
 
  $ bundle install
-
  $ rails db: migrate db:seed
-
  $ npm install --prefix client
 
-Then to run, in two separate tabs
+Then to run, in two separate console tabs
 
  $ rails s
- 
  $ npm start --prefix client
 
 

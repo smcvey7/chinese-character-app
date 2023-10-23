@@ -18,6 +18,7 @@ function Students({selectedClass, classStudents}){
     })[0]
 
     setSelectedStudent(student)
+    scrollToInfo()
   }
 
   function exportTableToCSV(filename){
@@ -42,6 +43,12 @@ function Students({selectedClass, classStudents}){
     downloadLink.style.display = "none"
     document.body.appendChild(downloadLink)
     downloadLink.click()
+  }
+
+  function scrollToInfo(){
+    const moreInfo = document.getElementById("selectedStudent")
+
+    moreInfo.scrollIntoView({ behavior: "smooth", block: "center" })
   }
 
   return(
@@ -92,7 +99,7 @@ function Students({selectedClass, classStudents}){
         </table>
       </div>
       {selectedStudent ?
-        <div>
+        <div id="selectedStudent">
           <StudentTests selectedTestNumber={selectedTestNumber} selectedStudent={selectedStudent} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
           {selectedTest ? <SelectedTest selectedClass={selectedClass} selectedTest={selectedTest} student={selectedStudent} /> : <></> }
         </div> : <></>}
