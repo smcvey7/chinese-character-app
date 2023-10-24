@@ -51,6 +51,14 @@ function Students({selectedClass, classStudents}){
     moreInfo.scrollIntoView({ behavior: "smooth", block: "center" })
   }
 
+  function formatDate(timestamp){
+    const date = new Date(timestamp)
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    return `${year}/${month}/${day}`
+  }
+
   return(
     <div>
       <h4>Students</h4>
@@ -101,8 +109,8 @@ function Students({selectedClass, classStudents}){
       <div id="selectedStudent" className="bottomMargins">
         {selectedStudent ?
           <div>
-            <StudentTests selectedTestNumber={selectedTestNumber} selectedStudent={selectedStudent} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
-            {selectedTest ? <SelectedTest selectedTestNumber={selectedTestNumber} exportTableToCSV={exportTableToCSV} downloadCSV={exportTableToCSV} selectedClass={selectedClass} selectedTest={selectedTest} student={selectedStudent} /> : <></> }
+            <StudentTests formatDate={formatDate} selectedTestNumber={selectedTestNumber} selectedStudent={selectedStudent} setSelectedTest={setSelectedTest} setSelectedTestNumber={setSelectedTestNumber} />
+            {selectedTest ? <SelectedTest date={formatDate(selectedTest.updated_at)} selectedTestNumber={selectedTestNumber} exportTableToCSV={exportTableToCSV} downloadCSV={exportTableToCSV} selectedClass={selectedClass} selectedTest={selectedTest} student={selectedStudent} /> : <></> }
           </div> : <></>}
       </div>
     </div>

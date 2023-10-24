@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :registrations
   get "/availability/:username", to: "availability#show"
 
   resources :tests

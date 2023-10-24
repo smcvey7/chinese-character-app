@@ -2,12 +2,12 @@ import React, {useContext} from "react";
 import MyContext from "./MyContext";
 import {v4 as uuidv4} from 'uuid';
 
-function SelectedTest({selectedTest, selectedClass, student, exportTableToCSV, downloadCSV, selectedTestNumber}){
+function SelectedTest({selectedTest, selectedClass, student, exportTableToCSV, selectedTestNumber, date}){
   const {characters} = useContext(MyContext)
   
   return(
     <div>
-      <button onClick={()=>exportTableToCSV(`${selectedClass.name}-${student.last_name}-test${selectedTestNumber+1}.csv`, "studentInfo")}>Download csv file</button>
+      <button onClick={()=>exportTableToCSV(`${selectedClass.name}-${student.last_name}-test${selectedTestNumber+1}-${date}.csv`, "studentInfo")}>Download csv file</button>
       <table id="selected-test" className="studentInfo">
       <caption><strong>class: </strong>{selectedClass.name}<strong> student: </strong> {student.last_name}, {student.first_name[0]}<strong> score: </strong>{selectedTest.score}<strong> test version </strong>{selectedTest.version}</caption>
       <thead>
