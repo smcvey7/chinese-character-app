@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from "react";
 import MyContext from "./MyContext";
 import {useNavigate} from "react-router-dom";
+import JoinNewClass from "./JoinNewClass";
 
 function StudentAccount(){
   const {user, setUser} = useContext(MyContext)
@@ -101,7 +102,9 @@ function StudentAccount(){
             }
             )}
           </ul>
-          
+          <div>
+            <JoinNewClass/>
+          </div>
           {/* <h4>Instructor: <em>{user.teacher.last_name}</em></h4> */}
           
           <div className="d-flex flex-row justify-content-around">
