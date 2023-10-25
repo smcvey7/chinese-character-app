@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import CountrySelector from "./CountrySelector";
 import MyContext from "./MyContext";
 
-function Signup({QRUUID}){
+function Signup({QRUUID, teacher}){
   const {setUser} = useContext(MyContext)
   const [role, setRole] = useState("student")
   const [available, setAvailable] = useState("")
@@ -94,9 +94,9 @@ useEffect(()=>{
 
   return(
     <div>
-      <div className="card full topMargins">
+      <div>
         <h1>Signup</h1>
-        I am a:<select value={role} onChange={handleChangeRole}>
+        I am a: <select value={role} onChange={handleChangeRole}>
           <option value="student">student</option>
           <option value="teacher">teacher/researcher</option>
         </select>
@@ -105,6 +105,7 @@ useEffect(()=>{
             <div>
               <label htmlFor="exampleClassId" className="form-label topMargins">class id</label>
               <input name="class_uuid" className="form-control" value={classUuid} disabled={noClass || QRUUID ? true : false} onChange={(e)=>setClassUuid(e.target.value)} />
+              {noClass || !teacher ? null : <strong>Teacher: {teacher ? teacher : null}</strong>}<br/>
               <input type="checkbox" name="no_class" onChange={handleNoClass} checked={noClass} /> not part of a class<br/>
               <label htmlFor="exampleLanguage" className="form-label topMargins">first language</label>
               <input name="first_language" className="form-control" value={newUserInfo.first_language} onChange={handleChange} /><br/>

@@ -68,7 +68,7 @@ function Login(){
   }
 
   return (
-    <div className="card topMargins full">
+    <div>
       <h3>Log in</h3>
       
       <div className="d-flex flex-row justify-content-around">

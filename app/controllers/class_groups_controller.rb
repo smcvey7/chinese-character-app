@@ -12,6 +12,17 @@ class ClassGroupsController < ApplicationController
     render json: class_group
   end
 
+  def find_class_group
+    class_group = ClassGroup.find_by(uuid: params[:uuid])
+    if class_group
+      teacher = Teacher.find_by(id: class_group.teacher_id)
+      teacher_name = "#{teacher.first_name} #{teacher.last_name}"
+      render json: {teacher: teacher_name}
+    else
+      render json: {errors: ["Class group not found"]}, status: :not_found
+    end
+  end
+
   def create
     class_group = ClassGroup.create(class_group_params)
     if class_group.valid?
