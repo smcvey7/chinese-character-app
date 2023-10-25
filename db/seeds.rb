@@ -216,8 +216,10 @@ hsk_above_list = []
 # students = []
 
 # 300.times do |i|
+#   username = Faker::Internet.username + rand(1..1000).to_s
+
 #   students << {
-#     username: Faker::Internet.username,
+#     username: username,
 #     password: "password",
 #     password_confirmation: "password",
 #     first_name: Faker::Name.first_name,
@@ -226,7 +228,6 @@ hsk_above_list = []
 #     first_language: Faker::Nation.language,
 #     country: Faker::Address.country,
 #     school: Faker::University.name,
-#     class_group_id: ClassGroup.all.sample.id,
 #     role: "student",
 #     age: rand(18..70),
 #     other_L2: Faker::Nation.language,
@@ -236,7 +237,16 @@ hsk_above_list = []
 #   }
 # end
 
-# Student.create(students)
+# Student.create!(students)
+
+# Student.all.each do |student|
+#   check_id = ClassGroup.all.sample.id
+#   puts check_id
+#   Registration.create!({
+#     class_group_id: check_id,
+#     student_id: student.id
+#   })
+# end 
 
 # tests = []
 
@@ -266,7 +276,7 @@ hsk_above_list = []
 
 # end
 
-# Test.create(tests)
+# Test.create!(tests)
 
 
 

@@ -1,11 +1,11 @@
 class Student < ApplicationRecord
-  belongs_to :class_group
-  has_one :teacher, through: :class_group
+  has_many :registrations
+  has_many :class_groups, through: :registrations
+  has_many :teachers, through: :class_groups
   has_many :tests
 
   has_secure_password
 
-  validates :class_group_id, {presence: true}
   validates :username, {presence: true, uniqueness: true}
   validates :email, {presence: true, uniqueness: true}
   validates :first_name, presence: true

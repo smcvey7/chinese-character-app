@@ -92,10 +92,17 @@ function StudentAccount(){
               <em className='red' >{deleteAccountError}</em>
             </div>
           </div>
+          <strong>Registrations:</strong>
+          <ul>
+            {user.class_groups.map((classGroup)=>{
+              return(
+                <li key={classGroup.id}>{classGroup.name}</li>
+              )
+            }
+            )}
+          </ul>
           
-          <h4>Class name: <em>{user.class_group.name}</em></h4>
-          
-          <h4>Instructor: <em>{user.teacher.last_name}</em></h4>
+          {/* <h4>Instructor: <em>{user.teacher.last_name}</em></h4> */}
           
           <div className="d-flex flex-row justify-content-around">
             <div className="card forty">

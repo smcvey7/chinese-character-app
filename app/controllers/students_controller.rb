@@ -19,7 +19,9 @@ class StudentsController < ApplicationController
       return
     end
 
-    student = classGroup.students.create(student_params[:newUserInfo])
+    student = Student.create(student_params[:newUserInfo])
+    registration = Registration.create(class_group_id: classGroup.id, student_id: student.id)
+
 
     if student.valid?
       session[:user_id] = student.id
