@@ -11,7 +11,7 @@ import MyContext from './MyContext';
 import Footer from './Footer';
 
 function App() {
-  const {setUser, setCharacters} = useContext(MyContext)
+  const {user, setUser, setCharacters} = useContext(MyContext)
   const navigate = useNavigate()
 
   // auto-login
@@ -23,7 +23,6 @@ function App() {
         r.json()
         .then((user)=>{
           setUser(user)
-          console.log(user)
           navigate(path)
         })
       }
@@ -47,7 +46,10 @@ function App() {
   return (
     <div className="App">
       <div className='entire-page'>
-        <h1>Chinese Character Test</h1>
+        <div className='d-flex flex-horizontal justify-content-between'>
+          <h1>Chinese Character Test</h1>
+          {user ? <em>{user.username}</em>: ""}
+        </div>
         <Navigation/>
       </div>
     <Routes>

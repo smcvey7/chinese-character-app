@@ -13,7 +13,6 @@ function TeacherAccount(){
     if (!selectedClass){
       return
     }
-    console.log(classStudents)
 
   }, [selectedClass, user, classStudents])
 

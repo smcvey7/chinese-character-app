@@ -105,7 +105,6 @@ function StudentAccount(){
           <div>
             <JoinNewClass/>
           </div>
-          {/* <h4>Instructor: <em>{user.teacher.last_name}</em></h4> */}
           
           <div className="d-flex flex-row justify-content-around">
             <div className="card forty">
@@ -150,7 +149,7 @@ function StudentAccount(){
                 </div>
               </div>
             </div>
-            <div className="card forty">
+            <div className="card forty scroll-table">
               <h3>Test History</h3>
               <div className="d-flex justify-content-around topMargins">
                 <table>

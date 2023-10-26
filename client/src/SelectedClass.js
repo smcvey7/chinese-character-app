@@ -52,7 +52,6 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
       code.select()
       document.execCommand("copy")
     } else{
-      console.log(code)
         // code.select()
         navigator.clipboard.writeText(code.value)
     }  
