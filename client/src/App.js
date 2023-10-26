@@ -22,7 +22,6 @@ function App() {
       if (r.ok){
         r.json()
         .then((user)=>{
-          console.log(user.class_groups)
           setUser(user)
           navigate(path)
         })

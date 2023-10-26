@@ -7,7 +7,8 @@ function JoinNewClass(){
   const [scanning, setScanning] = useState(false)
   const [newClassUUID, setNewClassUUID] = useState("")
   const [showBanner, setShowBanner] = useState(false)
-  const [bannerContent, setBannerContent] = useState("") 
+  const [bannerContent, setBannerContent] = useState("")
+  const [errors, setErrors] = useState(null)
 
   const onNewScanResult = (decodedText) => {
     setShowBanner(true)
@@ -20,16 +21,31 @@ function JoinNewClass(){
 
   function handleSubmit(e){
     e.preventDefault()
+    setErrors(null)
     
-    fetch(`/registrations/${newClassUUID}`, {
+    fetch(`/registrations`, {
       method: "POST",
       headers: {
         "content-type": "application/json"
       },
       body: JSON.stringify({
         student_id: user.id,
-        class_uuid: newClassUUID
+        class_group_uuid: newClassUUID
       })
+    })
+    .then((r)=>{
+      if (r.ok){
+        r.json().then((data)=>{
+          setBannerContent("Successfully joined class!")
+          setShowBanner(true)
+          setTimeout(()=>{setShowBanner(false)}, 5000)
+          setNewClassUUID("")
+        })
+      }else{
+        r.json().then((data)=>{
+          setErrors(data.errors)
+        })
+      }
     })
   }
 
@@ -55,11 +71,16 @@ function JoinNewClass(){
   return(
     <div className="topMargins">
       <h3>Join a class</h3>
-      <form onSubmit={handleSubmit}>
-        <label>Class code:</label><br/>
-        <input type="text" name="class_code" value={newClassUUID} placeholder="scan QRcode below" onChange={handleChange}/>
-        <input type="submit" value="Join"/>
-      </form>
+      <div className="d-flex flex-horizontal">
+        <form onSubmit={handleSubmit}>
+          <label>Class code:</label><br/>
+          <input type="text" name="class_code" value={newClassUUID} placeholder="scan QRcode below" onChange={handleChange}/>
+          <input type="submit" value="Join"/>
+        </form>
+        <ul className="red">
+          {errors ? errors.map((error, index)=><li key={index}>{error}</li>) : null}
+        </ul>
+      </div>
       <button onClick={showHideScanner}>{scanning ? "Hide scanner" : "Use QRcode"}</button>
       {showBanner ? <div className="banner"><h2>{bannerContent}</h2></div> : <></>}
       {scanning ? <div>

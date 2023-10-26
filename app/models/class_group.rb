@@ -1,6 +1,7 @@
 class ClassGroup < ApplicationRecord
   belongs_to :teacher
-  has_many :students
+  has_many :registrations
+  has_many :students, through: :registrations
   has_many :tests, through: :students
 
   def self.teacher_name class_group
