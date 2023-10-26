@@ -23,6 +23,7 @@ function App() {
         r.json()
         .then((user)=>{
           setUser(user)
+          console.log(user)
           navigate(path)
         })
       }

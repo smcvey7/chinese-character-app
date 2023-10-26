@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
         user = Teacher.find_by(id: session[:user_id])
         render json: user,
         serializer: TeacherSerializer,
-        include: ['class_groups', 'class_groups.registrations', 'registrations.students', 'students.tests']
+        include: ['class_groups', 'class_groups.students', 'class_groups.students.tests']
       end
 
     else
@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
       if params[:role] == "teacher"
         render json: user,
         serializer: TeacherSerializer,
-        include: ['class_groups', 'class_groups.registrations', 'class_groups.students', 'students.tests']
+        include: ['class_groups', 'class_groups.students', 'class_groups.students.tests']
       else
         render json: user
       end

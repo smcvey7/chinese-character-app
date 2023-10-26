@@ -8,18 +8,14 @@ function MyClasses({setSelectedClass, setClassStudents, selectedClass}){
     if (!selectedClass){
       return
     }
-    const students = selectedClass.students.filter((student)=>{
-      return student.class_group_id === selectedClass.id
-    })
-    setClassStudents(students)
   }, [selectedClass, setClassStudents])
 
   function handleSelectClass(e){
-    setClassStudents([])
-    const selectedClass = user.class_groups.filter((class_group)=>{
+    const newSelectedClass = user.class_groups.filter((class_group)=>{
       return class_group.id === parseInt(e.target.value)
     })[0]
-    setSelectedClass(selectedClass)
+    setSelectedClass(newSelectedClass)
+    setClassStudents(newSelectedClass.students)
   }
   return(
     <div className="topMargins">

@@ -13,7 +13,9 @@ function TeacherAccount(){
     if (!selectedClass){
       return
     }
-  }, [selectedClass, user])
+    console.log(classStudents)
+
+  }, [selectedClass, user, classStudents])
 
   if (!user){
     return(

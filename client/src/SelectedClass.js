@@ -11,10 +11,8 @@ function SelectedClass({selectedClass, setClassStudents, classStudents}){
       return
     }
     if (selectedClass.students){
-      const students = selectedClass.students.filter((student)=>{
-        return student.class_group_id === selectedClass.id
-      })
-      setClassStudents(students)
+      
+      setClassStudents(selectedClass.students)
     }
 
     const canvas = document.getElementById('canvas')

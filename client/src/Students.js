@@ -16,6 +16,7 @@ function Students({selectedClass, classStudents}){
     const student = classStudents.filter((student)=>{
       return student.id === parseInt(studentId)
     })[0]
+    console.log(student)
 
     setSelectedStudent(student)
     scrollToInfo()

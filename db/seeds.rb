@@ -200,7 +200,7 @@ hsk_above_list = []
 
 #   Teacher.create(teachers)
 
-#   classGroups = []
+  # classGroups = []
 
 # 20.times do |i|
 #   random_groups = ['CHN101', 'CHN102', 'CHN103', 'CHN201', 'CHN202', 'CHN203', 'CHN301', 'CHN302', 'CHN303', 'CHN401', 'CHN402', 'CHN403']
@@ -211,7 +211,11 @@ hsk_above_list = []
 #   }
 # end
 
-# ClassGroup.create(classGroups)
+# ClassGroup.create(  {
+#   name: "General",
+#   teacher_id: 1,
+#   uuid: SecureRandom.uuid
+# })
 
 # students = []
 

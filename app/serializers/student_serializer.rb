@@ -3,5 +3,5 @@ class StudentSerializer < ActiveModel::Serializer
 
   has_many :registrations
   # has_many :class_groups, through: :registrations 
-  # has_many :tests
+  has_many :tests
 end
