@@ -83,7 +83,7 @@ function JoinNewClass(){
       </div>
       <button onClick={showHideScanner}>{scanning ? "Hide scanner" : "Use QRcode"}</button>
       {showBanner ? <div className="banner"><h2>{bannerContent}</h2></div> : <></>}
-      {scanning ? <div>
+      {scanning ? <div className="qr-scanner">
         <Html5QrcodePlugin
             fps={10}
             qrbox={500}

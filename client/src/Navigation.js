@@ -26,7 +26,7 @@ function Navigation(){
       >
         Home
       </Link>
-      {user && user.role === "student" ? <Link
+      {user ? <Link
         to="/test"
         className="btn btn-lg custom-button"
         role="button"

@@ -15,10 +15,6 @@ function Test(){
     if (!user){
       navigate("/getstarted")
       return null
-    }else if (user.role !== "student"){
-      return(
-        <em>Tests are only available to students.</em>
-      )
     }else if (status === "testing"){
       return
     }
