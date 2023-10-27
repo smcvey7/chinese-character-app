@@ -1,6 +1,6 @@
 class StudentsController < ApplicationController
   
-  
+  before_action :authorize, only: [:update, :destroy]
 
   def index
     students = Student.all
@@ -54,6 +54,10 @@ class StudentsController < ApplicationController
 
   def student_params
     params.permit(:age, :other_L2, :home_learning, :class_learning, :other_info, :username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :first_language, :classUuid, {scores: []}, :id, newUserInfo: [:age, :other_L2, :home_learning, :class_learning, :other_info, :username, :email, :first_name, :last_name, :password, :password_confirmation, :country, :school, :first_language])
+  end
+
+  def authorize
+    return render json: {errors: ["Not authorized"]}, status: :unauthorized unless params[:student_id] == session[:user_id] && session[:role] == "student" || session[:admin]
   end
 
 end

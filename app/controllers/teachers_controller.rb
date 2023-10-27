@@ -27,7 +27,7 @@ class TeachersController < ApplicationController
   end
 
   def update
-    teacher = Teacher.find_by(id: params[:id])
+    teacher = Teacher.find_by(id: session[:user_id])
     teacher.update(teacher_params)
     if teacher.valid?
       render json: teacher
@@ -36,11 +36,16 @@ class TeachersController < ApplicationController
     end
   end 
 
-  # def destroy
-  #   teacher = Teacher.find_by(id: params[:id])
-  #   teacher.destroy
-  #   head :no_content
-  # end
+  def destroy
+    if session[:admin]
+      render json: {errors: ["Admins accounts cannot be deleted without approval"]}, status: :unauthorized
+      return
+    end
+
+    teacher = Teacher.find_by(id: session[:user_id])
+    teacher.destroy
+    head :no_content
+  end
 
   private
 
