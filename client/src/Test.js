@@ -14,15 +14,34 @@ function Test(){
   useEffect(()=>{
     if (!user){
       navigate("/getstarted")
-      return null
+      return <em>Please log in to access test</em>
     }else if (status === "testing"){
       return
     }
   }, [user, navigate, status])
 
+  function handleBeginTest(){
+    if (user.role === "teacher"){
+      beginTestTeacher()
+    }else{
+      beginTest()
+    }
+  }
+
+  function beginTestTeacher(){
+    const testVersion = Math.floor(Math.random() * 1) + 1
+    setCurrentTest({
+      version: testVersion,
+      score: 0,
+      complete: false,
+      char_num: 0,
+      items: []
+    })
+    setStatus("testing")
+  }
+
   function beginTest(){
     const testVersion = Math.floor(Math.random() * 1) + 1
-
     fetch('/tests', {
       method: "POST",
       headers: {
@@ -56,7 +75,7 @@ function Test(){
               </ul>
               <p>If you answer incorrectly ten times in a row, the test will end automatically, and you will be given your score with an estimate of how many Chinese characters you recognize.</p>
             </div>
-            <button onClick={beginTest} className="btn btn-primary topMargins full">Begin Test</button>
+            <button onClick={handleBeginTest} className="btn btn-primary topMargins full">Begin Test</button>
           </div>
         </div>
       </div>

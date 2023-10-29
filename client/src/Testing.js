@@ -25,6 +25,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
 
   useEffect(()=>{
     if (timer === 0){
+      console.log("out of time")
       handleSubmit({choice: "IDK", correct: false})
       setTimer(20)
     }
@@ -81,7 +82,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   }
 
   function handleSubmit(currentItem){
-
+    console.log("updating current test")
     setCurrentTest((prevTest) => ({
       ...prevTest,
       char_num: charNum + 1,
@@ -102,42 +103,49 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
       setWrong(0)
     }else{
       if (wrong === 9){
-        updateStudentScores(currentTest.score)
+        if (user.role === "student"){
+          updateStudentScores(currentTest.score)
+        }
         endTest()
       }else{
         setWrong(wrong + 1)
       }
     }
-
-    fetch(`/tests/${currentTest.id}`, {
-      method: "PATCH",
-      headers: {
-        'Content-Type': "application/json"
-      },
-      body: JSON.stringify(testUpdate)
-    })
-    .then((r)=>r.json())
-    .then((data)=>{
-      setUser((prevUser)=>({...prevUser, tests: [...user.tests.slice(0, user.tests.length - 1), data]}))
-      setCurrentTest(data)
-    })
-
+    if (user.role === "student"){
+      fetch(`/tests/${currentTest.id}`, {
+        method: "PATCH",
+        headers: {
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify(testUpdate)
+      })
+      .then((r)=>r.json())
+      .then((data)=>{
+        setUser((prevUser)=>({...prevUser, tests: [...user.tests.slice(0, user.tests.length - 1), data]}))
+        setCurrentTest(data)
+      })
+    }
+    
     nextChar()
     setTimer(20)
   }
 
   function updateStudentScores(score){
     const updatedScores = [...user.scores, score]
-    
+    console.log("beginning student record update")
     fetch(`/students/${user.id}`, {
       method: "PATCH",
       headers: {
         'Content-Type': "application/json"
       },
-      body: JSON.stringify({scores: updatedScores})
+      body: JSON.stringify({
+        student_id: user.id,
+        scores: updatedScores
+      })
     })
     .then((r)=>r.json())
     .then((data)=>{
+      console.log("finishing updating student scores", data)
       setUser(data)
     })
   }
@@ -152,6 +160,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
   }
 
   function endTest(){
+    console.log("ending test")
     setStatus("finished")
     setCharNum(0)
     setWrong(0)

@@ -1,12 +1,10 @@
 import React, {useContext} from "react";
-import { useNavigate } from "react-router-dom";
 import MyContext from "./MyContext";
 import StudentAccount from "./StudentAccount";
 import TeacherAccount from "./TeacherAccount";
 
 function Account(){
 const {user} = useContext(MyContext)
-const navigate = useNavigate();
 
 if (!user){
   return(

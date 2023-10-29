@@ -35,7 +35,7 @@ class StudentsController < ApplicationController
   end
 
   def update
-    student = Student.find_by(id: params[:id])
+    student = Student.find_by(id: session[:user_id])
     student.update(student_params)
     if student.valid?
       render json: student
@@ -57,7 +57,7 @@ class StudentsController < ApplicationController
   end
 
   def authorize
-    return render json: {errors: ["Not authorized"]}, status: :unauthorized unless params[:student_id] == session[:user_id] && session[:role] == "student" || session[:admin]
+    return render json: {errors: ["Not authorized"]}, status: :unauthorized unless params[:student_id] == session[:user_id]
   end
 
 end

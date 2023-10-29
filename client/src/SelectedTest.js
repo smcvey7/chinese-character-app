@@ -4,6 +4,7 @@ import {v4 as uuidv4} from 'uuid';
 
 function SelectedTest({selectedTest, selectedClass, student, exportTableToCSV, selectedTestNumber, date}){
   const {characters} = useContext(MyContext)
+  console.log(selectedTest)
   
   return(
     <div>
