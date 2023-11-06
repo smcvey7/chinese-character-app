@@ -22,6 +22,8 @@ gem 'faker'
 
 gem 'sitemap_generator'
 
+gem 'whenever', require: false
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

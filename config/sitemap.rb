@@ -1,7 +1,12 @@
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "http://www.example.com"
+SitemapGenerator::Sitemap.default_host = "http://www.chinesecharactertest.com"
 
 SitemapGenerator::Sitemap.create do
+  add '/', :changefreq => 'daily', :priority => 0.9
+  add '/test', :changefreq => 'daily', :priority => 0.9
+  add '/getstarted', :changefreq => 'daily', :priority => 0.9
+
+
   # Put links creation logic here.
   #
   # The root path '/' and sitemap index file are added automatically for you.
