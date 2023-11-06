@@ -17,7 +17,7 @@ function GetStarted(){
     }
     const params = new URL(window.location).searchParams
     if (params.get("class_id")){
-      // setHasAccount(false)
+      setHasAccount(false)
       setQRUUID(params.get("class_id"))
       fetch(`/find_class_group/${params.get("class_id")}`, {
         method: "GET",

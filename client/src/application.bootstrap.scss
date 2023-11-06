@@ -299,3 +299,16 @@ table{
 .qr-scanner{
   width: 50%;
 }
+
+.custom-button.btn {
+  background-color: #212529;
+  color: #FFF;
+  border: none;
+  margin-right: 20px;
+}
+
+// on hover
+
+.custom-button.btn:hover {
+  text-decoration: underline;
+}
