@@ -20,6 +20,8 @@ gem 'chinese_pinyin'
 
 gem 'faker'
 
+gem 'sitemap_generator'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
