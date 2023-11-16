@@ -26,9 +26,9 @@ class TestsController < ApplicationController
     render json: test
   end
 
-  def update
-        
+  def update   
     test = Test.find_by(id: params[:id])
+    Character.tested(character_update_params[:char_id], character_update_params[:correct])
     test.update(test_params)
     render json: test
   end
@@ -43,6 +43,10 @@ class TestsController < ApplicationController
 
   def test_params
     params.permit(:id, :score, :student_id, :version, :complete, :char_num, {items: [:correct, :choice, :character_id]})
+  end
+
+  def character_update_params
+    params.permit(:char_id, :correct)
   end
 
   def authorize_student

@@ -18,15 +18,20 @@ function CharacterInfo({currentCharacter, handleChange, handleAutofill}){
         <option value="7">7-9</option>
       </select>
         <div className="d-flex flex-row justify-content-between">
-          <div className="d-flex flex-column">
-            <label>components:</label>
-            <input className="short" onChange={handleChange} number="true" name="components" value={currentCharacter.components}/>
+          <div className="d-flex flex-row">
+            <div className="d-flex flex-column">
+              <label>components:</label>
+              <input className="short" onChange={handleChange} number="true" name="components" value={currentCharacter.components}/>
+            </div>
+            <div className="d-flex flex-column">
+              <label>strokes:</label>
+              <input className="short" onChange={handleChange} number="true" name="strokes" value={currentCharacter.strokes}/>
+            </div>
           </div>
-          <div className="d-flex flex-column">
-            <label>strokes:</label>
-            <input className="short" onChange={handleChange} number="true" name="strokes" value={currentCharacter.strokes}/>
+          <div className="d-flex flex-column ">
+            <strong>Times shown: </strong><em>{currentCharacter.appeared}</em>
+            <strong>Percent correct: </strong><em>{currentCharacter.appeared ? currentCharacter.correct / currentCharacter.appeared * 100: "hasn't appeared yet"}</em>
           </div>
-          <div></div>
         </div>
       </div>
     </div>

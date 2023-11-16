@@ -97,6 +97,8 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
       score: currentTest.score + (currentItem.correct ? 1 : 0),
       items: [...currentTest.items, currentItem],
       complete: !currentItem.correct && wrong === 9,
+      correct: currentItem.correct,
+      char_id: testChars[charNum].id
     };
 
     if (currentItem.correct){
@@ -180,8 +182,7 @@ function Testing({currentTest, setCurrentTest, setStatus, setFinalScore, status}
       <h2 className="red">Timer: {timer}</h2> */}
       <div id="testCard" className="full  topMargins">
         <div className="center border d-flex flex-column">
-        <h2 id="testChar"> {testChars[charNum].simplified}</h2>
-          {/* <h2 id="testChar">{testChars[charNum].simplified}{testChars[charNum].traditional ? `(${testChars[charNum].traditional})` : ""}</h2> */}
+        <h2 id="testChar"> {testChars[charNum].simplified} {testChars[charNum].traditional ? `（${testChars[charNum].traditional}）` : ``}</h2>
           <form id="testForm" className="d-flex flex-column justify-content-around full card topMargins">
           <div className="d-flex flex-row justify-content-between">
             {randomOptions ? randomOptions : createOptions(testChars[charNum].choices)}
