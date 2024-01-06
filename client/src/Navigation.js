@@ -1,7 +1,6 @@
 import React, {useContext} from "react";
-import { Link } from "react-router-dom";
 import MyContext from "./MyContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navigation(){
   const {user, setUser} = useContext(MyContext)
