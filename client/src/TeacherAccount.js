@@ -23,6 +23,9 @@ function TeacherAccount(){
 
   function handleDeleteAccount(e){
     e.preventDefault()
+    if (user.username === "exampleteacher"){
+      return
+    }
     if (!deleteAccount){
       setDeleteAccountError("Please check the box to confirm account deletion")
       return
@@ -41,12 +44,11 @@ function TeacherAccount(){
     return(
     <em>Please log in to view your account</em>
   )}
-  
   return(
     <div className="full topMargins">
       <div className="d-flex flex-column">
         <h2>Account info</h2>
-        {user.admin ? <></> : <div className="d-flex flex-column">
+        {user.admin || user.username === "exampleteacher" ? <></> : <div className="d-flex flex-column">
           <div>
             <label className="margin-small">check to confirm delete </label>
             <input onChange={(e)=>setDeleteAccount(e.target.checked)} className="margin-small" type="checkbox" name="delete" value={deleteAccount} />
