@@ -21,6 +21,11 @@ function TeacherAccount(){
 
   }, [selectedClass, user, classStudents])
 
+  function handleSetDeleteAccount(e){
+    setDeleteAccount(e.target.checked)
+    setDeleteAccountError(null)
+  }
+
   function handleDeleteAccount(e){
     e.preventDefault()
     if (user.username === "exampleteacher"){
@@ -30,14 +35,17 @@ function TeacherAccount(){
       setDeleteAccountError("Please check the box to confirm account deletion")
       return
     }
-    fetch(`/teachers/${user.id}`, {
-      method: "DELETE"
-    })
-    .then((r)=>{
-      setDeleteAccountError(null)
-      setUser(null)
-      navigate("/")
-    })
+    const confirmDelete = window.confirm("Are you sure you want to delete your account? This cannot be undone.")
+    if (confirmDelete){
+      fetch(`/teachers/${user.id}`, {
+        method: "DELETE"
+      })
+      .then((r)=>{
+        setDeleteAccountError(null)
+        setUser(null)
+        navigate("/")
+      })
+    }
   }
 
   if (!user){
@@ -51,7 +59,7 @@ function TeacherAccount(){
         {user.admin || user.username === "exampleteacher" ? <></> : <div className="d-flex flex-column">
           <div>
             <label className="margin-small">check to confirm delete </label>
-            <input onChange={(e)=>setDeleteAccount(e.target.checked)} className="margin-small" type="checkbox" name="delete" value={deleteAccount} />
+            <input onChange={handleSetDeleteAccount} className="margin-small" type="checkbox" name="delete" value={deleteAccount} />
             <button onClick={handleDeleteAccount}>Delete Account</button>
           </div>
           <em className='red' >{deleteAccountError}</em>

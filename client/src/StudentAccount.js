@@ -19,6 +19,11 @@ function StudentAccount(){
     setUserUpdate(user)
   }, [user, edit, errors])
 
+  function handleSetDeleteAccount(e){
+    setDeleteAccount(e.target.checked)
+    setDeleteAccountError(null)
+  }
+
   function handleChange(e){
     const key = e.target.name
     const value = e.target.value
@@ -62,14 +67,17 @@ function StudentAccount(){
       setDeleteAccountError("Please check the box to confirm account deletion")
       return
     }
-    fetch(`/students/${user.id}`, {
-      method: "DELETE"
-    })
-    .then((r)=>{
-      setDeleteAccountError(null)
-      setUser(null)
-      navigate("/")
-    })
+    const confirmDelete = window.confirm("Are you sure you want to delete your account? This cannot be undone.")
+    if (!confirmDelete){
+      fetch(`/students/${user.id}`, {
+        method: "DELETE"
+      })
+      .then((r)=>{
+        setDeleteAccountError(null)
+        setUser(null)
+        navigate("/")
+      })
+    }
   }
 
   if (!user){
@@ -87,7 +95,7 @@ function StudentAccount(){
             <div className="d-flex flex-column">
               <div>
                 <label className="margin-small">check to confirm delete </label>
-                <input onChange={(e)=>setDeleteAccount(e.target.checked)} className="margin-small" type="checkbox" name="delete" value={deleteAccount} />
+                <input onChange={handleSetDeleteAccount} className="margin-small" type="checkbox" name="delete" value={deleteAccount} />
                 <button onClick={handleDeleteAccount}>Delete Account</button>
               </div>
               <em className='red' >{deleteAccountError}</em>
